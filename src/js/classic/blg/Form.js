@@ -1,6 +1,7 @@
-Ext.define('Tualo.DS.Report', {
+Ext.define('Tualo.report.Panel', {
     extend: "Ext.panel.Panel",
     alias: [
+        'widget.report_panel',
         'widget.dsreport',
         'widget.cmp_belege_report_editorform',
         'widget.cmp_belege_report_editor'

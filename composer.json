@@ -1,5 +1,5 @@
 {
-    "name": "tualo/ds",
+    "name": "tualo/report",
     "description": "Datasets Component for tualo office",
     "type": "library",
     "license": "MIT",
@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Tualo\\Office\\DS\\": "src/"
+            "Tualo\\Office\\Report\\": "src/"
         },
         "files": ["src/functions.php"]
     },
