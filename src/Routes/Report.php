@@ -15,8 +15,7 @@ class Report implements IRoute{
             $type = $matches['type'];
             
             try{
-                
-                App::result('data',$db->singleValue('select `getReport_'.$type.'`({id}) as report',[],'report'));
+                App::result('data',json_decode( $db->singleValue('select `getReport_'.$type.'`({id}) as report',$matches,'report'), true));
                 App::result('success', true);
                 
             }catch(Exception $e){

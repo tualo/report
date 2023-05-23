@@ -1,55 +1,30 @@
 Ext.define('Tualo.report.Panel', {
-    extend: "Ext.panel.Panel",
+    extend: "Ext.form.Panel",
     alias: [
         'widget.report_panel',
         'widget.dsreport',
         'widget.cmp_belege_report_editorform',
         'widget.cmp_belege_report_editor'
     ],
+    controller: 'report_panel',
+	viewModel: {
+		type: 'report_panel'
+	},
     bind: {
-        disabled: "{saving}"
+        disabled: "{disabled}"
     },
     config: {
         record: null,
     },
     bodyPadding: 10,
-    layout: {
-        type: 'vbox',
-        align: 'stretch'
-    },
+    layout: 'fit',
     items: [
-        {
-            xtype: 'panel',
-            flex: 1,
-            layout: {
-                type: 'hbox',
-                align: 'stretch'
-            },
-            items: [
-                {
-                    xtype: 'panel',
-                    flex: 1,
-                    html: 'header a',
-                },
-                {
-                    xtype: 'panel',
-                    flex: 1,
-                    html: 'header b',
-                }
-            ]
-        },
-        {
-            xtype: 'dslist_view_editor_blg_pos_angebot',
-            flex: 1,
-            //html: 'table',
-        },
-        {
-            xtype: 'panel',
-            flex: 1,
-            html: 'footer',
-        }
+
+        /*
+        
+        */
     ],
     loadRecord: function(record){
-        console.log('loadRecord',record);
+        this.getController().loadRecord(record);
     }
 });
