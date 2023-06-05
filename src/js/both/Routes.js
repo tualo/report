@@ -1,4 +1,14 @@
 Ext.define('Tualo.routes.Report', {
+    statics: {
+        load: async function() {
+            return [
+                {
+                    name: 'report_fa_1',
+                    path: '#report/fa/1'
+                }
+            ]
+        }
+    },
     url: 'report/:type/:id',
     handler: {
         action: function (type, id) {
