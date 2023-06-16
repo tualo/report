@@ -44,9 +44,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                     items: config.header
                 })
             );
-            if (Ext.isEmpty(Ext.ClassManager.getByAlias('widget.dslist_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz')))){
+            if (Ext.isEmpty(Ext.ClassManager.getByAlias('widget.dslist_view_editor_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz')))){
                 Ext.toast('Die Beleg-Liste ist nicht konfiguriert',2000);
-                        
+                console.info('Die Beleg-Liste ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz')+' anpassen.');
                 return;
             }
             
@@ -55,7 +55,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 this.positionsList= Ext.create({
                     title: null,
                     border: true,
-                    xtype: 'dslist_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz'),
+                    xtype: 'dslist_view_editor_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz'),
                     plugins: {
                         gridfilters: true,
                         cellediting: {
@@ -64,7 +64,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                     },
                     store: {
                         type: 'json',
-                        model: 'Tualo.DataSets.model.Blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz'),
+                        model: 'Tualo.DataSets.model.View_editor_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz'),
                     },
                     bodyPadding: 10
                 })
@@ -82,19 +82,6 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 this.getView().getComponent('reportfooter').setHidden(false);
                 this.getView().getComponent('reportfooter').add(Ext.create(config.foottext));
             }
-
-            this.getView().getComponent('reportlist').add(
-                Ext.create({
-                    title: null,
-                    border: true,
-                    xtype: 'dslist_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz'),
-                    store: {
-                        type: 'json',
-                        model: 'Tualo.DataSets.model.Blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz'),
-                    },
-                    bodyPadding: 10
-                })
-            );
         }
         this.reportData();
 
