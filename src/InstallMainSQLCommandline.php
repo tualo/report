@@ -1,5 +1,5 @@
 <?php
-namespace Tualo\Office\Basic;
+namespace Tualo\Office\Report;
 use Garden\Cli\Cli;
 use Garden\Cli\Args;
 use phpseclib3\Math\BigInteger\Engines\PHP;
@@ -10,7 +10,7 @@ use Tualo\Office\Basic\PostCheck;
 
 class InstallMainSQLCommandline implements ICommandline{
 
-    public static function getCommandName():string { return 'reportinstallsql';}
+    public static function getCommandName():string { return 'install-sql-report';}
 
     public static function setup(Cli $cli){
         $cli->command(self::getCommandName())
@@ -47,6 +47,7 @@ class InstallMainSQLCommandline implements ICommandline{
             $filename = __DIR__.'/sql/main.sql';
             $sql = file_get_contents($filename);
             $sql = preg_replace('!/\*.*?\*/!s', '', $sql);
+            $sql = preg_replace('#^\s*\-\-.+$#m', '', $sql);
             $sinlgeStatements = App::get('clientDB')->explode_by_delimiter($sql);
             foreach($sinlgeStatements as $commandIndex => $statement){
                 try{
