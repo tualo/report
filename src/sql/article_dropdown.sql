@@ -1,6 +1,6 @@
 delimiter ;
 
-CREATE OR REPLACE VIEW `view_editor_artikelgruppen` AS 
+CREATE VIEW IF NOT EXISTS `view_editor_artikelgruppen` AS 
 select `artikelgruppen`.`gruppe` AS `gruppe` from `artikelgruppen`;
 
 

@@ -1,3 +1,4 @@
+DELIMITER //
 
 
 create  view  if not exists view_point_of_sale_belege_##### as 
@@ -162,7 +163,7 @@ select
 
 from 
 blg_hdr_##### hdr
-join blg__bezug__##### bez on hdr.id = bez.id
+join blg_#BEZ#_##### bez on hdr.id = bez.id
 join blg_bkr_##### bkr on hdr.id = bkr.id
 //
 
@@ -227,7 +228,7 @@ from
     blg_hdr_##### 
 //
 
-create view if not exists view view_blg_list_#####  as  select
+create view if not exists `view_blg_list_#####`  as  select
     hdr.id,
     '#####' tabellenzusatz,
     '#BLG_CONFIG_ID#' report_config_id,

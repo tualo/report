@@ -1,3 +1,4 @@
+DELIMITER //
 
 CREATE FUNCTION IF NOT EXISTS `getReport_#####`(  in_id bigint ) 
 RETURNS JSON 

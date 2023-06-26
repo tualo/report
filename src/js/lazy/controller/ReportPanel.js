@@ -49,6 +49,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 console.info('Die Beleg-Liste ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz')+' anpassen.');
                 return;
             }
+
+            console.log(config);
             
             
             this.getView().getComponent('reportlist').add(

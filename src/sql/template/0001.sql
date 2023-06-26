@@ -1,3 +1,5 @@
+DELIMITER //
+
 create table if not exists CHECK_BLG_STATES(
   id integer primary key,
   name varchar(50) not null,
@@ -12,6 +14,57 @@ create table if not exists pos_preistyp(
 
 insert ignore into pos_preistyp (id,name) values (0,'unbestimmt'),(1,'preiskategorie'),(2,'preisvereinbarung'),(3,'manuell') //
 
+
+
+CREATE  FUNCTION IF NOT EXISTS `getGiroCodeText#####`(in_number bigint) RETURNS longtext CHARSET utf8mb4 COLLATE utf8mb4_general_ci
+    READS SQL DATA
+BEGIN 
+
+DECLARE result longtext;
+
+DECLARE use_value fixed(15,6) default 0;
+DECLARE use_text varchar(50);
+DECLARE use_GIROCODE_BIC varchar(100);
+DECLARE use_GIROCODE_NAME varchar(100);
+DECLARE use_GIROCODE_IBAN varchar(100);
+
+
+
+
+
+select 
+    girocode_name,girocode_iban,girocode_bic,
+    concat('RN ',blg_hdr_#####.id, ' KN ',blg_adressen_#####.kundennummer),
+    blg_hdr_#####.brutto
+INTO use_GIROCODE_NAME, use_GIROCODE_IBAN, use_GIROCODE_BIC,use_text,use_value
+from 
+
+    girocode_buchungskreise 
+    join blg_bkr_##### on blg_bkr_#####.buchungskreis_id =  girocode_buchungskreise.buchungskreis
+    join blg_hdr_##### on blg_hdr_#####.id = blg_bkr_#####.id
+    join blg_#BEZ#_##### on blg_hdr_#####.id = blg_#BEZ#_#####.id
+
+where blg_bkr_#####.id = in_number;
+if use_GIROCODE_IBAN is null then return null; end if;
+select concat(
+    'BDC',char(10),
+    '002',char(10),
+    '1',char(10),
+    'SCT',char(10),
+    ifnull(use_GIROCODE_BIC,'00000000'),char(10),
+    ifnull(use_GIROCODE_NAME,'GIROCODE_NAME'),char(10),
+    ifnull(use_GIROCODE_IBAN,'DE000000000000000000'),char(10),
+    'EUR',round(use_value,2),char(10),
+    '',char(10),
+    '',char(10),
+    use_text,char(10),
+    '',char(10)
+) 
+INTO result;
+
+RETURN result;
+
+END //
 
 
 create table if not exists blg_hdr_#####(
@@ -73,12 +126,12 @@ call addFieldIfNotExists('blg_hdr_#####','datev_export','integer') //
 call addFieldIfNotExists('blg_hdr_#####','layout','integer default 0') //
 call addFieldIfNotExists('blg_hdr_#####','create_timestamp','timestamp default current_timestamp') //
 
-call addFieldIfNotExists('blg_hdr_#####','hardwareid','varchar(36) default NULL ');
-call addFieldIfNotExists('blg_hdr_#####','abschluss','bigint default NULL ');
+call addFieldIfNotExists('blg_hdr_#####','hardwareid','varchar(36) default NULL ') //
+call addFieldIfNotExists('blg_hdr_#####','abschluss','bigint default NULL ') //
 
 
-call addFieldIfNotExists('blg_hdr_#####','buchungskreis','varchar(10) default NULL ');
-call addFieldIfNotExists('blg_hdr_#####','geschaeftsstelle','integer default NULL ');
+call addFieldIfNotExists('blg_hdr_#####','buchungskreis','varchar(10) default NULL ') //
+call addFieldIfNotExists('blg_hdr_#####','geschaeftsstelle','integer default NULL ') //
 
 
 
@@ -256,14 +309,14 @@ CREATE TABLE IF NOT EXISTS `blg_signum_#####` (
 
 call addfieldifnotexists('blg_hdr_#####','geschaeftsstelle','integer default 100') //
 
-CREATE TABLE `blg_bkr_#####` (
+CREATE TABLE IF NOT EXISTS `blg_bkr_#####` (
   `id` bigint(20) NOT NULL,
   `buchungskreis_id` varchar(10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_blg_bkr_#####_buchungskreis_id` (`buchungskreis_id`),
   CONSTRAINT `fk_blg_bkr_#####_buchungskreise` FOREIGN KEY (`buchungskreis_id`) REFERENCES `buchungskreise` (`id`) ON UPDATE CASCADE
 ) //
-call addForeignKeyIfNotExists ('blg_bkr_#####','blg_hdr_#####','fk_blg_bkr_#####_id','belegnummer','id','cascade','cascade') //
+call addForeignKeyIfNotExists ('blg_bkr_#####','blg_hdr_#####','fk_blg_bkr_#####_id','id','id','cascade','cascade') //
 
 
 
@@ -272,9 +325,9 @@ create table if not exists blg_gst_##### (
   `gst_id` integer NOT NULL,
   KEY `idx_blg_gst_#####_gst_id` (`gst_id` ),
   CONSTRAINT `fk_blg_gst_#####_gst_id` FOREIGN KEY (`gst_id`) REFERENCES `geschaeftsstellen` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-);
+) //
 
-call addForeignKeyIfNotExists ('blg_gst_#####','blg_hdr_#####','fk_blg_gst_#####_id','belegnummer','id','cascade','cascade') //
+call addForeignKeyIfNotExists ('blg_gst_#####','blg_hdr_#####','fk_blg_gst_#####_id','id','id','cascade','cascade') //
 
 
 
@@ -330,7 +383,7 @@ create table if not EXISTS `blg_defaultlayout_#BEZUG#_#####` (
   `kostenstelle` integer,
   `layout` integer,
   primary key (layout,kundennummer,kostenstelle)
-)
+) //
 
 call addForeignKeyIfNotExists ('blg_defaultlayout_#BEZUG#_#####','#BEZUG#','fk_blg_defaultlayout_#BEZUG#_#####_ref','`kundennummer`#KST_REF#','`kundennummer`#KST_REF#','cascade','cascade') //
 
@@ -349,7 +402,7 @@ create table if not exists `blg_abschluss`(
 
     start_saldo fixed(15,6) default 0,
     stopp_saldo fixed(15,6) default 0    
-);
+) //
 
 
 

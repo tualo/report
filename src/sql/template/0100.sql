@@ -1,3 +1,4 @@
+DELIMITER //
 
 
 CREATE OR REPLACE PROCEDURE setupReportDS( in reporttype varchar(20))
