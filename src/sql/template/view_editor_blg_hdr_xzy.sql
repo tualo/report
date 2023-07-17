@@ -1,8 +1,9 @@
-LOCK TABLES `ds` WRITE;
-INSERT INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`) VALUES ('view_editor_blg_hdr_#####','Belegeditor-Kopfdaten','',0,'id','id','id',0,'','','','',0,'cellmodel','',0,'','','','Belegarten','',1,'','','','','',0,0,1,'',0);
-UNLOCK TABLES;
-LOCK TABLES `ds_column` WRITE;
-INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`) VALUES ('view_editor_blg_hdr_#####','abschluss',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES',NULL,1,NULL,'bigint','','bigint(20)',NULL,19,0,NULL,'select,insert,update,references',1,NULL,NULL),
+DELIMITER ;
+ 
+ INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`) VALUES ('view_editor_blg_hdr_#####','Belegeditor-Kopfdaten','',0,'id','id','id',0,'','','','',0,'cellmodel','',0,'','','','Belegarten','',1,'','','','','',0,0,1,'',0);
+ 
+ 
+ INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`) VALUES ('view_editor_blg_hdr_#####','abschluss',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES',NULL,1,NULL,'bigint','','bigint(20)',NULL,19,0,NULL,'select,insert,update,references',1,NULL,NULL),
 ('view_editor_blg_hdr_#####','an_lager',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES',NULL,1,NULL,'int','','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,NULL,NULL),
 ('view_editor_blg_hdr_#####','archiv',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES',NULL,1,NULL,'int','','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,NULL,NULL),
 ('view_editor_blg_hdr_#####','bezahlt',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES',NULL,1,NULL,'decimal','','decimal(15,6)',NULL,15,6,NULL,'select,insert,update,references',1,NULL,NULL),
@@ -50,9 +51,9 @@ INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_
 ('view_editor_blg_hdr_#####','zeitraum_bis',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES',NULL,1,NULL,'date','','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,NULL,NULL),
 ('view_editor_blg_hdr_#####','zeitraum_von',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES',NULL,1,NULL,'date','','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,NULL,NULL),
 ('view_editor_blg_hdr_#####','zurueck',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES',NULL,1,NULL,'decimal','','decimal(15,6)',NULL,15,6,NULL,'select,insert,update,references',1,NULL,NULL);
-UNLOCK TABLES;
-LOCK TABLES `ds_column_list_label` WRITE;
-INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('view_editor_blg_hdr_#####','abschluss','DE','abschluss','gridcolumn','',2,'','','',1,0,'',0,1.00,'','','',''),
+ 
+ 
+ INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('view_editor_blg_hdr_#####','abschluss','DE','abschluss','gridcolumn','',2,'','','',1,0,'',0,1.00,'','','',''),
 ('view_editor_blg_hdr_#####','an_lager','DE','an_lager','gridcolumn','',3,'','','',1,0,'',0,1.00,'','','',''),
 ('view_editor_blg_hdr_#####','archiv','DE','archiv','gridcolumn','',4,'','','',1,0,'',0,1.00,'','','',''),
 ('view_editor_blg_hdr_#####','bezahlt','DE','bezahlt','gridcolumn','',5,'','','',1,0,'',0,1.00,'','','',''),
@@ -100,9 +101,9 @@ INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `la
 ('view_editor_blg_hdr_#####','zeitraum_bis','DE','zeitraum_bis','gridcolumn','',45,'','','',1,0,'',0,1.00,'','','',''),
 ('view_editor_blg_hdr_#####','zeitraum_von','DE','zeitraum_von','gridcolumn','',46,'','','',1,0,'',0,1.00,'','','',''),
 ('view_editor_blg_hdr_#####','zurueck','DE','zurueck','gridcolumn','',47,'','','',1,0,'',0,1.00,'','','','');
-UNLOCK TABLES;
-LOCK TABLES `ds_column_form_label` WRITE;
-INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('view_editor_blg_hdr_#####','abschluss','DE','abschluss','displayfield','Allgemein',5,1,0,0,'1',1.00,'\'\''),
+ 
+ 
+ INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('view_editor_blg_hdr_#####','abschluss','DE','abschluss','displayfield','Allgemein',5,1,0,0,'1',1.00,'\'\''),
 ('view_editor_blg_hdr_#####','an_lager','DE','an_lager','displayfield','Allgemein',6,1,0,0,'1',1.00,'\'\''),
 ('view_editor_blg_hdr_#####','archiv','DE','archiv','displayfield','Allgemein',7,1,0,0,'1',1.00,'\'\''),
 ('view_editor_blg_hdr_#####','bezahlt','DE','bezahlt','displayfield','Allgemein',8,1,0,0,'1',1.00,'\'\''),
@@ -150,13 +151,13 @@ INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `la
 ('view_editor_blg_hdr_#####','zeitraum_bis','DE','Bis','datefield','Allgemein',4,0,1,0,'Leistungszeitraum',1.00,'\'\''),
 ('view_editor_blg_hdr_#####','zeitraum_von','DE','Von','datefield','Allgemein',3,0,1,0,'Leistungszeitraum',1.00,'\'\''),
 ('view_editor_blg_hdr_#####','zurueck','DE','zurueck','displayfield','Allgemein',47,1,0,0,'1',1.00,'\'\'');
-UNLOCK TABLES;
-LOCK TABLES `ds_dropdownfields` WRITE;
-UNLOCK TABLES;
-LOCK TABLES `ds_reference_tables` WRITE;
-UNLOCK TABLES;
-LOCK TABLES `ds_addcommands` WRITE;
-UNLOCK TABLES;
-LOCK TABLES `ds_access` WRITE;
-INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','view_editor_blg_hdr_#####',1,0,0,0,0);
-UNLOCK TABLES;
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','view_editor_blg_hdr_#####',1,0,0,0,0);
+ 

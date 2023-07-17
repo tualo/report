@@ -33,6 +33,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
 
     initializeReport: async function(){
+        console.log('initializeReport',this.getViewModel().get('record'),this.getViewModel().get('record').get('tabellenzusatz'));
         let config = await fetch('./report/config/'+this.getViewModel().get('record').get('tabellenzusatz')).then((response)=>{return response.json()});
         if (config.success){
             this.getViewModel().set('config',config);
