@@ -9,6 +9,11 @@ Ext.define('Tualo.routes.Report', {
             ]
         }
     },
+    requires: [
+        'Tualo.report.data.field.SinglePrice',
+        'Tualo.report.data.field.NetPrice',
+        'Tualo.report.data.field.Account',
+    ],
     url: 'report/:type/:id',
     handler: {
         action: function (type, id) {

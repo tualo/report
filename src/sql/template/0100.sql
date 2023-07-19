@@ -69,7 +69,7 @@ BEGIN
         ds_column
     where 
         table_name=concat('view_editor_blg_pos_',reporttype)
-        and column_name in ('bemerkung')
+        and column_name in ('notes','additionaltext')
     union 
         select 
             table_name,
@@ -83,8 +83,8 @@ BEGIN
             ds_column
         where 
             table_name=concat('view_editor_blg_pos_',reporttype)
-            and column_name in ('artikel','anzahl','epreis','netto','brutto','steuersatz','steuer')
-            
+            and column_name in ('article','amount','singleprice','net','gross','tax','taxvalue')
+
     union 
         select 
             table_name,

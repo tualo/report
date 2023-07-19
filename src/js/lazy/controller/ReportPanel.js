@@ -11,19 +11,25 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             }
         }
     },
+    getReportHeader: function(){
+        return this.getView().getForm().getValues();
+    },  
     reportData: async function(){
         let config = this.getViewModel().get('config'),
             data = await fetch('./report/get/'+this.getViewModel().get('record').get('tabellenzusatz')+'/'+this.getViewModel().get('record').get('id')).then((response)=>{return response.json()});
-        console.log('reportData',data,config.translations);
+
         if (data.success){
+
+
             let positions=[];
+            this.getView().getForm().setValues(data.data);
             data.data.positions.forEach((item)=>{
                 let pos = {...item};
                 for(let k in config.translations.pos){
                     let o = config.translations.pos[k][0];
-                    pos['blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz')+'__'+o.column_name]=item[k];
+                    pos[ o.column_name]=item[k];
                 }
-                let record = Ext.create('Tualo.DataSets.model.Blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz'),pos);
+                let record = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz'),pos);
                 positions.push(record);
             });
             console.log('positions',positions);
@@ -32,26 +38,47 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     },
 
 
+    removeUneccessaryFields: function(list){
+        list.forEach((item)=>{
+            delete item['bind'];
+            delete item['listeners'];
+            if (item.items){
+                item.items = this.removeUneccessaryFields(item.items);
+            }
+        });
+        return list;
+    },
     initializeReport: async function(){
         console.log('initializeReport',this.getViewModel().get('record'),this.getViewModel().get('record').get('tabellenzusatz'));
-        let config = await fetch('./report/config/'+this.getViewModel().get('record').get('tabellenzusatz')).then((response)=>{return response.json()});
+        let config = await fetch('./reportconfig/'+this.getViewModel().get('record').get('tabellenzusatz')).then((response)=>{return response.json()});
         if (config.success){
             this.getViewModel().set('config',config);
-            this.getView().getComponent('header').getComponent('reportheader').add(
-                Ext.create({
-                    scrollable: 'y',
-                    xtype: 'panel',
-                    bodyPadding: 10,
-                    items: config.header
-                })
-            );
+            
             if (Ext.isEmpty(Ext.ClassManager.getByAlias('widget.dslist_view_editor_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz')))){
                 Ext.toast('Die Beleg-Liste ist nicht konfiguriert',2000);
                 console.info('Die Beleg-Liste ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz')+' anpassen.');
                 return;
             }
+            if (Ext.isEmpty(Ext.ClassManager.getByAlias('widget.dslist_view_editor_blg_hdr_'+this.getViewModel().get('record').get('tabellenzusatz')))){
+                Ext.toast('Der Belegkopf ist nicht konfiguriert',2000);
+                console.info('Der Belegkopf ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_hdr_'+this.getViewModel().get('record').get('tabellenzusatz')+' anpassen.');
+                return;
+            }
 
-            console.log(config);
+            let hdr = Ext.create({
+                scrollable: 'y',
+                xtype: 'panel',
+                defaults: {
+                    labelWidth: 150,
+                },
+                items: this.removeUneccessaryFields(config.header),
+                // bodyPadding: 10
+            });
+            this.getView().getComponent('header').getComponent('reportheader').add(
+                hdr
+            );
+
+            console.log(config,hdr);
             
             
             this.getView().getComponent('reportlist').add(
@@ -62,14 +89,22 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                     plugins: {
                         gridfilters: true,
                         cellediting: {
-                            clicksToEdit: 1
+                            clicksToEdit: 1,
+                            listeners: {
+                                edit: function(editor, fld){
+                                    this.grid.checkAutoNewRow(fld.rowIdx);
+                                    this.grid.fireEvent('edited',fld.record,fld);
+                                    return true;
+                                }
+                            }
                         }
                     },
                     store: {
                         type: 'json',
+                        getHeader: this.getReportHeader.bind(this),
                         model: 'Tualo.DataSets.model.View_editor_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz'),
                     },
-                    bodyPadding: 10
+                    // bodyPadding: 10
                 })
             );
 

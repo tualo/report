@@ -1,4 +1,4 @@
-Ext.define('Tualo.report.fields.reportnumber',  {
+Ext.define('Tualo.report.fields.Reportnumber',  {
     alias: 'widget.tualoreportnumber',
     extend: 'Ext.form.field.Display',
     

@@ -9,7 +9,10 @@ class JsLoader implements IRoute{
     public static function register(){
         BasicRoute::add('/jsreport/(?P<file>[\w.\/\-]+).js',function($matches){
             App::contenttype('application/javascript');
+            if (file_exists(dirname(__DIR__,1).'/js/lazy/'.$matches['file'].'.js'))
             readfile( dirname(__DIR__,1).'/js/lazy/'.$matches['file'].'.js' );
+
+
             exit();
             
         },['get'],false);

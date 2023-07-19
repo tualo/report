@@ -10,14 +10,12 @@ use Tualo\Office\DS\DSTable;
 
 class Config implements IRoute{
     public static function register(){
-        Route::add('/report/config/(?P<type>\w+)',function($matches){
+        Route::add('/reportconfig/(?P<type>\w+)',function($matches){
             $db = App::get('session')->getDB();
             try{
-                $headerList = $db->direct('select * from view_reportform_fieldgroups where tabellenzusatz={type} order by position',$matches);
-                $header = [];
-                foreach($headerList as $item){
-                    $header[] = json_decode($item['jsfield'],true);
-                }
+                
+
+                $header = json_decode( $db->singleValue('select json_extract(js,"$[0].items") x from view_ds_formtabs_pertable where table_name = "view_editor_blg_hdr_'.$matches['type'].'"',[],'x'), true );
                 App::result('header', $header);
                 $matches['table_name'] = 'blg_txt_'.$matches['type'];
                 $texts = json_decode($db->singleValue('select json_object("xtype",xtype) json from ds_column_form_label 

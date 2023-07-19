@@ -213,19 +213,48 @@ from
 
 
 
-create view if not exists `view_editor_blg_pos_#####` as
+create or replace view `view_editor_blg_pos_#####` as
 select 
-    *
+    blg_pos_#####.*,
+
+    blg_pos_#####.artikel article,
+    blg_pos_#####.anzahl amount,
+    blg_pos_#####.epreis singleprice,
+    blg_pos_#####.netto net,
+    blg_pos_#####.brutto gross,
+    blg_pos_#####.steuersatz tax,
+    blg_pos_#####.steuer taxvalue,
+    blg_pos_#####.bemerkung notes,
+    blg_pos_#####.zusatztext additionaltext
 from 
     blg_pos_##### 
 //
 
 
-create view if not exists `view_editor_blg_hdr_#####` as
+create or replace view `view_editor_blg_hdr_#####` as
 select 
-    *
+    blg_hdr_#####.*,
+    blg_hdr_#####.datum `date`,
+    blg_hdr_#####.buchungsdatum `bookingdate`,
+    blg_hdr_#####.zeitraum_von `service_period_start`,
+    blg_hdr_#####.zeitraum_bis `service_period_stop`,
+    blg_hdr_#####.von_lager `warehouse`,
+    blg_hdr_#####.referenz `reference`,
+    blg_hdr_#####.geschaeftsstelle `office`,
+    blg_hdr_#####.faelligam `payuntildate`,
+    
+    '#####' `reporttype`,
+
+    adr.adresse `address`,
+    bkr.buchungskreis_id `companycode`,
+    bez.kundennummer `referencenr`,
+    bez.kostenstelle `costcenter`
+
 from 
     blg_hdr_##### 
+    join blg_#BEZ#_##### bez on blg_hdr_#####.id = bez.id
+    join blg_bkr_##### bkr on blg_hdr_#####.id = bkr.id
+    join blg_adr_##### adr on blg_hdr_#####.id = adr.id
 //
 
 create view if not exists `view_blg_list_#####`  as  select

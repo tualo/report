@@ -695,25 +695,6 @@ BEGIN
     SET @SQL = concat('
     SELECT JSON_OBJECT(
 
-        /*
-        "id", hdr.id,
-        "date", hdr.datum,
-        "bookingdate", hdr.buchungsdatum,
-        "service_period_start", hdr.zeitraum_von,
-        "service_period_stop", hdr.zeitraum_bis,
-
-
-        "time", hdr.zeit,
-
-        "warehouse", hdr.von_lager,
-        "reference", hdr.referenz,
-        
-        "kind_of_bill", hdr.preisorientierung,
-        
-        "office", hdr.geschaeftsstelle,
-
-        "login", hdr.login,
-        */
 
         ',flds,',
 
@@ -744,6 +725,12 @@ BEGIN
     execute stmt;
     DEALLOCATE PREPARE stmt;
 
+    for rec in (select * from blg_hdr_translations where is_required = 1) do
+        if JSON_VALUE(@result,concat('$.',rec.json_attribute_name)) is null then
+            SET @error = concat( "required field missing: ",rec.json_attribute_name);
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @error;
+        end if;
+    end for;
 
     --  Belegpositionen
     call debug_message('get report pos');

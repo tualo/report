@@ -62,5 +62,27 @@ class InstallMainSQLCommandline implements ICommandline{
         $clientName = $args->getOpt('client');
         if( is_null($clientName) ) $clientName = '';
         self::setupClients("setup main report procedures ",$clientName,$installSQL);
+
+
+
+        $installSQLBaseTypes = function (){
+            $filename = __DIR__.'/sql/ext_base_type.sql';
+            $sql = file_get_contents($filename);
+            $sql = preg_replace('!/\*.*?\*/!s', '', $sql);
+            $sql = preg_replace('#^\s*\-\-.+$#m', '', $sql);
+            $sinlgeStatements = App::get('clientDB')->explode_by_delimiter($sql);
+            foreach($sinlgeStatements as $commandIndex => $statement){
+                try{
+                    App::get('clientDB')->direct($statement);
+                    
+                }catch(\Exception $e){
+                    echo PHP_EOL;
+                    PostCheck::formatPrintLn(['red'], $e->getMessage().': commandIndex => '.$commandIndex);
+                }
+            }
+        };
+        $clientName = $args->getOpt('client');
+        if( is_null($clientName) ) $clientName = '';
+        self::setupClients("setup base types procedures ",$clientName,$installSQLBaseTypes);
     }
 }

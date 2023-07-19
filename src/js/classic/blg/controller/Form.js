@@ -1,4 +1,5 @@
 Ext.Loader.setPath('Tualo.report.lazy', './jsreport');
+Ext.Loader.setPath('Tualo.report.data.field', './jsreport');
 
 Ext.define('Tualo.report.controller.Form', {
     extend: 'Ext.app.ViewController',
