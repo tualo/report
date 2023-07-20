@@ -22,19 +22,51 @@ Ext.define('Tualo.report.lazy.ReportPanel',{
         align: 'stretch'
     },
 
+    dockedItems: [
+        {   
+            xtype: "toolbar",
+            dock: "top",
+            layout: 'hbox',
+            cls: "x-panel-header-default",
+            listeners: {
+                boxready: 'toolbarBoxReady'
+            },
+            items: [
+                '->',
+                {
+                    xtype: "glyphtool",
+                    glyph: "refresh",
+                    handler: "refresh",
+                    tooltip: "neu Laden",
+                    
+                },
+                {
+                    xtype: "glyphtool",
+                    glyph: "save",
+                    tooltip: "Speichern",
+                    handler: "save",
+                    
+                }
+            ]
+        }
+    ],
+
     items: [
         {
             xtype: 'panel',
             itemId: 'header',
-            flex: 0.5,
+            //flex: 0.5,
             layout: {
                 type: 'hbox',
                 align: 'stretch'
             },
+
+            
+
             items: [
                 {
                     xtype: 'panel',
-                    flex: 1,
+                    // flex: 1,
                     layout: {
                         type: 'hbox',
                         align: 'stretch'

@@ -210,7 +210,57 @@ from
 
 //
 
+create view if not exists view_editor_relation_##### as 
 
+select 
+concat(#BEZ#.#id_column#,'|',#KST_REF0#) id,
+#BEZ#.#id_column# referencenr,
+#KST_REF0# costcenter,
+#BEZDISPLAY# display,
+#BEZDISPLAY# address
+
+from #BEZ# //
+
+call fill_ds('view_editor_relation_#####')  //
+call fill_ds_column('view_editor_relation_#####')  //
+
+insert ignore into ds_dropdownfields
+(
+    table_name,
+    name,
+    idfield,
+    displayfield
+) values
+(
+    'view_editor_relation_#####',
+    'id',
+    'id',
+    'display'
+) //
+
+update ds set 
+    searchfield='display',
+    displayfield='display',
+    sortfield='display',
+    class_name='Belegarten',
+    title='Belegeditor (Bezugsdropdown)',
+    default_pagesize=10
+where 
+    ds.table_name = 'view_editor_relation_#####' and (title='' or title is null) 
+//
+
+insert ignore into ds_access
+(
+    `role`,
+    table_name,
+    `read`
+) values
+(
+    '_default_',
+    'view_editor_relation_#####',
+    1
+) 
+// 
 
 
 create or replace view `view_editor_blg_pos_#####` as
@@ -224,11 +274,15 @@ select
     blg_pos_#####.brutto gross,
     blg_pos_#####.steuersatz tax,
     blg_pos_#####.steuer taxvalue,
+    blg_pos_#####.einheit unit,
     blg_pos_#####.bemerkung notes,
     blg_pos_#####.zusatztext additionaltext
 from 
     blg_pos_##### 
 //
+
+call fill_ds('view_editor_blg_pos_#####')  //
+call fill_ds_column('view_editor_blg_pos_#####')  //
 
 
 create or replace view `view_editor_blg_hdr_#####` as
@@ -256,6 +310,10 @@ from
     join blg_bkr_##### bkr on blg_hdr_#####.id = bkr.id
     join blg_adr_##### adr on blg_hdr_#####.id = adr.id
 //
+
+call fill_ds('view_editor_blg_hdr_#####')  //
+call fill_ds_column('view_editor_blg_hdr_#####')  //
+
 
 create view if not exists `view_blg_list_#####`  as  select
     hdr.id,
@@ -294,6 +352,8 @@ hdr.geschaeftsstelle,
       on (#BEZUG_ID_REF##BEZUG_KST_REF0#) = (bez.kundennummer,bez.kostenstelle)
 // 
 
+call fill_ds('view_blg_list_#####')  //
+call fill_ds_column('view_blg_list_#####')  //
 
 
 CREATE OR REPLACE VIEW `view_report_blg_hdr_#####_girocode` AS 

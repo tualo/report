@@ -16,7 +16,7 @@ class Price implements IRoute{
             try{
                 $payload = json_decode(file_get_contents('php://input'),true);
                 $db->direct('call `reportArticleInformation`({payload},@o)',['payload'=>json_encode( $payload )]);
-
+                $db->moreResults();
                 $result = json_decode( $db->singleValue('select @o o',[],'o'), true);
                 foreach($result as $key=>$value){
                     App::result($key,$value);

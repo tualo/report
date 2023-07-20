@@ -2,37 +2,119 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.lazy_report_panel',
 
+    onFormFieldChanged: function(fld,oldValue,newValue){
+        console.log('onFormFieldChanged',arguments,fld.name);
+        let me=this,sel=null,view=this.getView();
+        if (fld.name=='referencenr'){
+            if (
+                (typeof fld.picker!='undefined') &&
+                (typeof fld.picker.getSelection=='function')
+            ){
+                sel  =fld.picker.getSelection();
+                 
+                if ((sel.length>0) && (sel[0].get('referencenr')!=null)){
+                     
+                    view.getForm().setValues({
+                        referencenr: sel[0].get('referencenr'),
+                        costcenter: sel[0].get('costcenter'),
+                        address: sel[0].get('address')
+                    });
+                    
+                }
+            }
+        }
+    },
+
     loadRecord: function(record){
         this.getViewModel().set('record',record);
+        console.log('loadRecord',this.id,this.positionsList);
         if (!Ext.isEmpty(record)){
-            if (this.getViewModel().get('initialized')!=true){
-                this.getViewModel().set('initialized',true);
+            if (typeof this.positionsList=='undefined'){
                 this.initializeReport( );
+                this.getViewModel().set('initialized',true);
+            }else{
+                this.reportData(
+                    this.getViewModel().get('record').get('tabellenzusatz'),
+                    this.getViewModel().get('record').get('id')
+                );
             }
         }
     },
     getReportHeader: function(){
-        return this.getView().getForm().getValues();
+        console.log(this.getView().getForm().getValues(false,false,false,true));
+        return this.getView().getForm().getValues(false,false,false,true);
     },  
-    reportData: async function(){
-        let config = this.getViewModel().get('config'),
-            data = await fetch('./report/get/'+this.getViewModel().get('record').get('tabellenzusatz')+'/'+this.getViewModel().get('record').get('id')).then((response)=>{return response.json()});
+    save: async function(){
+        let view = this.getView();o=view.getForm().getValues(false,false,false,true);
+        for(let k in o){
+            if (o.hasOwnProperty(k)){
+                if (o[k]==null) delete o[k];
+                if (o[k] instanceof Date) o[k]=Ext.util.Format.date(o[k],'Y-m-d');
+            }
+        }
+        
+        o.positions = [];
+        this.positionsList.getStore().each((item)=>{
 
+            let d = item.getData();
+            if (
+                d.amount!=null
+                && d.tax!=null
+            ){
+                for(let k in d){
+                    if (d.hasOwnProperty(k)){
+                        if (d[k]==null) delete d[k];
+                        if (d[k] instanceof Date) d[k]=Ext.util.Format.date(d[k],'Y-m-d');
+                    }
+                }
+                o.positions.push(d);
+            }
+        });
+        let data = await fetch(
+            './report/'+this.getViewModel().get('record').get('tabellenzusatz')+'/'+this.getViewModel().get('record').get('id'),
+            {
+                method: 'PUT',
+                body: JSON.stringify(o)
+            }
+        ).then((response)=>{return response.json()});
         if (data.success){
+            this.reportData(this.getViewModel().get('record').get('tabellenzusatz'),data.data.id);
+            view.up().up().getComponent('list').getStore().load({
+                callback: function(){
+                    let r = view.up().up().getComponent('list').getStore().findExact('id',data.data.id);
+                    console.log(r);
+                    view.up().up().getComponent('list').getSelectionModel().select(r);
+                    setTimeout(()=>{
+                        view.up().up().getController().setViewType('form');
+                    },100);
+                }
+            });
+        }
 
+    },
+    reportData: async function(tabellenzusatz,id){
+        let view = this.getView();
+        view.getForm().reset(true);
+        this.positionsList.getStore().removeAll();
 
+        let config = this.getViewModel().get('config'),
+            data = await fetch('./report/'+tabellenzusatz+'/'+id).then((response)=>{return response.json()});
+        if (data.success){
             let positions=[];
-            this.getView().getForm().setValues(data.data);
+            view.getForm().setValues(data.data);
             data.data.positions.forEach((item)=>{
                 let pos = {...item};
                 for(let k in config.translations.pos){
                     let o = config.translations.pos[k][0];
                     pos[ o.column_name]=item[k];
                 }
-                let record = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_'+this.getViewModel().get('record').get('tabellenzusatz'),pos);
+                let record = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_'+tabellenzusatz,pos);
                 positions.push(record);
             });
-            console.log('positions',positions);
+            if (positions.length==0){
+                positions.push(Ext.create('Tualo.DataSets.model.View_editor_blg_pos_'+tabellenzusatz,{}));
+            }
+
             this.positionsList.getStore().loadData(positions);
         }
     },
@@ -41,13 +123,14 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     removeUneccessaryFields: function(list){
         list.forEach((item)=>{
             delete item['bind'];
-            delete item['listeners'];
+            // delete item['listeners'];
             if (item.items){
                 item.items = this.removeUneccessaryFields(item.items);
             }
         });
         return list;
     },
+
     initializeReport: async function(){
         console.log('initializeReport',this.getViewModel().get('record'),this.getViewModel().get('record').get('tabellenzusatz'));
         let config = await fetch('./reportconfig/'+this.getViewModel().get('record').get('tabellenzusatz')).then((response)=>{return response.json()});
@@ -74,6 +157,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 items: this.removeUneccessaryFields(config.header),
                 // bodyPadding: 10
             });
+            
+
             this.getView().getComponent('header').getComponent('reportheader').add(
                 hdr
             );

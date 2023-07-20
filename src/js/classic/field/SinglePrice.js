@@ -28,6 +28,7 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
                 if (data.singleprice!=rec.get('singleprice')) rec.set('singleprice',data.singleprice);
                 if (data.tax!=rec.get('tax')) rec.set('tax',data.tax);
                 if (data.account!=rec.get('account')) rec.set('account',data.account);
+                if (data.unit!=rec.get('unit')) rec.set('unit',data.unit);
             }
         }
     },

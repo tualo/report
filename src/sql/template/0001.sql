@@ -135,6 +135,19 @@ call addFieldIfNotExists('blg_hdr_#####','geschaeftsstelle','integer default NUL
 
 
 
+alter table `blg_hdr_#####` modify skonto_netto	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify skonto_brutto	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify provision_netto	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify provision_brutto	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify netto	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify brutto	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify steuer	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify bezahlt	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify minderung	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify gegeben	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify zurueck	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify faelligam date default CURRENT_TIMESTAMP //
+
 create table if not exists blg_ueb_#####(
   id bigint ,
   zid bigint ,
@@ -255,6 +268,7 @@ call addFieldIfNotExists('blg_pos_#####','vzusatz','varchar(100)') //
 call addFieldIfNotExists('blg_pos_#####','vid','bigint') //
 
 
+alter table `blg_pos_#####` modify pos integer default 1//
 
 create table if not exists blg_#BEZ#_#####(
   `id` bigint(20) NOT NULL,

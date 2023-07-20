@@ -1,5 +1,7 @@
 <?php
 namespace Tualo\Office\Report\Routes;
+
+use DateTime;
 use Exception;
 use Tualo\Office\Basic\TualoApplication as App;
 use Tualo\Office\Basic\Route ;
@@ -10,12 +12,15 @@ use Tualo\Office\DS\DSTable;
 
 class Report implements IRoute{
     public static function register(){
-        Route::add('/report/get/(?P<type>\w+)/(?P<id>\w+)',function($matches){
+        Route::add('/report/(?P<type>\w+)/(?P<id>[\w\-]+)',function($matches){
             $db = App::get('session')->getDB();
             $type = $matches['type'];
             try{
                 $db->direct('call `getReport`({type},{id},@o)',$matches);
-                App::result('data',json_decode( $db->singleValue('select @o report',$matches,'report'), true));
+                $data = json_decode( $db->singleValue('select @o report',$matches,'report'), true);
+                if (is_null($data)) throw new \Exception('Report not found');
+                App::result('data',$data);
+
                 App::result('success', true);
             }catch(Exception $e){
                 App::result('last_sql', $db->last_sql );
@@ -25,26 +30,30 @@ class Report implements IRoute{
             App::contenttype('application/json');
         },['get'],true);
 
-        /*
-        Route::add('/report/(?P<type>\w+)/(?P<id>\w+)',function($matches){
+        Route::add('/report/(?P<type>\w+)/(?P<id>[\w\-]+)',function($matches){
             $db = App::get('session')->getDB();
             $type = $matches['type'];
             try{
-                App::result('data',json_decode( $db->singleValue('select `getReport_'.$type.'`({id}) as report',$matches,'report'), true));
-                App::result('success', true);
-            }catch(Exception $e){
-                App::result('last_sql', $db->last_sql );
-                App::result('msg', $e->getMessage());
-            }
-            Route::$finished=true;
-            App::contenttype('application/json');
-        },['get'],true);
+                $report = json_decode( file_get_contents('php://input'), true);
+                if (is_null($report)) throw new \Exception('Report not readable');
 
-        Route::add('/report/(?P<type>\w+)/(?P<id>\w+)',function($matches){
-            $db = App::get('session')->getDB();
-            $type = $matches['type'];
-            try{
-                App::result('data',json_decode( $db->singleValue('select `getReport_'.$type.'`({id}) as report',$matches,'report'), true));
+                if (!isset($report['bookingdate']) || $report['bookingdate']=='') $report['bookingdate'] = (new DateTime())->format('Y-m-d');
+                if (!isset($report['date']) || $report['date']=='') $report['date'] = (new DateTime())->format('Y-m-d');
+                if (!isset($report['payuntildate']) || $report['payuntildate']=='') $report['payuntildate'] = (new DateTime())->format('Y-m-d');
+                if (!isset($report['service_period_stop']) || $report['service_period_stop']=='') $report['service_period_stop'] = (new DateTime())->format('Y-m-d');
+                if (!isset($report['service_period_start']) || $report['service_period_start']=='') $report['service_period_start'] = (new DateTime())->format('Y-m-d');
+                App::result('report',$report);
+                
+                $db->direct('set @report={report}',[
+                    'report'=>json_encode($report)
+                ]);
+                $db->direct('call setReport({type},@report,@result)',[
+                    'type'=>$matches['type'],
+                    'report'=>json_encode($report)
+                ]);
+                $mr = $db->moreResults();
+                $data = json_decode( $db->singleValue('select @result report',[],'report'), true);
+                App::result('data',$data);
                 App::result('success', true);
             }catch(Exception $e){
                 App::result('last_sql', $db->last_sql );
@@ -53,6 +62,5 @@ class Report implements IRoute{
             Route::$finished=true;
             App::contenttype('application/json');
         },['put'],true);
-        */
     }
 };
