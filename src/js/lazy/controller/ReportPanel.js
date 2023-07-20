@@ -45,7 +45,10 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         return this.getView().getForm().getValues(false,false,false,true);
     },  
     save: async function(){
+
+
         let view = this.getView();o=view.getForm().getValues(false,false,false,true);
+        view.setDisabled(true);
         for(let k in o){
             if (o.hasOwnProperty(k)){
                 if (o[k]==null) delete o[k];
@@ -77,18 +80,25 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 body: JSON.stringify(o)
             }
         ).then((response)=>{return response.json()});
+        view.setDisabled(false);
         if (data.success){
             this.reportData(this.getViewModel().get('record').get('tabellenzusatz'),data.data.id);
+            view.up().up().getViewModel().set('viewTypeOnLoad','form');
             view.up().up().getComponent('list').getStore().load({
                 callback: function(){
-                    let r = view.up().up().getComponent('list').getStore().findExact('id',data.data.id);
-                    console.log(r);
-                    view.up().up().getComponent('list').getSelectionModel().select(r);
                     setTimeout(()=>{
-                        view.up().up().getController().setViewType('form');
-                    },100);
+                    let r = view.up().up().getComponent('list').getStore().findExact('id',data.data.id);
+                    view.up().up().getComponent('list').getSelectionModel().select(r);
+                    },500);
                 }
             });
+        }else{
+            
+            Ext.toast({
+                html: data.msg,
+                title: 'Fehler beim Speichern',
+                align: 't'
+            },2000);
         }
 
     },
@@ -130,9 +140,21 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         });
         return list;
     },
-
+    hideSaveButton: function(){
+        try{
+            let toolbar_items = this.getView().up().up().down('toolbar').items;
+            toolbar_items.each((item)=>{
+                if (
+                    (item.glyph=='save') ||
+                    (item.glyph=='history') 
+                ){
+                    item.setHidden(true);
+                }
+            });
+        }catch(e){}
+    },
     initializeReport: async function(){
-        console.log('initializeReport',this.getViewModel().get('record'),this.getViewModel().get('record').get('tabellenzusatz'));
+        this.hideSaveButton();
         let config = await fetch('./reportconfig/'+this.getViewModel().get('record').get('tabellenzusatz')).then((response)=>{return response.json()});
         if (config.success){
             this.getViewModel().set('config',config);
@@ -148,6 +170,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 return;
             }
 
+            
+
             let hdr = Ext.create({
                 scrollable: 'y',
                 xtype: 'panel',
@@ -162,8 +186,6 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             this.getView().getComponent('header').getComponent('reportheader').add(
                 hdr
             );
-
-            console.log(config,hdr);
             
             
             this.getView().getComponent('reportlist').add(

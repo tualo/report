@@ -42,6 +42,14 @@ class Report implements IRoute{
                 if (!isset($report['payuntildate']) || $report['payuntildate']=='') $report['payuntildate'] = (new DateTime())->format('Y-m-d');
                 if (!isset($report['service_period_stop']) || $report['service_period_stop']=='') $report['service_period_stop'] = (new DateTime())->format('Y-m-d');
                 if (!isset($report['service_period_start']) || $report['service_period_start']=='') $report['service_period_start'] = (new DateTime())->format('Y-m-d');
+
+                if (!isset($report['_in_warehouse']) || $report['_in_warehouse']=='') $report['_in_warehouse'] = 0;
+                if (!isset($report['warehouse']) || $report['warehouse']=='') $report['warehouse'] = 0;
+                if (!isset($report['order_id']) || $report['order_id']=='') $report['order_id'] = '';
+                if (!isset($report['time']) || $report['time']=='') $report['time'] = (new DateTime())->format('H:i:s');
+                
+                
+
                 App::result('report',$report);
                 
                 $db->direct('set @report={report}',[
