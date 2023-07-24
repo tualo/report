@@ -22,7 +22,7 @@ class Price implements IRoute{
                     App::result($key,$value);
                 }
                 App::result('success', true);
-                App::result('payload', $payload);
+                // App::result('payload', $payload);
             }catch(Exception $e){
                 App::result('last_sql', $db->last_sql );
                 App::result('msg', $e->getMessage());

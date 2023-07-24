@@ -51,13 +51,15 @@ class Configure implements IRoute{
 
 
             try{
-            $templates = ['0001.sql','0002.sql','0003.sql','0100.sql'/*,'view_editor_blg_hdr_xzy.sql','view_editor_blg_pos_xzy.sql'*/];
+            $templates = ['0001.sql','0002.sql','0003.sql','0100.sql' ,'view_editor_blg_hdr_xzy.sql','view_editor_blg_pos_xzy.sql' ,'view_editor_relation_xzy.sql' ,'view_blg_list_xzy.sql' ];
                 $config=$db->directSingleHash('select * from blg_config where tabellenzusatz={type}',$matches);
                 if ($config===false) throw new Exception('no config found');
                 $sqls=[];
                 if (isset($_REQUEST['force']) && ($_REQUEST['force']==1)){
                     $db->direct('delete from ds_column_list_label where table_name={tn}',['tn'=>'view_editor_blg_pos_'.$config['tabellenzusatz']]);
                     $db->direct('delete from ds_column_form_label where table_name={tn}',['tn'=>'view_editor_blg_hdr_'.$config['tabellenzusatz']]);
+                    $db->direct('delete from ds_column_form_label where table_name={tn}',['tn'=>'view_editor_relation_xzy'.$config['tabellenzusatz']]);
+                    $db->direct('delete from ds_column_list_label where table_name={tn}',['tn'=>'view_blg_list_xzy'.$config['tabellenzusatz']]);
                 }
                 foreach($templates as $template){
                     $commands = $db->explode_by_delimiter(file_get_contents(dirname(__DIR__,1).'/sql/template/'.$template));
