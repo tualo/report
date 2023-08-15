@@ -1,3 +1,72 @@
+
+
+CREATE TABLE IF NOT EXISTS `hauptkassenbuecher` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `aktiv` int(11) DEFAULT NULL,
+  `konto` varchar(100) NOT NULL,
+  `fibukonto` varchar(10) DEFAULT '100001',
+  `hauptkassenbuecher` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `kassenterminals` (
+  `id` varchar(36) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `kasse` int(11) NOT NULL,
+  `lager` int(11) NOT NULL,
+  `beleg` int(11) NOT NULL,
+  `bs_auto_print` tinyint(4) DEFAULT 0,
+  `bs_system` tinyint(4) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uidx_kassenterminals_name` (`name`),
+  KEY `fk_kassenterminal_hauptkassenbuecher` (`kasse`),
+  KEY `fk_kassenterminal_lager` (`lager`),
+  KEY `fk_kassenterminal_beleg` (`beleg`),
+  CONSTRAINT `fk_kassenterminal_beleg` FOREIGN KEY (`beleg`) REFERENCES `blg_config` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_kassenterminal_hauptkassenbuecher` FOREIGN KEY (`kasse`) REFERENCES `hauptkassenbuecher` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_kassenterminal_lager` FOREIGN KEY (`lager`) REFERENCES `lager` (`id`) ON UPDATE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS `buchungskreise` (
+  `id` varchar(10) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `vat_id` varchar(50) DEFAULT '',
+  `firmen_name` varchar(100) DEFAULT '',
+  `firmen_strasse` varchar(100) DEFAULT '',
+  `firmen_plz` varchar(10) DEFAULT '',
+  `firmen_ort` varchar(100) DEFAULT '',
+  PRIMARY KEY (`id`)
+) ;
+insert ignore into buchungskreise (id,name) values ('0000','Standard');
+
+CREATE TABLE IF NOT EXISTS `vertriebsregion` (
+  `region` char(1) NOT NULL DEFAULT '0',
+  `name` varchar(255) DEFAULT '',
+  PRIMARY KEY (`region`)
+);
+
+insert ignore into vertriebsregion (region,name) values ('0','');
+
+CREATE TABLE IF NOT EXISTS `geschaeftsstellen` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `kostenstelle` varchar(20) DEFAULT NULL,
+  `prefix` varchar(20) DEFAULT NULL,
+  `lohnartpc` int(11) DEFAULT NULL,
+  `status` varchar(4) DEFAULT 'Ja',
+  `auftrag` varchar(10) DEFAULT NULL,
+  `zusatztext` varchar(100) DEFAULT NULL,
+  `auswertungstext` varchar(20) DEFAULT '',
+  `region` char(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uidx_geschaeftsstellen_id` (`name`),
+  KEY `idx_geschaeftsstellen_region` (`region`),
+  CONSTRAINT `fk_geschaeftsstellen_vertriebsregion` FOREIGN KEY (`region`) REFERENCES `vertriebsregion` (`region`) ON DELETE CASCADE ON UPDATE CASCADE
+) ;
+insert ignore into geschaeftsstellen (id,name) values (100,'Standard');
+
 CREATE TABLE IF NOT EXISTS `warenhauptgruppen` (
   `id` int(11) NOT NULL DEFAULT 0,
   `name` varchar(255) DEFAULT NULL,
@@ -164,6 +233,16 @@ CREATE TABLE IF NOT EXISTS `artikelgruppen` (
 );
 
 
+CREATE TABLE  IF NOT EXISTS `steuergruppen` (
+  `steuergruppe` varchar(25) NOT NULL,
+  `feld` varchar(20) DEFAULT NULL,
+  `bezeichnung` varchar(100) DEFAULT NULL,
+  `aktiv` tinyint(4) DEFAULT 0,
+  `sap_kennzeichen` varchar(5) DEFAULT 'A',
+  `position` int(11) DEFAULT 999,
+  PRIMARY KEY (`steuergruppe`),
+  UNIQUE KEY `idx_steuergruppen_feld` (`feld`)
+);
 
 CREATE TABLE IF NOT EXISTS `bfkonten_zuordnung` (
   `gruppe` varchar(255) NOT NULL,
@@ -204,4 +283,27 @@ CREATE TABLE IF NOT EXISTS `staffeln` (
   KEY `idx_staffeln_preiskategorie` (`preiskategorie`),
   CONSTRAINT `fk_staffeln_gruppe` FOREIGN KEY (`gruppe`) REFERENCES `artikelgruppen` (`gruppe`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_staffeln_preiskategorie` FOREIGN KEY (`preiskategorie`) REFERENCES `preiskategorien` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS `brieffusstextspalten` (
+  `id` varchar(50) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `aktiv` tinyint(4) DEFAULT 1,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `brieffusstext` (
+  `id` int(11) NOT NULL,
+  `spalte_id` varchar(50) NOT NULL,
+  `buchungskreis_id` varchar(10) NOT NULL,
+  `wert` varchar(255) NOT NULL,
+  `start_am` date DEFAULT '2000-01-01',
+  `ende_am` date DEFAULT '2099-12-31',
+  `position` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `idx_brieffusstext_spalte_id` (`spalte_id`),
+  KEY `idx_brieffusstext_buchungskreis_id` (`buchungskreis_id`),
+  CONSTRAINT `fk_brieffusstext_buchungskreise` FOREIGN KEY (`buchungskreis_id`) REFERENCES `buchungskreise` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_brieffusstext_spalte_id` FOREIGN KEY (`spalte_id`) REFERENCES `brieffusstextspalten` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );

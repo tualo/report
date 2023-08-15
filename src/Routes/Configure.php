@@ -24,7 +24,7 @@ class Configure implements IRoute{
         
 
         $sql = str_replace('#BEZUG_ID_REF#','bezug.`'.$config['bezug_id'].'`',$sql);
-        
+        $db->direct('UNLOCK TABLES');
 
         if ($db->singleValue(
             'select column_name from ds_column a
