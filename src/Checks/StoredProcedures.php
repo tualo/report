@@ -33,8 +33,8 @@ class StoredProcedures extends PostCheck {
         self::procedureCheck(
             'report',
             $def,
-            "please run the following command: `./tm reportinstallsql --client ".$clientdb->dbname."`",
-            "please run the following command: `./tm reportinstallsql --client ".$clientdb->dbname."`"
+            "please run the following command: `./tm install-sql-report --client ".$clientdb->dbname."`",
+            "please run the following command: `./tm install-sql-report --client ".$clientdb->dbname."`"
         );
         
     }
