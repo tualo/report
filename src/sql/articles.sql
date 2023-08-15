@@ -175,6 +175,15 @@ CREATE TABLE `bfkonten_zuordnung` (
   CONSTRAINT `fk_bfkonten_zuordnung_artikelgruppen_konto_id` FOREIGN KEY (`konto_id`, `gueltig`) REFERENCES `bfkonten` (`id`, `gueltig`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE `preiskategorien` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `status` tinyint(4) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) 
+COMMENT='Preiskategorien für das ermitteln des Einzelpreises, dies kann im Bezugsstamm oder im Belege festgelegt werden.'
+;
+
 
 CREATE TABLE `staffeln` (
   `gruppe` varchar(255) NOT NULL,

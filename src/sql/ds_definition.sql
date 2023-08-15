@@ -828,3 +828,33 @@ UNLOCK TABLES;
 LOCK TABLES `ds_access` WRITE;
 INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','staffeln',0,0,0,0,0);
 UNLOCK TABLES;
+LOCK TABLES `ds` WRITE;
+INSERT INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('preiskategorien','Preiskategorien','',0,'name','name','name',1,'','','','',0,'tualomultirowmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
+UNLOCK TABLES;
+LOCK TABLES `ds_column` WRITE;
+INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('preiskategorien','codx_schluessel',NULL,10000000,0,NULL,0,0,NULL,NULL,'YES','NO',1,'','varchar','','varchar(30)',30,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
+('preiskategorien','id','{#serial}',10000000,0,'',1,0,'','','NO','NO',1,'','int','PRI','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,''),
+('preiskategorien','name','',10000000,0,'',0,0,'','','NO','NO',1,'','varchar','','varchar(255)',255,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
+('preiskategorien','status','1',10000000,0,'',0,0,'','','YES','NO',1,'','tinyint','','tinyint(4)',NULL,3,0,NULL,'select,insert,update,references',1,0,NULL,'');
+UNLOCK TABLES;
+LOCK TABLES `ds_column_list_label` WRITE;
+INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('preiskategorien','id','DE','ID','gridcolumn','',0,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
+('preiskategorien','name','DE','Name','gridcolumn','',999,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
+('preiskategorien','status','DE','Status','gridcolumn','',999,'','','',0,1,'',0,1.00,'ASC','left','',NULL);
+UNLOCK TABLES;
+LOCK TABLES `ds_column_form_label` WRITE;
+INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('preiskategorien','codx_schluessel','DE','CodX','combobox_view_codx_kundenbericht_preisgruppe_preisgruppe','Allgemein/Angaben',999,0,1,1,'',1.00,''),
+('preiskategorien','id','DE','ID','displayfield','Allgemein/Angaben',0,0,1,1,'',1.00,''),
+('preiskategorien','name','DE','Name','textfield','Allgemein/Angaben',999,0,1,1,'',1.00,''),
+('preiskategorien','status','DE','Status','checkbox','Allgemein/Angaben',999,0,1,1,'',1.00,'');
+UNLOCK TABLES;
+LOCK TABLES `ds_dropdownfields` WRITE;
+INSERT INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('preiskategorien','id','id','name','');
+UNLOCK TABLES;
+LOCK TABLES `ds_reference_tables` WRITE;
+UNLOCK TABLES;
+LOCK TABLES `ds_addcommands` WRITE;
+UNLOCK TABLES;
+LOCK TABLES `ds_access` WRITE;
+INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','preiskategorien',0,1,1,1,1);
+UNLOCK TABLES;
