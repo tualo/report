@@ -18,6 +18,7 @@ class Configure implements IRoute{
         $sql = str_replace('#BLG_CONFIG_ID#',$config['adress_bezug'],$sql);
         $sql = str_replace('#id_column#',$config['bezug_id'],$sql);
 
+        $db->direct('UNLOCK TABLES');
         $sql = str_replace('#BEZDISPLAY#',$db->singleValue(
             'select displayfield from ds where table_name={tn}',['tn'=>$config['adress_bezug']],'displayfield'
         ),$sql);
@@ -66,6 +67,7 @@ class Configure implements IRoute{
                     $sqls[$template]=[];
                     foreach($commands as $command){
                         $sqls[$template][] = self::replacements($command,$config);
+                        $db->direct('UNLOCK TABLES');
                         $db->direct(self::replacements($command,$config));
                     }
                 }

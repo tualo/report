@@ -1,9 +1,6 @@
 DELIMITER ;
 
-LOCK TABLES `ds` WRITE;
 INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('view_editor_blg_pos_#####','Belegeditor (Positionen)','pos',0,'beleg','artikel','pos',0,'','','','',0,'cellmodel','',0,'','','','Belegarten','',1,'','','','','',0,10000,NULL,'Tualo.DataSets.ListViewAutoNew',0,'Tualo.report.model.Basic');
-UNLOCK TABLES;
-LOCK TABLES `ds_column` WRITE;
 INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('view_editor_blg_pos_#####','account','',0,0,'',0,0,'','','NO','',0,'','int','','int(11)',0,10,0,'','select,insert,update,references',0,0,'','tualoreportaccount'),
 ('view_editor_blg_pos_#####','additionaltext',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES',NULL,1,NULL,'varchar','','varchar(4000)',4000,NULL,NULL,'utf8mb4','select,insert,update,references',1,NULL,NULL,''),
 ('view_editor_blg_pos_#####','amount',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'NO',NULL,1,NULL,'decimal','','decimal(12,5)',NULL,12,5,NULL,'select,insert,update,references',1,NULL,NULL,''),
@@ -50,8 +47,6 @@ INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `d
 ('view_editor_blg_pos_#####','zid',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'bigint','','bigint(20)',NULL,19,0,NULL,'select,insert,update,references',1,NULL,NULL,''),
 ('view_editor_blg_pos_#####','zusatztext',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'varchar','','varchar(4000)',4000,NULL,NULL,'utf8mb4','select,insert,update,references',1,NULL,NULL,''),
 ('view_editor_blg_pos_#####','zzusatz',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'varchar','','varchar(100)',100,NULL,NULL,'utf8mb4','select,insert,update,references',1,NULL,NULL,'');
-UNLOCK TABLES;
-LOCK TABLES `ds_column_list_label` WRITE;
 INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('view_editor_blg_pos_#####','account','DE','Konto','gridcolumn','',8,'','','',1,1,'',0,1.00,'','start','',NULL),
 ('view_editor_blg_pos_#####','additionaltext','DE','additionaltext','gridcolumn','',43,'','','',1,0,'',0,1.00,'','start','',NULL),
 ('view_editor_blg_pos_#####','amount','DE','Anzahl','gridcolumn','tualoreportamountinputfield',2,'','','sum',0,1,'',0,1.00,'','end','',NULL),
@@ -98,15 +93,4 @@ INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `languag
 ('view_editor_blg_pos_#####','zid','DE','zid','gridcolumn','',38,'','','',1,0,'',0,1.00,'','start','',NULL),
 ('view_editor_blg_pos_#####','zusatztext','DE','zusatztext','gridcolumn','',39,'','','',1,0,'',0,1.00,'','start','',NULL),
 ('view_editor_blg_pos_#####','zzusatz','DE','zzusatz','gridcolumn','',40,'','','',1,0,'',0,1.00,'','start','',NULL);
-UNLOCK TABLES;
-LOCK TABLES `ds_column_form_label` WRITE;
-UNLOCK TABLES;
-LOCK TABLES `ds_dropdownfields` WRITE;
-UNLOCK TABLES;
-LOCK TABLES `ds_reference_tables` WRITE;
-UNLOCK TABLES;
-LOCK TABLES `ds_addcommands` WRITE;
-UNLOCK TABLES;
-LOCK TABLES `ds_access` WRITE;
 INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','view_editor_blg_pos_#####',1,0,0,0,0);
-UNLOCK TABLES;
