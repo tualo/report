@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `warenhauptgruppen` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_warenhauptgruppen_name` (`name`)
 );
-insert into warenhauptgruppen (id, name) values (0, 'Keine Hauptgruppe');
+INSERT IGNORE INTO warenhauptgruppen (id, name) values (0, 'Keine Hauptgruppe');
 
 CREATE TABLE IF NOT EXISTS `buchungskonten` (
   `konto` varchar(100) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `buchungskonten` (
   `aktiv` tinyint(4) DEFAULT 1,
   PRIMARY KEY (`konto`)
 );
-insert into buchungskonten (konto, name) values ('0000', 'Kein Konto');
+INSERT IGNORE INTO buchungskonten (konto, name) values ('0000', 'Kein Konto');
 
 CREATE TABLE IF NOT EXISTS `mengeneinheiten` (
   `id` int(11) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `mengeneinheiten` (
   UNIQUE KEY `uidx_mengeneinheiten_name` (`name`)
 );
 
-insert into mengeneinheiten (id, name, symbol, faktor) values (1, 'STK', 'Stk.', 1.000000);
+INSERT IGNORE INTO mengeneinheiten (id, name, symbol, faktor) values (1, 'STK', 'Stk.', 1.000000);
 
 CREATE TABLE IF NOT EXISTS `warengruppen` (
   `id` int(11) NOT NULL,
