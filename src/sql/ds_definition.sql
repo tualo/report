@@ -1,39 +1,39 @@
 LOCK TABLES `ds` WRITE;
-INSERT INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('mengeneinheiten','Mengeneinheiten','',0,'name','name','name',1,'','','','',0,'tualomultirowmodel','',0,'','','','Artikel','',1,'','','listview','XlsxWriter','Mengeneinheiten-{DATETIME}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
+INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('mengeneinheiten','Mengeneinheiten','',0,'name','name','name',1,'','','','',0,'tualomultirowmodel','',0,'','','','Artikel','',1,'','','listview','XlsxWriter','Mengeneinheiten-{DATETIME}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
 UNLOCK TABLES;
 LOCK TABLES `ds_column` WRITE;
-INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('mengeneinheiten','faktor','',10000000,0,'',0,0,'','','YES','NO',1,'','decimal','','decimal(15,6)',NULL,15,6,NULL,'select,insert,update,references',1,0,NULL,''),
+INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('mengeneinheiten','faktor','',10000000,0,'',0,0,'','','YES','NO',1,'','decimal','','decimal(15,6)',NULL,15,6,NULL,'select,insert,update,references',1,0,NULL,''),
 ('mengeneinheiten','id','{#serial}',10000000,0,'',1,0,'','','NO','NO',1,'','int','PRI','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,''),
 ('mengeneinheiten','name','',10000000,0,'',0,0,'','','NO','NO',1,'','varchar','UNI','varchar(20)',20,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('mengeneinheiten','symbol','',10000000,0,'',0,0,'','','NO','NO',1,'','varchar','','varchar(20)',20,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_column_list_label` WRITE;
-INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('mengeneinheiten','faktor','DE','Faktor','gridcolumn','',3,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
+INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('mengeneinheiten','faktor','DE','Faktor','gridcolumn','',3,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
 ('mengeneinheiten','id','DE','ID','gridcolumn','',0,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
 ('mengeneinheiten','name','DE','Name','gridcolumn','',1,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
 ('mengeneinheiten','symbol','DE','Symbol','gridcolumn','',2,'','','',0,1,'',0,1.00,'ASC','left','',NULL);
 UNLOCK TABLES;
 LOCK TABLES `ds_column_form_label` WRITE;
-INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('mengeneinheiten','faktor','DE','Faktor','numberfield','Allgemein',999,0,1,1,'',1.00,''),
+INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('mengeneinheiten','faktor','DE','Faktor','numberfield','Allgemein',999,0,1,1,'',1.00,''),
 ('mengeneinheiten','id','DE','ID','displayfield','Allgemein',999,1,1,1,'',1.00,''),
 ('mengeneinheiten','name','DE','Name','textfield','Allgemein',999,0,1,1,'',1.00,''),
 ('mengeneinheiten','symbol','DE','Symbol','textfield','Allgemein',999,0,1,1,'',1.00,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_dropdownfields` WRITE;
-INSERT INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('mengeneinheiten','name','id','name','');
+INSERT IGNORE INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('mengeneinheiten','name','id','name','');
 UNLOCK TABLES;
 LOCK TABLES `ds_reference_tables` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_addcommands` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_access` WRITE;
-INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','mengeneinheiten',0,0,0,0,0);
+INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','mengeneinheiten',0,0,0,0,0);
 UNLOCK TABLES;
 LOCK TABLES `ds` WRITE;
-INSERT INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('buchungskonten','Buchungskonten','',0,'konto','konto','konto',1,'','','','',0,'tualomultirowmodel','',0,'','','','Belegarten','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
+INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('buchungskonten','Buchungskonten','',0,'konto','konto','konto',1,'','','','',0,'tualomultirowmodel','',0,'','','','Belegarten','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
 UNLOCK TABLES;
 LOCK TABLES `ds_column` WRITE;
-INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('buchungskonten','agenda_bezeichnung',NULL,10000000,0,NULL,0,0,NULL,NULL,'YES','NO',1,'','varchar','','varchar(50)',50,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
+INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('buchungskonten','agenda_bezeichnung',NULL,10000000,0,NULL,0,0,NULL,NULL,'YES','NO',1,'','varchar','','varchar(50)',50,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('buchungskonten','agenda_hauptfunktion',NULL,10000000,0,NULL,0,0,NULL,NULL,'YES','NO',1,'','varchar','','varchar(3)',3,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('buchungskonten','agenda_kontoart',NULL,10000000,0,NULL,0,0,NULL,NULL,'YES','NO',1,'','varchar','','varchar(3)',3,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('buchungskonten','agenda_langbezeichnung',NULL,10000000,0,NULL,0,0,NULL,NULL,'YES','NO',1,'','varchar','','varchar(255)',255,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
@@ -47,12 +47,12 @@ INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_
 ('buchungskonten','name',' ',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(255)',255,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_column_list_label` WRITE;
-INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('buchungskonten','aktiv','DE','Aktiv','gridcolumn','',999,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
+INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('buchungskonten','aktiv','DE','Aktiv','gridcolumn','',999,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
 ('buchungskonten','konto','DE','Konto','gridcolumn','',0,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
 ('buchungskonten','name','DE','Bezeichnung','gridcolumn','',999,'','','',0,1,'',0,1.00,'ASC','left','',NULL);
 UNLOCK TABLES;
 LOCK TABLES `ds_column_form_label` WRITE;
-INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('buchungskonten','agenda_bezeichnung','DE','agenda_bezeichnung','textfield','Allgemein',999,0,1,1,'',1.00,''),
+INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('buchungskonten','agenda_bezeichnung','DE','agenda_bezeichnung','textfield','Allgemein',999,0,1,1,'',1.00,''),
 ('buchungskonten','agenda_hauptfunktion','DE','agenda_hauptfunktion','textfield','Allgemein',999,0,1,1,'',1.00,''),
 ('buchungskonten','agenda_kontoart','DE','agenda_kontoart','textfield','Allgemein',999,0,1,1,'',1.00,''),
 ('buchungskonten','agenda_langbezeichnung','DE','agenda_langbezeichnung','textfield','Allgemein',999,0,1,1,'',1.00,''),
@@ -66,7 +66,7 @@ INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `la
 ('buchungskonten','name','DE','Bezeichnung','textfield','Allgemein',999,0,1,1,'',1.00,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_dropdownfields` WRITE;
-INSERT INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('buchungskonten','konto','konto','konto',''),
+INSERT IGNORE INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('buchungskonten','konto','konto','konto',''),
 ('buchungskonten','kontobezeichnung','konto','bezeichnung','');
 UNLOCK TABLES;
 LOCK TABLES `ds_reference_tables` WRITE;
@@ -74,38 +74,38 @@ UNLOCK TABLES;
 LOCK TABLES `ds_addcommands` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_access` WRITE;
-INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','buchungskonten',1,1,1,1,0);
+INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','buchungskonten',1,1,1,1,0);
 UNLOCK TABLES;
 LOCK TABLES `ds` WRITE;
-INSERT INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('warenhauptgruppen','Warenhauptgruppen','',0,'name','name','name',1,'','','','',0,'cellmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
+INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('warenhauptgruppen','Warenhauptgruppen','',0,'name','name','name',1,'','','','',0,'cellmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
 UNLOCK TABLES;
 LOCK TABLES `ds_column` WRITE;
-INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('warenhauptgruppen','id','{#serial}',10000000,1,'',1,0,'','','NO','NO',1,'','int','PRI','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,''),
+INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('warenhauptgruppen','id','{#serial}',10000000,1,'',1,0,'','','NO','NO',1,'','int','PRI','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,''),
 ('warenhauptgruppen','name','',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','UNI','varchar(255)',255,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_column_list_label` WRITE;
-INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('warenhauptgruppen','id','DE','ID','gridcolumn','',0,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
+INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('warenhauptgruppen','id','DE','ID','gridcolumn','',0,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
 ('warenhauptgruppen','name','DE','Name','gridcolumn','',999,'','','',0,1,'',0,1.00,'ASC','left','',NULL);
 UNLOCK TABLES;
 LOCK TABLES `ds_column_form_label` WRITE;
-INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('warenhauptgruppen','id','DE','ID','displayfield','Allgemein',0,0,1,1,'',1.00,''),
+INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('warenhauptgruppen','id','DE','ID','displayfield','Allgemein',0,0,1,1,'',1.00,''),
 ('warenhauptgruppen','name','DE','Name','textfield','Allgemein',999,0,1,1,'',1.00,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_dropdownfields` WRITE;
-INSERT INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('warenhauptgruppen','id','id','name','');
+INSERT IGNORE INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('warenhauptgruppen','id','id','name','');
 UNLOCK TABLES;
 LOCK TABLES `ds_reference_tables` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_addcommands` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_access` WRITE;
-INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','warenhauptgruppen',0,1,1,1,1);
+INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','warenhauptgruppen',0,1,1,1,1);
 UNLOCK TABLES;
 LOCK TABLES `ds` WRITE;
-INSERT INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('warengruppen','Warengruppen','wgsort',0,'warengruppe','warengruppe','wgsort',1,'','','','',0,'cellmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','Warengruppen-{DATETIME}',0,1000,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
+INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('warengruppen','Warengruppen','wgsort',0,'warengruppe','warengruppe','wgsort',1,'','','','',0,'cellmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','Warengruppen-{DATETIME}',0,1000,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
 UNLOCK TABLES;
 LOCK TABLES `ds_column` WRITE;
-INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('warengruppen','beleggruppierung','',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(20)',20,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
+INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('warengruppen','beleggruppierung','',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(20)',20,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('warengruppen','bestandsflag','0',10000000,0,'',0,0,'','','YES','NO',1,'','tinyint','','tinyint(4)',NULL,3,0,NULL,'select,insert,update,references',1,0,NULL,''),
 ('warengruppen','detailgruppe','',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(100)',100,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('warengruppen','farbe','rgb(200,200,210)',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(20)',20,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
@@ -124,7 +124,7 @@ INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_
 ('warengruppen','wgsort','99',10000000,0,'',0,0,'','','YES','NO',1,'','int','','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_column_list_label` WRITE;
-INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('warengruppen','beleggruppierung','DE','Beleggruppierung','gridcolumn','',13,'','','',1,1,'',0,1.00,'ASC','left','',NULL),
+INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('warengruppen','beleggruppierung','DE','Beleggruppierung','gridcolumn','',13,'','','',1,1,'',0,1.00,'ASC','left','',NULL),
 ('warengruppen','bestandsflag','DE','bestandsflag','gridcolumn','',7,'','','',1,1,'',0,1.00,'ASC','left','',NULL),
 ('warengruppen','detailgruppe','DE','detailgruppe','gridcolumn','',15,'','','',1,0,'',0,1.00,'ASC','left','',NULL),
 ('warengruppen','farbe','DE','Farbe','rgbcolorcolumn','',5,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
@@ -143,7 +143,7 @@ INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `la
 ('warengruppen','wgsort','DE','Position','tualocolumnnumber0','',1,'','','',0,1,'',0,1.00,'ASC','left','',NULL);
 UNLOCK TABLES;
 LOCK TABLES `ds_column_form_label` WRITE;
-INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('warengruppen','beleggruppierung','DE','Beleggruppierung','displayfield','Allgemein',14,1,0,0,'',1.00,''),
+INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('warengruppen','beleggruppierung','DE','Beleggruppierung','displayfield','Allgemein',14,1,0,0,'',1.00,''),
 ('warengruppen','bestandsflag','DE','bestandsflag','displayfield','Allgemein',8,1,0,0,'',1.00,''),
 ('warengruppen','detailgruppe','DE','detailgruppe','displayfield','Allgemein',15,1,0,0,'',1.00,''),
 ('warengruppen','farbe','DE','Farbe','tualocolors','Allgemein',5,1,1,1,'',1.00,''),
@@ -162,10 +162,10 @@ INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `la
 ('warengruppen','wgsort','DE','Position','displayfield','Allgemein',1,1,1,1,'',1.00,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_dropdownfields` WRITE;
-INSERT INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('warengruppen','warengruppe','warengruppe','warengruppe','');
+INSERT IGNORE INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('warengruppen','warengruppe','warengruppe','warengruppe','');
 UNLOCK TABLES;
 LOCK TABLES `ds_reference_tables` WRITE;
-INSERT INTO `ds_reference_tables` (`table_name`, `reference_table_name`, `columnsdef`, `constraint_name`, `active`, `searchable`, `autosync`, `position`, `path`, `existsreal`, `tabtitle`) VALUES ('warengruppen','warenhauptgruppen','{\"warengruppen__warenhauptgruppe\":\"warenhauptgruppen__id\"}','fk_waregruppen_warenhauptgruppe',0,0,1,99999,'',0,''),
+INSERT IGNORE INTO `ds_reference_tables` (`table_name`, `reference_table_name`, `columnsdef`, `constraint_name`, `active`, `searchable`, `autosync`, `position`, `path`, `existsreal`, `tabtitle`) VALUES ('warengruppen','warenhauptgruppen','{\"warengruppen__warenhauptgruppe\":\"warenhauptgruppen__id\"}','fk_waregruppen_warenhauptgruppe',0,0,1,99999,'',0,''),
 ('warengruppen','warenhauptgruppen','{\"warengruppen__warenhauptgruppe\":\"warenhauptgruppen__id\"}','fk_waregruppen_warenhauptgruppe',0,0,0,999,'',0,''),
 ('warengruppen','warenhauptgruppen','{\"warengruppen__warenhauptgruppe\":\"warenhauptgruppen__id\"}','fk_waregruppen_warenhauptgruppe',0,0,0,999,'',0,''),
 ('warengruppen','warenhauptgruppen','{\"warengruppen__warenhauptgruppe\":\"warenhauptgruppen__id\"}','fk_waregruppen_warenhauptgruppe',0,0,0,999,'',0,''),
@@ -187,13 +187,13 @@ UNLOCK TABLES;
 LOCK TABLES `ds_addcommands` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_access` WRITE;
-INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','warengruppen',0,0,0,0,0);
+INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','warengruppen',0,0,0,0,0);
 UNLOCK TABLES;
 LOCK TABLES `ds` WRITE;
-INSERT INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('bfkonten','Kontenmatrix','',0,'name','name','',1,'','','','',0,'cellmodel','',0,'','','','Belegarten','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
+INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('bfkonten','Kontenmatrix','',0,'name','name','',1,'','','','',0,'cellmodel','',0,'','','','Belegarten','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
 UNLOCK TABLES;
 LOCK TABLES `ds_column` WRITE;
-INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('bfkonten','gueltig','2099-12-31',10000000,0,'',1,0,'','','NO','NO',1,'','date','PRI','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,0,'NULL',''),
+INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('bfkonten','gueltig','2099-12-31',10000000,0,'',1,0,'','','NO','NO',1,'','date','PRI','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,0,'NULL',''),
 ('bfkonten','gueltig_von','2020-01-01',10000000,0,'',0,0,'','','YES','NO',1,'','date','','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,0,'NULL',''),
 ('bfkonten','id','{#serial}',999,100,'',1,0,'','','NO','NO',1,'','int','PRI','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,''),
 ('bfkonten','konto','8400',0,0,'',0,0,'','','YES','NO',1,'','varchar','MUL','varchar(100)',100,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,'NULL',''),
@@ -233,7 +233,7 @@ INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_
 ('bfkonten','steuer_9','0',10000000,0,'',0,0,'','','YES','NO',1,'','decimal','','decimal(15,2)',NULL,15,2,NULL,'select,insert,update,references',1,0,NULL,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_column_list_label` WRITE;
-INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('bfkonten','gueltig','DE','gültig bis','datecolumn','',1,'','','',0,1,'',0,1.00,'','','','NULL'),
+INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('bfkonten','gueltig','DE','gültig bis','datecolumn','',1,'','','',0,1,'',0,1.00,'','','','NULL'),
 ('bfkonten','gueltig_von','DE','gültig von','datecolumn','',0,'','','',0,1,'',0,1.00,'','','','NULL'),
 ('bfkonten','id','DE','ID','gridcolumn','',2,'','','',1,1,'',0,1.00,'','','','NULL'),
 ('bfkonten','konto','DE','Konto (normalbesteuert)','column_buchungskonten_konto','combobox_buchungskonten_konto',4,'','','',0,1,'',0,1.00,'','','','NULL'),
@@ -272,7 +272,7 @@ INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `la
 ('bfkonten','steuer_9','DE','Steuer (steuerfrei non-eu)','tualocolumnnumber2','number2',11,'','','',0,1,'',0,1.00,'','','','NULL');
 UNLOCK TABLES;
 LOCK TABLES `ds_column_form_label` WRITE;
-INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('bfkonten','gueltig','DE','gueltig','displayfield','Allgemein',0,0,1,1,'',1.00,''),
+INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('bfkonten','gueltig','DE','gueltig','displayfield','Allgemein',0,0,1,1,'',1.00,''),
 ('bfkonten','id','DE','ID','displayfield','Allgemein/Satz',0,0,1,1,'',1.00,''),
 ('bfkonten','konto','DE','Konto','combobox_buchungskonten_konto','Allgemein/1 normalbesteuert',5,0,1,1,'',1.00,''),
 ('bfkonten','konto_1','DE','Konto','combobox_buchungskonten_konto','Allgemein/2 EU - St.frei',9,0,1,1,'',1.00,''),
@@ -287,10 +287,10 @@ INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `la
 ('bfkonten','steuer_4','DE','steuer_4','displayfield','Allgemein',12,1,0,1,'',1.00,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_dropdownfields` WRITE;
-INSERT INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('bfkonten','ID','id','name','');
+INSERT IGNORE INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('bfkonten','ID','id','name','');
 UNLOCK TABLES;
 LOCK TABLES `ds_reference_tables` WRITE;
-INSERT INTO `ds_reference_tables` (`table_name`, `reference_table_name`, `columnsdef`, `constraint_name`, `active`, `searchable`, `autosync`, `position`, `path`, `existsreal`, `tabtitle`) VALUES ('bfkonten','buchungskonten','{\"bfkonten__konto\":\"buchungskonten__konto\"}','fk_bfkonten_konto',0,0,1,99999,'',0,''),
+INSERT IGNORE INTO `ds_reference_tables` (`table_name`, `reference_table_name`, `columnsdef`, `constraint_name`, `active`, `searchable`, `autosync`, `position`, `path`, `existsreal`, `tabtitle`) VALUES ('bfkonten','buchungskonten','{\"bfkonten__konto\":\"buchungskonten__konto\"}','fk_bfkonten_konto',0,0,1,99999,'',0,''),
 ('bfkonten','buchungskonten','{\"bfkonten__konto_1\":\"buchungskonten__konto\"}','fk_bfkonten_konto_1',0,0,1,99999,'',0,''),
 ('bfkonten','buchungskonten','{\"bfkonten__konto_10\":\"buchungskonten__konto\"}','fk_bfkonten_konto_10',0,0,1,99999,'',0,''),
 ('bfkonten','buchungskonten','{\"bfkonten__konto_2\":\"buchungskonten__konto\"}','fk_bfkonten_konto_2',0,0,1,99999,'',0,''),
@@ -492,13 +492,13 @@ UNLOCK TABLES;
 LOCK TABLES `ds_addcommands` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_access` WRITE;
-INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','bfkonten',1,1,1,1,1);
+INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','bfkonten',1,1,1,1,1);
 UNLOCK TABLES;
 LOCK TABLES `ds` WRITE;
-INSERT INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('artikelgruppen','Artikel','',0,'gruppe','gruppe','gruppe',1,'','','','',0,'tualomultirowmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','Artikelgruppe-{DATETIME}',0,10000,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
+INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('artikelgruppen','Artikel','',0,'gruppe','gruppe','gruppe',1,'','','','',0,'tualomultirowmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','Artikelgruppe-{DATETIME}',0,10000,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
 UNLOCK TABLES;
 LOCK TABLES `ds_column` WRITE;
-INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('artikelgruppen','artikelnummer','',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(20)',20,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
+INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('artikelgruppen','artikelnummer','',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(20)',20,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('artikelgruppen','averkaufszeitraum_bis','2099-12-31',10000000,0,'',0,0,'','','YES','NO',1,'','date','','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,0,NULL,''),
 ('artikelgruppen','averkaufszeitraum_von','2000-01-01',10000000,0,'',0,0,'','','YES','NO',1,'','date','','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,0,NULL,''),
 ('artikelgruppen','bemerkung','',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(4000)',4000,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
@@ -536,7 +536,7 @@ INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_
 ('artikelgruppen','zusatztext','',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(4000)',4000,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_column_list_label` WRITE;
-INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('artikelgruppen','artikelnummer','DE','Artikelnummer','gridcolumn','',3,'','','',1,1,'',0,1.00,'','','','NULL'),
+INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('artikelgruppen','artikelnummer','DE','Artikelnummer','gridcolumn','',3,'','','',1,1,'',0,1.00,'','','','NULL'),
 ('artikelgruppen','averkaufszeitraum_bis','DE','Verkaufszeitraum bis','gridcolumn','',26,'','','',1,1,'',0,1.00,'ASC','left','',NULL),
 ('artikelgruppen','averkaufszeitraum_von','DE','Verkaufszeitraum von','gridcolumn','',25,'','','',1,1,'',0,1.00,'ASC','left','',NULL),
 ('artikelgruppen','bemerkung','DE','Bemerkung','gridcolumn','',14,'','','',1,1,'',0,1.00,'ASC','left','',NULL),
@@ -571,7 +571,7 @@ INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `la
 ('artikelgruppen','zusatztext','DE','Zusatztext','gridcolumn','',13,'','','',1,1,'',0,1.00,'ASC','left','',NULL);
 UNLOCK TABLES;
 LOCK TABLES `ds_column_form_label` WRITE;
-INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('artikelgruppen','artikelnummer','DE','Artikelnummer','textfield','Allgemein/Angaben',4,1,1,1,'',1.00,''),
+INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('artikelgruppen','artikelnummer','DE','Artikelnummer','textfield','Allgemein/Angaben',4,1,1,1,'',1.00,''),
 ('artikelgruppen','averkaufszeitraum_bis','DE','Verkaufszeitraum bis','datefield','Allgemein/Admin-Zeitraum',28,1,1,1,'',1.00,''),
 ('artikelgruppen','averkaufszeitraum_von','DE','Verkaufszeitraum von','datefield','Allgemein/Admin-Zeitraum',27,1,1,1,'',1.00,''),
 ('artikelgruppen','bemerkung','DE','Bemerkung','textarea','Allgemein/Optionen',16,1,1,1,'',1.00,''),
@@ -609,10 +609,10 @@ INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `la
 ('artikelgruppen','zusatztext','DE','Zusatztext','textarea','Allgemein/Optionen',15,1,1,1,'',1.00,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_dropdownfields` WRITE;
-INSERT INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('artikelgruppen','gruppe','gruppe','gruppe','');
+INSERT IGNORE INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('artikelgruppen','gruppe','gruppe','gruppe','');
 UNLOCK TABLES;
 LOCK TABLES `ds_reference_tables` WRITE;
-INSERT INTO `ds_reference_tables` (`table_name`, `reference_table_name`, `columnsdef`, `constraint_name`, `active`, `searchable`, `autosync`, `position`, `path`, `existsreal`, `tabtitle`) VALUES ('artikelgruppen','bfkonten','{\"artikelgruppen__konto_id\":\"bfkonten__id\"}','fk_artikelgruppen_konto_id',0,0,1,99999,'',0,''),
+INSERT IGNORE INTO `ds_reference_tables` (`table_name`, `reference_table_name`, `columnsdef`, `constraint_name`, `active`, `searchable`, `autosync`, `position`, `path`, `existsreal`, `tabtitle`) VALUES ('artikelgruppen','bfkonten','{\"artikelgruppen__konto_id\":\"bfkonten__id\"}','fk_artikelgruppen_konto_id',0,0,1,99999,'',0,''),
 ('artikelgruppen','mengeneinheiten','{\"artikelgruppen__einheit\":\"mengeneinheiten__name\"}','fk_artikelgruppen_einheit',0,0,1,99999,'',0,''),
 ('artikelgruppen','warengruppen','{\"artikelgruppen__warengruppe\":\"warengruppen__warengruppe\"}','fk_artikelgruppen_warengruppe',1,0,1,99999,'',0,''),
 ('artikelgruppen','mengeneinheiten','{\"artikelgruppen__einheit\":\"mengeneinheiten__id\"}','fk_artikelgruppen_einheit',0,0,0,999,'',0,''),
@@ -670,30 +670,30 @@ UNLOCK TABLES;
 LOCK TABLES `ds_addcommands` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_access` WRITE;
-INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','artikelgruppen',0,0,0,0,0);
+INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','artikelgruppen',0,0,0,0,0);
 UNLOCK TABLES;
 LOCK TABLES `ds` WRITE;
-INSERT INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('bfkonten_zuordnung','Kontenzuweisung','',0,'gruppe','gruppe','gruppe',1,'','','','',0,'tualomultirowmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','{GUID}',0,10000,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
+INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('bfkonten_zuordnung','Kontenzuweisung','',0,'gruppe','gruppe','gruppe',1,'','','','',0,'tualomultirowmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','{GUID}',0,10000,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
 UNLOCK TABLES;
 LOCK TABLES `ds_column` WRITE;
-INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('bfkonten_zuordnung','gruppe','',10000000,0,'',1,0,'','','NO','NO',1,'','varchar','PRI','varchar(255)',255,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
+INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('bfkonten_zuordnung','gruppe','',10000000,0,'',1,0,'','','NO','NO',1,'','varchar','PRI','varchar(255)',255,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('bfkonten_zuordnung','gueltig','2099-12-31',10000000,0,'',1,0,'','','NO','NO',1,'','date','PRI','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,0,NULL,''),
 ('bfkonten_zuordnung','konto_id','',10000000,0,'',1,0,'','','NO','NO',1,'','int','PRI','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_column_list_label` WRITE;
-INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('bfkonten_zuordnung','gruppe','DE','Artikel','column_artikelgruppen_gruppe','',0,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
+INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('bfkonten_zuordnung','gruppe','DE','Artikel','column_artikelgruppen_gruppe','',0,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
 ('bfkonten_zuordnung','gueltig','DE','gültig bis','tualodedatedisplaycolumn','',0,'','','',0,1,'',0,1.00,'','','','NULL'),
 ('bfkonten_zuordnung','konto_id','DE','Kontengruppe','column_bfkonten_id','',0,'','','',0,1,'',0,1.00,'ASC','left','',NULL);
 UNLOCK TABLES;
 LOCK TABLES `ds_column_form_label` WRITE;
-INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('bfkonten_zuordnung','gruppe','DE','Artikel','combobox_artikelgruppen_gruppe','Allgemein',0,0,1,1,'',1.00,''),
+INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('bfkonten_zuordnung','gruppe','DE','Artikel','combobox_artikelgruppen_gruppe','Allgemein',0,0,1,1,'',1.00,''),
 ('bfkonten_zuordnung','gueltig','DE','gültig bis','tualodatedisplayfield','Allgemein',0,0,1,1,'',1.00,''),
 ('bfkonten_zuordnung','konto_id','DE','Kontengruppe','combobox_bfkonten_id','Allgemein',0,0,1,1,'',1.00,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_dropdownfields` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_reference_tables` WRITE;
-INSERT INTO `ds_reference_tables` (`table_name`, `reference_table_name`, `columnsdef`, `constraint_name`, `active`, `searchable`, `autosync`, `position`, `path`, `existsreal`, `tabtitle`) VALUES ('bfkonten_zuordnung','artikelgruppen','{\"bfkonten_zuordnung__gruppe\":\"artikelgruppen__gruppe\"}','fk_bfkonten_zuordnung_artikelgruppen_gruppe',0,0,1,99999,'',0,''),
+INSERT IGNORE INTO `ds_reference_tables` (`table_name`, `reference_table_name`, `columnsdef`, `constraint_name`, `active`, `searchable`, `autosync`, `position`, `path`, `existsreal`, `tabtitle`) VALUES ('bfkonten_zuordnung','artikelgruppen','{\"bfkonten_zuordnung__gruppe\":\"artikelgruppen__gruppe\"}','fk_bfkonten_zuordnung_artikelgruppen_gruppe',0,0,1,99999,'',0,''),
 ('bfkonten_zuordnung','artikelgruppen','{\"bfkonten_zuordnung__gruppe\":\"artikelgruppen__gruppe\"}','fk_bfkonten_zuordnung_artikelgruppen_gruppe',0,0,0,999,'',0,''),
 ('bfkonten_zuordnung','artikelgruppen','{\"bfkonten_zuordnung__gruppe\":\"artikelgruppen__gruppe\"}','fk_bfkonten_zuordnung_artikelgruppen_gruppe',0,0,0,999,'',0,''),
 ('bfkonten_zuordnung','artikelgruppen','{\"bfkonten_zuordnung__gruppe\":\"artikelgruppen__gruppe\"}','fk_bfkonten_zuordnung_artikelgruppen_gruppe',0,0,0,999,'',0,''),
@@ -733,13 +733,13 @@ UNLOCK TABLES;
 LOCK TABLES `ds_addcommands` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_access` WRITE;
-INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','bfkonten_zuordnung',1,1,1,1,0);
+INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','bfkonten_zuordnung',1,1,1,1,0);
 UNLOCK TABLES;
 LOCK TABLES `ds` WRITE;
-INSERT INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('staffeln','Preise','',0,'gruppe','gruppe','preis',1,'','','','',0,'cellmodel','',0,'','','','ERP','',1,'latin1','','listview','XlsxWriter','Preise-{DATETIME}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
+INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('staffeln','Preise','',0,'gruppe','gruppe','preis',1,'','','','',0,'cellmodel','',0,'','','','ERP','',1,'latin1','','listview','XlsxWriter','Preise-{DATETIME}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
 UNLOCK TABLES;
 LOCK TABLES `ds_column` WRITE;
-INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('staffeln','bis','100000',10000000,0,'',1,0,'','','NO','NO',1,'','int','PRI','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,''),
+INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('staffeln','bis','100000',10000000,0,'',1,0,'','','NO','NO',1,'','int','PRI','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,''),
 ('staffeln','bruttopreis','0',10000000,0,'',0,0,'','','YES','NO',1,'','decimal','','decimal(15,6)',NULL,15,6,NULL,'select,insert,update,references',1,0,'NULL',''),
 ('staffeln','epreis','0',10000000,0,'',0,0,'','','YES','NO',1,'','decimal','','decimal(15,6)',NULL,15,6,NULL,'select,insert,update,references',1,0,'NULL',''),
 ('staffeln','gebiet','.',10000000,0,'',1,0,'','','YES','NO',1,'','varchar','','varchar(50)',50,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
@@ -754,7 +754,7 @@ INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_
 ('staffeln','zeitraum_von','2020-01-01',10000000,0,'',1,0,'','','NO','NO',1,'','date','PRI','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,0,'NULL','');
 UNLOCK TABLES;
 LOCK TABLES `ds_column_list_label` WRITE;
-INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('staffeln','bis','DE','Bis','numbercolumn','',4,'','','',1,1,'',0,1.00,'ASC','left','',NULL),
+INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('staffeln','bis','DE','Bis','numbercolumn','',4,'','','',1,1,'',0,1.00,'ASC','left','',NULL),
 ('staffeln','bruttopreis','DE','Preis (brutto)','moneycolumn5','numberfield',6,'','','',1,1,'',0,1.00,'','','','NULL'),
 ('staffeln','epreis','DE','Einkaufspreis','coloredmoneycolumn2','',8,'','','',1,1,'',0,1.00,'','','',NULL),
 ('staffeln','gebiet','DE','gebiet','gridcolumn','',0,'','','',1,1,'',0,1.00,'ASC','left','',NULL),
@@ -769,7 +769,7 @@ INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `la
 ('staffeln','zeitraum_von','DE','Zeitraum von','datecolumn','',9,'','','',1,1,'',0,1.00,'','','','NULL');
 UNLOCK TABLES;
 LOCK TABLES `ds_column_form_label` WRITE;
-INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('staffeln','bis','DE','Bis','numberfield','Allgemein',6,1,1,0,'',1.00,''),
+INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('staffeln','bis','DE','Bis','numberfield','Allgemein',6,1,1,0,'',1.00,''),
 ('staffeln','bruttopreis','DE','Bruttopreis','numberfield','Allgemein/Angaben',8,1,1,1,'',1.00,''),
 ('staffeln','epreis','DE','Einkaufspreis','number5','Allgemein/Angaben',9,1,1,1,'',1.00,''),
 ('staffeln','gebiet','DE','Gebiet','textfield','Allgemein',10,1,1,0,'',1.00,''),
@@ -786,7 +786,7 @@ UNLOCK TABLES;
 LOCK TABLES `ds_dropdownfields` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_reference_tables` WRITE;
-INSERT INTO `ds_reference_tables` (`table_name`, `reference_table_name`, `columnsdef`, `constraint_name`, `active`, `searchable`, `autosync`, `position`, `path`, `existsreal`, `tabtitle`) VALUES ('staffeln','artikelgruppen','{\"staffeln__gruppe\":\"artikelgruppen__gruppe\"}','fk_staffeln_gruppe',1,0,1,99999,'',0,''),
+INSERT IGNORE INTO `ds_reference_tables` (`table_name`, `reference_table_name`, `columnsdef`, `constraint_name`, `active`, `searchable`, `autosync`, `position`, `path`, `existsreal`, `tabtitle`) VALUES ('staffeln','artikelgruppen','{\"staffeln__gruppe\":\"artikelgruppen__gruppe\"}','fk_staffeln_gruppe',1,0,1,99999,'',0,''),
 ('staffeln','artikelgruppen','{\"staffeln__gruppe\":\"artikelgruppen__gruppe\"}','fk_staffeln_gruppe',0,0,0,999,'',0,''),
 ('staffeln','artikelgruppen','{\"staffeln__gruppe\":\"artikelgruppen__gruppe\"}','fk_staffeln_gruppe',0,0,0,999,'',0,''),
 ('staffeln','artikelgruppen','{\"staffeln__gruppe\":\"artikelgruppen__gruppe\"}','fk_staffeln_gruppe',0,0,0,999,'',0,''),
@@ -826,35 +826,35 @@ UNLOCK TABLES;
 LOCK TABLES `ds_addcommands` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_access` WRITE;
-INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','staffeln',0,0,0,0,0);
+INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','staffeln',0,0,0,0,0);
 UNLOCK TABLES;
 LOCK TABLES `ds` WRITE;
-INSERT INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('preiskategorien','Preiskategorien','',0,'name','name','name',1,'','','','',0,'tualomultirowmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
+INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('preiskategorien','Preiskategorien','',0,'name','name','name',1,'','','','',0,'tualomultirowmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
 UNLOCK TABLES;
 LOCK TABLES `ds_column` WRITE;
-INSERT INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('preiskategorien','codx_schluessel',NULL,10000000,0,NULL,0,0,NULL,NULL,'YES','NO',1,'','varchar','','varchar(30)',30,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
+INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('preiskategorien','codx_schluessel',NULL,10000000,0,NULL,0,0,NULL,NULL,'YES','NO',1,'','varchar','','varchar(30)',30,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('preiskategorien','id','{#serial}',10000000,0,'',1,0,'','','NO','NO',1,'','int','PRI','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,''),
 ('preiskategorien','name','',10000000,0,'',0,0,'','','NO','NO',1,'','varchar','','varchar(255)',255,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('preiskategorien','status','1',10000000,0,'',0,0,'','','YES','NO',1,'','tinyint','','tinyint(4)',NULL,3,0,NULL,'select,insert,update,references',1,0,NULL,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_column_list_label` WRITE;
-INSERT INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('preiskategorien','id','DE','ID','gridcolumn','',0,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
+INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('preiskategorien','id','DE','ID','gridcolumn','',0,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
 ('preiskategorien','name','DE','Name','gridcolumn','',999,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
 ('preiskategorien','status','DE','Status','gridcolumn','',999,'','','',0,1,'',0,1.00,'ASC','left','',NULL);
 UNLOCK TABLES;
 LOCK TABLES `ds_column_form_label` WRITE;
-INSERT INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('preiskategorien','codx_schluessel','DE','CodX','combobox_view_codx_kundenbericht_preisgruppe_preisgruppe','Allgemein/Angaben',999,0,1,1,'',1.00,''),
+INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('preiskategorien','codx_schluessel','DE','CodX','combobox_view_codx_kundenbericht_preisgruppe_preisgruppe','Allgemein/Angaben',999,0,1,1,'',1.00,''),
 ('preiskategorien','id','DE','ID','displayfield','Allgemein/Angaben',0,0,1,1,'',1.00,''),
 ('preiskategorien','name','DE','Name','textfield','Allgemein/Angaben',999,0,1,1,'',1.00,''),
 ('preiskategorien','status','DE','Status','checkbox','Allgemein/Angaben',999,0,1,1,'',1.00,'');
 UNLOCK TABLES;
 LOCK TABLES `ds_dropdownfields` WRITE;
-INSERT INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('preiskategorien','id','id','name','');
+INSERT IGNORE INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('preiskategorien','id','id','name','');
 UNLOCK TABLES;
 LOCK TABLES `ds_reference_tables` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_addcommands` WRITE;
 UNLOCK TABLES;
 LOCK TABLES `ds_access` WRITE;
-INSERT INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','preiskategorien',0,1,1,1,1);
+INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','preiskategorien',0,1,1,1,1);
 UNLOCK TABLES;

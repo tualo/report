@@ -1,4 +1,4 @@
-CREATE TABLE `warenhauptgruppen` (
+CREATE TABLE IF NOT EXISTS `warenhauptgruppen` (
   `id` int(11) NOT NULL DEFAULT 0,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -6,7 +6,7 @@ CREATE TABLE `warenhauptgruppen` (
 );
 insert into warenhauptgruppen (id, name) values (0, 'Keine Hauptgruppe');
 
-CREATE TABLE `buchungskonten` (
+CREATE TABLE IF NOT EXISTS `buchungskonten` (
   `konto` varchar(100) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `aktiv` tinyint(4) DEFAULT 1,
@@ -14,7 +14,7 @@ CREATE TABLE `buchungskonten` (
 );
 insert into buchungskonten (konto, name) values ('0000', 'Kein Konto');
 
-CREATE TABLE `mengeneinheiten` (
+CREATE TABLE IF NOT EXISTS `mengeneinheiten` (
   `id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
   `symbol` varchar(20) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE `mengeneinheiten` (
 
 insert into mengeneinheiten (id, name, symbol, faktor) values (1, 'STK', 'Stk.', 1.000000);
 
-CREATE TABLE `warengruppen` (
+CREATE TABLE IF NOT EXISTS `warengruppen` (
   `id` int(11) NOT NULL,
   `warengruppe` varchar(100) NOT NULL,
   `wgsort` int(11) DEFAULT 999,
@@ -39,7 +39,7 @@ CREATE TABLE `warengruppen` (
 );
 
 
-CREATE TABLE `bfkonten` (
+CREATE TABLE IF NOT EXISTS `bfkonten` (
   `id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT '',
   `konto` varchar(100) DEFAULT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE `bfkonten` (
 );
 
 
-CREATE TABLE `artikelgruppen` (
+CREATE TABLE IF NOT EXISTS `artikelgruppen` (
   `gruppen_id` int(11) NOT NULL,
   `gruppe` varchar(255) NOT NULL,
   `kurztext` varchar(30) DEFAULT '',
@@ -165,7 +165,7 @@ CREATE TABLE `artikelgruppen` (
 
 
 
-CREATE TABLE `bfkonten_zuordnung` (
+CREATE TABLE IF NOT EXISTS `bfkonten_zuordnung` (
   `gruppe` varchar(255) NOT NULL,
   `konto_id` int(11) NOT NULL,
   `gueltig` date NOT NULL DEFAULT '2099-12-31',
@@ -175,7 +175,7 @@ CREATE TABLE `bfkonten_zuordnung` (
   CONSTRAINT `fk_bfkonten_zuordnung_artikelgruppen_konto_id` FOREIGN KEY (`konto_id`, `gueltig`) REFERENCES `bfkonten` (`id`, `gueltig`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE `preiskategorien` (
+CREATE TABLE IF NOT EXISTS `preiskategorien` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `status` tinyint(4) DEFAULT 0,
@@ -185,7 +185,7 @@ COMMENT='Preiskategorien für das ermitteln des Einzelpreises, dies kann im Bezu
 ;
 
 
-CREATE TABLE `staffeln` (
+CREATE TABLE IF NOT EXISTS `staffeln` (
   `gruppe` varchar(255) NOT NULL,
   `von` int(11) NOT NULL DEFAULT -1000000,
   `bis` int(11) NOT NULL DEFAULT 1000000,
