@@ -1,53 +1,192 @@
-DELIMITER ;
 
-INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('view_blg_list_#####','##### (Liste)','',0,'belegnummer','belegnummer','belegnummer',1,'','','','',0,'tualomultirowmodel','',0,'','cmp_belege_report_editorform','','ERP','',1,'','','listview','XlsxWriter','',0,100,NULL,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
-INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('view_blg_list_#####','belegnummer','-1',10000000,0,'',1,0,'','','NO','NO',1,'\'\'','bigint','','bigint(20)',NULL,19,0,NULL,'select,insert,update,references',1,0,'NULL',''),
-('view_blg_list_#####','belegnummer_anzeige','',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(32)',32,NULL,NULL,'utf8mb3','select,insert,update,references',1,0,NULL,''),
-('view_blg_list_#####','bezahlt','',10000000,0,'',0,0,'','','YES','NO',1,'','decimal','','decimal(12,5)',NULL,12,5,NULL,'select,insert,update,references',1,0,NULL,''),
-('view_blg_list_#####','bezugsnummer','',10000000,0,'',0,0,'','','NO','NO',1,'','varchar','','varchar(10)',10,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
-('view_blg_list_#####','brutto','',10000000,0,'',0,0,'','','YES','NO',1,'','decimal','','decimal(12,5)',NULL,12,5,NULL,'select,insert,update,references',1,0,NULL,''),
-('view_blg_list_#####','buchungsdatum','',10000000,0,'',0,0,'','','YES','NO',1,'','date','','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,0,NULL,''),
-('view_blg_list_#####','datum','',10000000,0,'',0,0,'','','NO','NO',1,'','date','','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,0,NULL,''),
-('view_blg_list_#####','faelligam','',10000000,0,'',0,0,'','','YES','NO',1,'','date','','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,0,NULL,''),
-('view_blg_list_#####','gedruckt','',10000000,0,'',0,0,'','','YES','NO',1,'','tinyint','','tinyint(4)',NULL,3,0,NULL,'select,insert,update,references',1,0,NULL,''),
-('view_blg_list_#####','gedruckt_am','',10000000,0,'',0,0,'','','YES','NO',1,'','date','','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,0,NULL,''),
-('view_blg_list_#####','geschaeftsstelle','100',0,0,'',0,0,'','','YES','NO',1,'','int','','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,'',''),
-('view_blg_list_#####','id','-1',0,0,'',0,0,'','','NO','NO',1,'','bigint','','bigint(20)',NULL,19,0,NULL,'select,insert,update,references',1,0,'',''),
-('view_blg_list_#####','kostenstelle','0',0,0,'',0,0,'','','NO','NO',1,'','int','','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,'',''),
-('view_blg_list_#####','kundennummer',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'NO','NO',1,NULL,'varchar','','varchar(10)',10,NULL,NULL,'utf8mb4','select,insert,update,references',1,NULL,NULL,''),
-('view_blg_list_#####','minderung',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'decimal','','decimal(12,5)',NULL,12,5,NULL,'select,insert,update,references',1,NULL,NULL,''),
-('view_blg_list_#####','netto',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'decimal','','decimal(12,5)',NULL,12,5,NULL,'select,insert,update,references',1,NULL,NULL,''),
-('view_blg_list_#####','offen',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'decimal','','decimal(15,6)',NULL,15,6,NULL,'select,insert,update,references',1,NULL,NULL,''),
-('view_blg_list_#####','referenz',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'varchar','','varchar(255)',255,NULL,NULL,'utf8mb4','select,insert,update,references',1,NULL,NULL,''),
-('view_blg_list_#####','report_config_id','4',0,0,'',0,0,'','','NO','NO',1,'','varchar','','varchar(1)',1,NULL,NULL,'utf8mb3','select,insert,update,references',1,0,'NULL',''),
-('view_blg_list_#####','steuer',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'decimal','','decimal(12,5)',NULL,12,5,NULL,'select,insert,update,references',1,NULL,NULL,''),
-('view_blg_list_#####','tabellenzusatz','#####',0,0,'',0,0,'','','NO','NO',1,'','varchar','','varchar(7)',7,NULL,NULL,'utf8mb3','select,insert,update,references',1,0,'NULL',''),
-('view_blg_list_#####','zahlart',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'varchar','','varchar(20)',20,NULL,NULL,'utf8mb4','select,insert,update,references',1,NULL,NULL,''),
-('view_blg_list_#####','zeit',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'time','','time',NULL,NULL,NULL,NULL,'select,insert,update,references',1,NULL,NULL,''),
-('view_blg_list_#####','zeitraum_bis',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'date','','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,NULL,NULL,''),
-('view_blg_list_#####','zeitraum_von',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'YES','NO',1,NULL,'date','','date',NULL,NULL,NULL,NULL,'select,insert,update,references',1,NULL,NULL,'');
-INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('view_blg_list_#####','belegnummer','DE','Belegnummer','gridcolumn','',0,'deNatualRenderer','deNatualRenderer','count',0,1,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','belegnummer_anzeige','DE','belegnummer_anzeige','gridcolumn','',1,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','bezahlt','DE','bezahlt','gridcolumn','',2,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','bezugsnummer','DE','Bezug','gridcolumn','',4,'','','',1,1,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','brutto','DE','Brutto','coloredmoneycolumn2','',3,'euroRenderer','euroRenderer','sum',0,1,'',0,1.00,'','end','',NULL),
-('view_blg_list_#####','buchungsdatum','DE','buchungsdatum','gridcolumn','',5,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','datum','DE','Datum','datecolumn','',6,'','','',0,1,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','faelligam','DE','faelligam','gridcolumn','',7,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','gedruckt','DE','gedruckt','gridcolumn','',8,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','gedruckt_am','DE','gedruckt_am','gridcolumn','',9,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','geschaeftsstelle','DE','geschaeftsstelle','gridcolumn','',10,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','id','DE','id','gridcolumn','',11,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','kostenstelle','DE','kostenstelle','gridcolumn','',12,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','kundennummer','DE','Bezug','gridcolumn','',13,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','minderung','DE','minderung','gridcolumn','',14,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','netto','DE','Netto','coloredmoneycolumn2','',15,'euroRenderer','euroRenderer','sum',0,1,'',0,1.00,'','end','',NULL),
-('view_blg_list_#####','offen','DE','offen','gridcolumn','',16,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','referenz','DE','referenz','gridcolumn','',17,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','report_config_id','DE','report_config_id','gridcolumn','',18,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','steuer','DE','steuer','gridcolumn','',19,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','tabellenzusatz','DE','tabellenzusatz','gridcolumn','',20,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','zahlart','DE','zahlart','gridcolumn','',21,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','zeit','DE','zeit','gridcolumn','',22,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','zeitraum_bis','DE','zeitraum_bis','gridcolumn','',23,'','','',1,0,'',0,1.00,'','','',NULL),
-('view_blg_list_#####','zeitraum_von','DE','zeitraum_von','gridcolumn','',24,'','','',1,0,'',0,1.00,'','','',NULL);
+CREATE OR REPLACE PROCEDURE `fibuconv_plenty`( )
+BEGIN 
+
+    declare incorrect_string_type int default 0;
+    declare incorrect_column_type int default 0;
+    declare incorrect_table_type int default 0;
+    declare incorrect_column_count int default 0;
+    declare incorrect_cursor int default 0;
+
+    DECLARE incorrect_string CONDITION FOR SQLSTATE '22007';
+    DECLARE incorrect_column CONDITION FOR SQLSTATE '42S22';
+    DECLARE incorrect_cursor_e2 CONDITION FOR SQLSTATE '24000';
+    DECLARE incorrect_columncount CONDITION FOR SQLSTATE '21S01';
+    
+
+    DECLARE CONTINUE HANDLER FOR incorrect_column SET incorrect_column_type = 1;
+    DECLARE CONTINUE HANDLER FOR incorrect_columncount SET incorrect_column_count = 1;
+    DECLARE CONTINUE HANDLER FOR incorrect_string SET incorrect_string_type = 1;
+    DECLARE CONTINUE HANDLER FOR incorrect_cursor_e2 SET incorrect_cursor = 1;
+
+    /*
+
+    DECLARE incorrect_table CONDITION FOR SQLSTATE '42S02';
+    DECLARE incorrect_cursor_e CONDITION FOR SQLSTATE '24099';
+    
+    DECLARE incorrect_columncount CONDITION FOR SQLSTATE '42000';
+    
+
+    DECLARE CONTINUE HANDLER FOR incorrect_cursor_e SET incorrect_cursor = 1;
+    DECLARE CONTINUE HANDLER FOR incorrect_cursor_e2 SET incorrect_cursor = 1;
+    DECLARE CONTINUE HANDLER FOR incorrect_column SET incorrect_column_type = 1;
+    DECLARE CONTINUE HANDLER FOR incorrect_columncount SET incorrect_column_count = 1;
+    DECLARE CONTINUE HANDLER FOR incorrect_table SET incorrect_table_type = 1;
+    */
+/*
+    alter table fibuconv_uploaded_files add incorrect_string_type tinyint default 0;
+    alter table fibuconv_uploaded_files add incorrect_column_type tinyint default 0;
+    alter table fibuconv_uploaded_files add incorrect_table_type tinyint default 0;
+    alter table fibuconv_uploaded_files add incorrect_column_count tinyint default 0;
+    alter table fibuconv_uploaded_files add detected_type varchar(255) default null;
+    alter table fibuconv_uploaded_files add detected_charset varchar(255) default null;
+
+    alter table fibuconv_uploaded_files add processed_report tinyint default 0;
+*/
+FOR files IN (
+    select * from  fibuconv_uploaded_files where 
+        detected_type='plenty2018'
+        and filename like '%DATEV_2022%'
+    -- and id  in ('145a1bfc-cc10-11ea-9001-0cc47a979684')
+) DO
+    -- alter table fibuconv_uploaded_files add incorrect_string_type tinyint default 0;
+        select files.id,files.filename,incorrect_string_type,files.detected_charset;
+        set incorrect_string_type = 0;
+        if (files.detected_charset='utf16le') then
+            set @d = ( select HTML_UnEncode(from_base64(CONVERT(data  USING utf16le))) names from fibuconv_uploaded_files_data where  id = files.id );
+        end if;
+        if (files.detected_charset='latin1') then
+            set @d = ( select HTML_UnEncode(from_base64(CONVERT(data  USING latin1))) names from fibuconv_uploaded_files_data where  id = files.id );
+        end if;
+        if (files.detected_charset='utf8') then
+            set @d = ( select HTML_UnEncode(from_base64( data )) names from fibuconv_uploaded_files_data where  id = files.id );
+        end if;
+
+        select incorrect_string_type;
+
+
+    if (incorrect_string_type = 0) then
+        drop table if exists sample;
+        drop table if exists mat_sample;
+        drop table if exists temp_csv_lines;
+        drop table if exists temp_csv_columns;
+        call csv_to_table(@d,char(10),char(59),'sample');
+
+        set incorrect_column_type = 0;
+        set incorrect_column_count = 0;
+        set incorrect_table_type=0;
+        set incorrect_cursor=0;
+
+        select files.id,files.filename,incorrect_string_type,'x' x;
+        -- create table mat_sample as select * from sample;
+        select files.id,files.filename,incorrect_string_type,'y' x;
+        select incorrect_column_type;
+        if (incorrect_column_type=0 and incorrect_column_count=0 and incorrect_table_type=0) then
+        select `Rechn.-Nr. (Belegfeld 1)` from sample;
+            for reports in (
+
+                    select 
+                    json_object(
+                        "id", `Rechn.-Nr. (Belegfeld 1)`,
+                        "date", str_to_date(`Belegdatum`,'%d.%m.%Y %H:%i'),
+                        "time", cast(str_to_date(`Belegdatum`,'%d.%m.%Y %H:%i') as time),
+                        
+                        "bookingdate", str_to_date(`Belegdatum`,'%d.%m.%Y %H:%i'),
+                        "service_period_start", str_to_date(`Belegdatum`,'%d.%m.%Y %H:%i'),
+                        "service_period_stop", str_to_date(`Belegdatum`,'%d.%m.%Y %H:%i'),
+                        "warehouse", 0,
+                        "reference", `Order ID (Belegfeld 2)`,
+                        "filename",files.filename,
+                        "fileid",files.id,
+                        "zusatzinfo", `Zusatzinfo Inhalt`,
+                        "zusatzinfo2", `Zusatzinfo Inhalt 2`,
+                        "zahlungsart", zahlungsart,
+                        "paymentid", 
+                            if( 
+                                    zahlungsart in (
+                                            'Amazon Pay',
+                                            'Amazon Payments',
+                                            'eBay Payment',
+                                            'Kaufland.de Payment',
+                                            'Metro Paypal',
+                                            'OTTO Payment',
+                                            'idealo Direktkauf',
+                                            'Paypal',
+                                            'Paypal Plus (Lastschrift, Kreditkarte, Kauf auf Rechnung)',
+                                            'PayPal Express'
+                                    ) ,
+                                    `Zusatzinfo Inhalt`,
+                                    if( 
+                                    zahlungsart in (
+                                            'PayPal Plus'
+                                    ) ,
+                                    `Zusatzinfo Inhalt 2`,null
+                                    )
+                            ),
+                            
+                            
+                            
+                            
+                        "referencenr", kundennummer,
+                        "costcenter", kostenstelle,
+                        "iso", `Rechnungsanschrift Land ISO`,
+                        "address", concat(`Firma`,char(10),`Vorname`,' ',`Nachname`),
+                        "companycode", "0000",
+                        "office", 1,
+                        "positions",
+                            json_arrayagg(
+                                    pos
+                            )
+
+                    ) c
+                    from (
+                        select 
+                            adressen.kundennummer,
+                            adressen.kostenstelle,
+                            sample.*,
+                            json_object(
+                                "id", `Rechn.-Nr. (Belegfeld 1)` * 1000 + row_number() over (partition by `Rechn.-Nr. (Belegfeld 1)`  order by `Gegenkonto (Erlöskonto)`),
+                                "article", `Zusatzinfo Art 2`,
+                                "position", row_number() over ( partition by `Rechn.-Nr. (Belegfeld 1)` order by `Gegenkonto (Erlöskonto)`),
+                                "account", `Gegenkonto (Erlöskonto)`,
+                                "amount", 1.00000,
+                                "notes", null,
+                                "additionaltext", "",
+                                "singleprice", if(`Soll-Haben`='S',1,-1) * ( german_to_decimal(`Rechnungsbetrag (brutto in Systemwährung)`) - german_to_decimal(`MwSt in Systemwährung`) ),
+                                "tax", 19.00000,
+                                "net", if(`Soll-Haben`='S',1,-1) * ( german_to_decimal(`Rechnungsbetrag (brutto in Systemwährung)`) - german_to_decimal(`MwSt in Systemwährung`) ),
+                                "taxvalue", if(`Soll-Haben`='S',1,-1) * german_to_decimal(`MwSt in Systemwährung`),
+                                "gross", if(`Soll-Haben`='S',1,-1) * german_to_decimal(`Rechnungsbetrag (brutto in Systemwährung)`)
+                            ) pos
+                        from sample join adressen 
+                        on `Kunde ID`=adressen.kundennummer
+                        and postid = md5(concat(
+                            trim(ifnull(sample.kunde,'')),
+                            trim(ifnull(sample.firma,'')),
+                            trim(ifnull(sample.vorname,'')),
+                            trim(ifnull(sample.nachname,'')),
+                            trim(ifnull(sample.`rechnungsanschrift land iso`,''))
+                        ))
+                    ) sample
+                    group by `Rechn.-Nr. (Belegfeld 1)`
+
+
+            ) do
+                    select reports.c;
+                    call setReport('plenty',reports.c,@o);
+
+            end for;
+                if (incorrect_table_type=0) then    
+                    update fibuconv_uploaded_files set processed_report=1;
+                end if;
+
+
+        end if; -- incorrect column
+    end if; -- incorrect type
+
+END FOR;
+
+
+
+
+END //
