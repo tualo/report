@@ -368,7 +368,7 @@ create table if not EXISTS `blg_mailto_#BEZUG#_#####` (
   primary key (id,mail_to,kundennummer,kostenstelle)
 ) //
 
-call addForeignKeyIfNotExists ('blg_mailto_#BEZUG#_#####','#BEZUG#','fk_blg_mailto_#BEZUG#_#####_ref','`kundennummer`#KST_REF#','`kundennummer`#KST_REF#','cascade','cascade') //
+call addForeignKeyIfNotExists ('blg_mailto_#BEZUG#_#####','#BEZUG#','fk_blg_mailto_#BEZUG#_#####_ref','`kundennummer`#KST_REF#','#BEZUG_ID_REF##KST_REF#','cascade','cascade') //
 
 
 create table if not EXISTS `blg_mail_#####` (
@@ -399,7 +399,7 @@ create table if not EXISTS `blg_defaultlayout_#BEZUG#_#####` (
   primary key (layout,kundennummer,kostenstelle)
 ) //
 
-call addForeignKeyIfNotExists ('blg_defaultlayout_#BEZUG#_#####','#BEZUG#','fk_blg_defaultlayout_#BEZUG#_#####_ref','`kundennummer`#KST_REF#','`kundennummer`#KST_REF#','cascade','cascade') //
+call addForeignKeyIfNotExists ('blg_defaultlayout_#BEZUG#_#####','#BEZUG#','fk_blg_defaultlayout_#BEZUG#_#####_ref','#BEZUG_ID_REF##KST_REF#','#BEZUG_ID_REF##KST_REF#','cascade','cascade') //
 
 
 
