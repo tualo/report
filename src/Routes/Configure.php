@@ -40,7 +40,7 @@ class Configure implements IRoute{
             $sql = str_replace('#BEZUG_KST_REF0#',',bezug.`'.$config['bezug_kst'].'`',$sql);
         }else{
             $sql = str_replace('#KST_REF#','',$sql);
-            $sql = str_replace('#BEZUG_KST_REF0#','0',$sql);
+            $sql = str_replace('#BEZUG_KST_REF0#',',0',$sql);
             $sql = str_replace('#KST_REF0#','0',$sql);
         }
         return $sql;
