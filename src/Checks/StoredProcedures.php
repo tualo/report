@@ -15,7 +15,7 @@ class StoredProcedures extends PostCheck {
         and routine_name in ('getReport','getReportPayments','getReportPositions','getReportReductions','getReportLocks','setReport','setReportDefaults','setReportHeader','setReportPosition','setReportTSE')
         */
         $def = [
-            'getReport'=>'4deb97a5ce1348f2a54d0c8fde5f9329',
+            'getReport'=>'82aed978367f26594445705aca300bdd',
             'getReportPayments'=>'b23033b47b22b0239d557753583e4559',
             'getReportPositions'=>'d8467e62cd59ac0409aa080cd4fba0c5',
             'getReportReductions'=>'8e77e1a31b9301ff1e3d91dc518ee7e2',

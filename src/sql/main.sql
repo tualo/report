@@ -725,7 +725,7 @@ BEGIN
     execute stmt;
     DEALLOCATE PREPARE stmt;
 
-    for rec in (select * from blg_hdr_translations where is_required = 1) do
+    for rec in (select * from blghdr_translations where is_required = 1) do
         if JSON_VALUE(@result,concat('$.',rec.json_attribute_name)) is null then
             SET @error = concat( "required field missing: ",rec.json_attribute_name);
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @error;
@@ -1337,6 +1337,8 @@ BEGIN
     -- DEALLOCATE PREPARE stmt;
     
     -- call debug_message('REPORT SAVED');
+
+    call recalculateHeader(reporttype,JSON_VALUE(position,'$.reportnr'));
 
     call getReport(reporttype,JSON_VALUE(position,'$.reportnr'),@tempout);
     

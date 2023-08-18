@@ -182,7 +182,7 @@ BEGIN
     select min(von),max(bis)  into use_von,use_bis from view_readtable_blg_config_buchungskreis where buchungskreis_id=use_bkr and blg_id = use_blg_id;
 
 
-    SELECT ifnull(max(id)+1,use_von ) x INTO res FROM blg_hdr_BLGTABELLENZUSATZ WHERE id>=use_von and id<=use_bis;
+    SELECT ifnull(max(id)+1,use_von ) x INTO res FROM blg_hdr_##### WHERE id>=use_von and id<=use_bis;
 
     IF res < use_von THEN
         SET res=NULL;
