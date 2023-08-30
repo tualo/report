@@ -20,7 +20,7 @@ class InstallMainSQLCommandline implements ICommandline{
     }
 
    
-    public static function setupClients(string $msg,string $clientName,callable $callback){
+    public static function setupClients(string $msg,string $clientName,string $file,callable $callback){
         $_SERVER['REQUEST_URI']='';
         $_SERVER['REQUEST_METHOD']='none';
         App::run();
@@ -34,7 +34,7 @@ class InstallMainSQLCommandline implements ICommandline{
             }else{
                 App::set('clientDB',$session->newDBByRow($db));
                 PostCheck::formatPrint(['blue'],$msg.'('.$db['dbname'].'):  ');
-                $callback();
+                $callback($file);
                 PostCheck::formatPrintLn(['green'],"\t".' done');
 
             }
@@ -43,46 +43,39 @@ class InstallMainSQLCommandline implements ICommandline{
 
     public static function run(Args $args){
 
-        $installSQL = function (){
-            $filename = __DIR__.'/sql/main.sql';
-            $sql = file_get_contents($filename);
-            $sql = preg_replace('!/\*.*?\*/!s', '', $sql);
-            $sql = preg_replace('#^\s*\-\-.+$#m', '', $sql);
-            $sinlgeStatements = App::get('clientDB')->explode_by_delimiter($sql);
-            foreach($sinlgeStatements as $commandIndex => $statement){
-                try{
-                    App::get('clientDB')->direct($statement);
-                    
-                }catch(\Exception $e){
-                    echo PHP_EOL;
-                    PostCheck::formatPrintLn(['red'], $e->getMessage().': commandIndex => '.$commandIndex);
+        $files = [
+            'articles' => 'setup articles ddl ',
+            'article_dropdown' => 'setup article_dropdown ds definition ',
+            'preisorientierung' => 'setup preisorientierung ds definition ',
+            'steuergruppen_field' => 'setup steuergruppen_field ds definition ',
+            'main' => 'setup main report procedures ',
+            'ext_base_type' => 'setup base types '
+        ];
+
+        foreach($files as $file=>$msg){
+            $installSQL = function(string $file){
+
+                $filename = __DIR__.'/sql/'.$file.'.sql';
+                $sql = file_get_contents($filename);
+                $sql = preg_replace('!/\*.*?\*/!s', '', $sql);
+                $sql = preg_replace('#^\s*\-\-.+$#m', '', $sql);
+
+                $sinlgeStatements = App::get('clientDB')->explode_by_delimiter($sql);
+                foreach($sinlgeStatements as $commandIndex => $statement){
+                    try{
+                        App::get('clientDB')->direct($statement);
+                        App::get('clientDB')->moreResults();
+                    }catch(\Exception $e){
+                        echo PHP_EOL;
+                        PostCheck::formatPrintLn(['red'], $e->getMessage().': commandIndex => '.$commandIndex);
+                    }
                 }
-            }
-        };
-        $clientName = $args->getOpt('client');
-        if( is_null($clientName) ) $clientName = '';
-        self::setupClients("setup main report procedures ",$clientName,$installSQL);
+            };
+            $clientName = $args->getOpt('client');
+            if( is_null($clientName) ) $clientName = '';
+            self::setupClients($msg,$clientName,$file,$installSQL);
+        }
 
 
-
-        $installSQLBaseTypes = function (){
-            $filename = __DIR__.'/sql/ext_base_type.sql';
-            $sql = file_get_contents($filename);
-            $sql = preg_replace('!/\*.*?\*/!s', '', $sql);
-            $sql = preg_replace('#^\s*\-\-.+$#m', '', $sql);
-            $sinlgeStatements = App::get('clientDB')->explode_by_delimiter($sql);
-            foreach($sinlgeStatements as $commandIndex => $statement){
-                try{
-                    App::get('clientDB')->direct($statement);
-                    
-                }catch(\Exception $e){
-                    echo PHP_EOL;
-                    PostCheck::formatPrintLn(['red'], $e->getMessage().': commandIndex => '.$commandIndex);
-                }
-            }
-        };
-        $clientName = $args->getOpt('client');
-        if( is_null($clientName) ) $clientName = '';
-        self::setupClients("setup base types procedures ",$clientName,$installSQLBaseTypes);
     }
 }
