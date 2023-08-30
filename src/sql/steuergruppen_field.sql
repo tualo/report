@@ -1,6 +1,6 @@
 delimiter ;
 
-CREATE  VIEW `steuergruppen_field` AS select `steuergruppen`.`steuergruppe` AS `name`,`steuergruppen`.`feld` AS `feld` from `steuergruppen` union select 'steuerschluessel' AS `name`,'steuerschluessel' AS `feld`;
+CREATE  VIEW IF NOT EXISTS `steuergruppen_field` AS select `steuergruppen`.`steuergruppe` AS `name`,`steuergruppen`.`feld` AS `feld` from `steuergruppen` union select 'steuerschluessel' AS `name`,'steuerschluessel' AS `feld`;
 LOCK TABLES `ds` WRITE;
 INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('steuergruppen_field','Steuergruppe-Feld','',0,'name','name','name',1,'','','','',0,'cellmodel','',0,'','','','ERP','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
 UNLOCK TABLES;
