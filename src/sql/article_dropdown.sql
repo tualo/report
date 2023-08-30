@@ -1,6 +1,6 @@
 delimiter ;
 
-insert ignore into ds_class (name) values ('Belegarten');
+insert ignore into ds_class (class_name) values ('Belegarten'),('ERP');
 
 CREATE VIEW IF NOT EXISTS `view_editor_artikelgruppen` AS 
 select `artikelgruppen`.`gruppe` AS `gruppe` from `artikelgruppen`;
