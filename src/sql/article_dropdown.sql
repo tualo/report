@@ -1,5 +1,7 @@
 delimiter ;
 
+insert ingore into ds_class (name) values ('Belegarten');
+
 CREATE VIEW IF NOT EXISTS `view_editor_artikelgruppen` AS 
 select `artikelgruppen`.`gruppe` AS `gruppe` from `artikelgruppen`;
 
