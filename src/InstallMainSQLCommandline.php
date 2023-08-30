@@ -49,7 +49,8 @@ class InstallMainSQLCommandline implements ICommandline{
             'preisorientierung' => 'setup preisorientierung ds definition ',
             'steuergruppen_field' => 'setup steuergruppen_field ds definition ',
             'main' => 'setup main report procedures ',
-            'ext_base_type' => 'setup base types '
+            'ext_base_type' => 'setup base types ',
+            'blg_config'=> 'setup blg_config ds definition ',
         ];
 
         foreach($files as $file=>$msg){
