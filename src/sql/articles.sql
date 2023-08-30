@@ -1,4 +1,4 @@
-
+delimiter ;
 
 CREATE TABLE IF NOT EXISTS `hauptkassenbuecher` (
   `id` int(11) NOT NULL,
