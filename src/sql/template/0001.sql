@@ -1,5 +1,16 @@
 DELIMITER //
 
+CREATE OR REPLACE FUNCTION `getReportToAccount`(intabellenzusatz VARCHAR(20), kundennummer VARCHAR(10),kostenstelle integer) RETURNS varchar(10) CHARSET utf8mb4
+    DETERMINISTIC
+BEGIN
+    DECLARE res VARCHAR(10);
+    select gegenkonto_bezug into res from blg_config where tabellenzusatz=intabellenzusatz and gegenkonto_bezug<>'*';
+    if res is null then
+        set res = kundennummer;
+    end if;
+    return res;
+END //
+
 create table if not exists CHECK_BLG_STATES(
   id integer primary key,
   name varchar(50) not null,

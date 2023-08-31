@@ -233,6 +233,40 @@ CREATE TABLE IF NOT EXISTS `artikelgruppen` (
 );
 
 
+delimiter //
+CREATE OR REPLACE TRIGGER `artikelgruppen_setup_defaults_ai` 
+AFTER UPDATE ON `artikelgruppen` FOR EACH ROW
+BEGIN
+
+    IF NOT EXISTS(
+        select 
+            `gruppe` 
+        from `staffeln` 
+        where `gruppe` = NEW.gruppe
+    ) THEN
+        
+        
+        insert into `staffeln` (`gruppe`) values (NEW.gruppe);
+
+    END IF;
+
+    IF NOT EXISTS(
+        select 
+            `gruppe` 
+        from `bfkonten_zuordnung` 
+        where `gruppe` = NEW.gruppe
+    ) THEN
+        
+        
+        
+        insert into `bfkonten_zuordnung` (`gruppe`,`konto_id`) values (NEW.gruppe, NEW.konto_id);
+
+    END IF;
+
+END //
+
+delimiter ;
+
 CREATE TABLE  IF NOT EXISTS `steuergruppen` (
   `steuergruppe` varchar(25) NOT NULL,
   `feld` varchar(20) DEFAULT NULL,
