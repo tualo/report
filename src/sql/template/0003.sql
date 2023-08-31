@@ -219,7 +219,7 @@ concat(#BEZ#.#id_column#,'|',#KST_REF0#) id,
 #BEZDISPLAY# display,
 #BEZDISPLAY# address
 
-from #BEZ# //
+from view_readtable_#BEZ# #BEZ# //
 
 call fill_ds('view_editor_relation_#####')  //
 call fill_ds_column('view_editor_relation_#####')  //
