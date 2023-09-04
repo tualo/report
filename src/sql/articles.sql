@@ -341,3 +341,59 @@ CREATE TABLE IF NOT EXISTS `brieffusstext` (
   CONSTRAINT `fk_brieffusstext_buchungskreise` FOREIGN KEY (`buchungskreis_id`) REFERENCES `buchungskreise` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_brieffusstext_spalte_id` FOREIGN KEY (`spalte_id`) REFERENCES `brieffusstextspalten` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+CREATE TABLE `blg_artikel` (
+  `id` int(11) NOT NULL,
+  `belegart` int(11) NOT NULL,
+  `artikel` varchar(255) NOT NULL,
+  `bemerkung` varchar(255) NOT NULL,
+  `anzahl` int(11) DEFAULT 0,
+  `position` int(11) DEFAULT 0,
+  `epreis` decimal(16,5) DEFAULT 0.00000,
+  PRIMARY KEY (`id`),
+  KEY `fk_blg_artikel_artikelgruppen` (`artikel`),
+  KEY `fk_blg_artikel_blg_config` (`belegart`),
+  CONSTRAINT `fk_blg_artikel_artikelgruppen` FOREIGN KEY (`artikel`) REFERENCES `artikelgruppen` (`gruppe`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_blg_artikel_blg_config` FOREIGN KEY (`belegart`) REFERENCES `blg_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE TABLE `buchungskreise_logins` (
+  `buchungskreis_id` varchar(10) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `aktiv` tinyint(4) DEFAULT 0,
+  `standard` tinyint(4) DEFAULT 0,
+  PRIMARY KEY (`buchungskreis_id`,`login`),
+  CONSTRAINT `fk_buchungskreise_logins_buchungskreise` FOREIGN KEY (`buchungskreis_id`) REFERENCES `buchungskreise` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `geschaeftsstellen_logins` (
+  `geschaeftsstelle` int(11) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `aktiv` tinyint(4) DEFAULT 0,
+  `standard` tinyint(4) DEFAULT 0,
+  PRIMARY KEY (`geschaeftsstelle`,`login`),
+  KEY `idx_geschaeftsstellen_logins_geschaeftsstelle_aktiv` (`geschaeftsstelle`,`aktiv`),
+  CONSTRAINT `fk_geschaeftsstellen_logins_buchungskreise` FOREIGN KEY (`geschaeftsstelle`) REFERENCES `geschaeftsstellen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE OR REPLACE FUNCTION `getSessionDefaultBKR`() RETURNS varchar(255) CHARSET utf8mb4
+    DETERMINISTIC
+RETURN ifnull( (  select buchungskreis_id from buchungskreise_logins where login=getSessionUser() and standard=1 ),'0000')
+;
+
+CREATE OR REPLACE FUNCTION `getSessionCurrentBKR`() RETURNS varchar(255) CHARSET utf8mb4
+    DETERMINISTIC
+RETURN ( SELECT ifnull(@sessionbuchungskreis,getSessionDefaultBKR()) );
+
+
+CREATE OR REPLACE  FUNCTION `getSessionCurrentOffice`() RETURNS varchar(255) CHARSET utf8mb4
+    DETERMINISTIC
+RETURN ( SELECT ifnull(@sessionoffice,getSessionDefaultOffice()) );
+
+
+CREATE OR REPLACE  FUNCTION `getSessionDefaultOffice`() RETURNS varchar(255) CHARSET utf8mb4
+    DETERMINISTIC
+RETURN ifnull( (  select max(geschaeftsstelle) from geschaeftsstellen_logins where login=getSessionUser() and standard=1 ), ifnull( (  select min(geschaeftsstelle) from geschaeftsstellen_logins where login=getSessionUser() ),'0')  );
+

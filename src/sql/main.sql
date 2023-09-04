@@ -4,7 +4,10 @@
 -- SOURCE FILE: ./src/000.RPT.getArticleAccountNumber.sql 
 
 DELIMITER //
- 
+
+
+
+
 CREATE OR REPLACE FUNCTION `getArticleAccountNumber`( in_steuergruppe varchar(20), in_bookingdate date, in_article varchar(255) ) 
 RETURNS varchar(10)
 READS SQL DATA
