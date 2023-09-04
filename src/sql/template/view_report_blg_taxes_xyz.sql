@@ -1,3 +1,5 @@
+delimiter ;
+
 CREATE OR REPLACE VIEW `view_report_blg_taxes_#####` AS
 select
     `blg_pos_#####`.`beleg` AS `beleg`,
