@@ -21,7 +21,7 @@ class Report  {
                     if ( 
                         ($z['buchungskreis_id'] == $data['companycode']) && 
                         ($z['start_am'] <= $data['bookingdate']) && 
-                        ($data['bookingdate'] <= $data['ende_am']) 
+                        ($data['bookingdate'] <= $z['ende_am']) 
                     ){
                         $zr[] = $z;
                     }
