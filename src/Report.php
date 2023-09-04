@@ -29,7 +29,7 @@ class Report  {
                 }
                 $row['zeilen'] = $zr;
             }
-            $r['report_footer'] = $fusstextspalten;
+            $data['report_footer'] = $fusstextspalten;
         }catch(\Exception $e){
         }
         try{
@@ -37,23 +37,23 @@ class Report  {
         }catch(\Exception $e){
         }
         try{
-            $r['report_title'] = $db->singleValue('select name from blg_config where tabellenzusatz = {reporttype}',$data,'name');
+            $data['report_title'] = $db->singleValue('select name from blg_config where tabellenzusatz = {reporttype}',$data,'name');
         }catch(\Exception $e){
         }
         try{
-            $r['report_taxes'] = $db->direct('select * from view_report_blg_taxes_'.$type.' where beleg = {id}',$data,'');
+            $data['report_taxes'] = $db->direct('select * from view_report_blg_taxes_'.$type.' where beleg = {id}',$data,'');
         }catch(\Exception $e){
         }
         try{
-            $r['report_images'] = [];
+            $data['report_images'] = [];
         }catch(\Exception $e){
         }
         try{
-            $r['report_images'] = $db->direct('select * from  blg_images_'.$type.' where beleg = {id}',$data,'');
+            $data['report_images'] = $db->direct('select * from  blg_images_'.$type.' where beleg = {id}',$data,'');
         }catch(\Exception $e){
         }
         try{
-            $r['sender_address'] = $db->singleValue('select zusatztext from geschaeftsstellen where id={office}',$data,'zusatztext');
+            $data['sender_address'] = $db->singleValue('select zusatztext from geschaeftsstellen where id={office}',$data,'zusatztext');
         }catch(\Exception $e){
         }
 
