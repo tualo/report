@@ -51,6 +51,7 @@ class InstallMainSQLCommandline implements ICommandline{
             'main' => 'setup main report procedures ',
             'ext_base_type' => 'setup base types ',
             'blg_config'=> 'setup blg_config ds definition ',
+            'view_brieffusstext' => 'setup report footer view '
         ];
 
         foreach($files as $file=>$msg){

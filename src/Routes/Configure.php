@@ -52,7 +52,13 @@ class Configure implements IRoute{
 
 
             try{
-            $templates = ['0001.sql','0002.sql','0003.sql','0100.sql' ,'view_editor_blg_hdr_xzy.sql','view_editor_blg_pos_xzy.sql' ,'view_editor_relation_xyz.sql' ,'view_blg_list_xzy.sql' ];
+                $templates = [
+                    '0001.sql','0002.sql','0003.sql','0100.sql' ,
+                    'view_editor_blg_hdr_xzy.sql','view_editor_blg_pos_xzy.sql' ,
+                    'view_editor_relation_xyz.sql' ,'view_blg_list_xzy.sql',
+                    'view_report_blg_taxes_xyz.sql'
+                ];
+                
                 $config=$db->directSingleHash('select * from blg_config where tabellenzusatz={type}',$matches);
                 if ($config===false) throw new Exception('no config found');
                 $sqls=[];
