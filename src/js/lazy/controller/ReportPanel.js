@@ -27,6 +27,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
     loadRecord: function(record){
         this.getViewModel().set('record',record);
+
         console.log('loadRecord',this.id,this.positionsList);
         if (!Ext.isEmpty(record)){
             if (typeof this.positionsList=='undefined'){
@@ -107,6 +108,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         view.getForm().reset(true);
         this.positionsList.getStore().removeAll();
 
+        if (typeof tabellenzusatz=='undefined') return;
         let config = this.getViewModel().get('config'),
             data = await fetch('./report/'+tabellenzusatz+'/'+id).then((response)=>{return response.json()});
         if (data.success){
@@ -228,7 +230,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 this.getView().getComponent('reportfooter').add(Ext.create(config.foottext));
             }
         }
-        this.reportData();
+        this.reportData(this.getViewModel().get('record').get('tabellenzusatz'),this.getViewModel().get('record').get('id'));
 
     }
 });
