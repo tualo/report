@@ -23,6 +23,11 @@ class Report implements IRoute{
                 $db->direct('call `getReport`({type},{id},@o)',$matches);
                 $data = json_decode( $db->singleValue('select @o report',$matches,'report'), true);
                 if (is_null($data)) throw new \Exception('Report not found');
+                if ($matches['id']<0){
+                    if ($postdata && isset($postdata['bezugsnummer'])){
+                        $data['referencenr'] = $postdata['bezugsnummer'];
+                    }
+                }
                 App::result('data',$data);
 
                 App::result('success', true);
