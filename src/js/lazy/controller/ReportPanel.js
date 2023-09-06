@@ -112,7 +112,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         let config = this.getViewModel().get('config'),
             data = await fetch('./report/'+tabellenzusatz+'/'+id,{
                 method: 'POST',
-                body: this.getViewModel().get('record').getData({serialize: true})
+                body: JSON.stringify(this.getViewModel().get('record').getData())
             }).then((response)=>{return response.json()});
         if (data.success){
             let positions=[];
