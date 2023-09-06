@@ -24,8 +24,14 @@ class Report implements IRoute{
                 $data = json_decode( $db->singleValue('select @o report',$matches,'report'), true);
                 if (is_null($data)) throw new \Exception('Report not found');
                 if ($matches['id']<0){
-                    if ($postdata && isset($postdata['bezugsnummer'])){
-                        $data['referencenr'] = $postdata['bezugsnummer'];
+                    if ($data['referencenr']==0){
+                        if ($postdata && isset($postdata['bezugsnummer'])){
+                            $data['referencenr'] = $postdata['bezugsnummer'];
+                        }else if ($postdata && isset($postdata['kundennummer'])){
+                            $data['referencenr'] = $postdata['kundennummer'];
+                        }else if ($postdata && isset($postdata['referencenr'])){
+                            $data['referencenr'] = $postdata['referencenr'];
+                        }
                     }
                 }
                 App::result('data',$data);
