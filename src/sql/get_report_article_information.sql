@@ -15,13 +15,18 @@ BEGIN
     SELECT feld INTO @FLD FROM steuergruppen where steuergruppe = @KNT;
     SET @PREISKATEGORIE = (select min(preiskategorie) from staffeln where gruppe =JSON_VALUE(request,'$.position.article'));
 
+SET result = JSON_SET(result,'$.KNT',@KNT);
+
     IF 
         JSON_EXISTS(request,'$.header.referencenr') = 1 
         and @ADR='adressen'
     THEN
         SELECT steuerschluessel,preiskategorie INTO @STEUERSCHLUESSEL,@PREISKATEGORIE 
         FROM adressen where kundennummer = JSON_VALUE(request,'$.header.referencenr') and kostenstelle = JSON_VALUE(request,'$.header.costcenter') ;
-        SELECT feld INTO @FLD FROM steuergruppen where steuergruppe = IF (@KNT='steuerschluessel',@STEUERSCHLUESSEL,@KNT);
+        SELECT ifnull(feld,'') INTO @FLD FROM steuergruppen where steuergruppe = IF (@KNT='steuerschluessel',@STEUERSCHLUESSEL,@KNT);
+SET result = JSON_SET(result,'$.STEUERSCHLUESSEL',@STEUERSCHLUESSEL);
+SET result = JSON_SET(result,'$.PREISKATEGORIE',@PREISKATEGORIE);
+
     END IF;
 
     SET @SQL = concat('
@@ -75,6 +80,7 @@ BEGIN
                     and `bfkonten`.`gueltig` >= ',QUOTE(IFNULL(JSON_VALUE(request,'$.header.service_period_stop'),curdate())),'
         LIMIT 1
     ');
+SET result = JSON_SET(result,'$.FLD',@FLD);
 
     PREPARE stmt FROM @SQL;
     EXECUTE stmt;
@@ -82,6 +88,7 @@ BEGIN
  
     SET result = JSON_SET(result,'$.account',@account);
     SET result = JSON_SET(result,'$.tax',@tax);
+    
 END //
 
 set @test = '{

@@ -31,6 +31,13 @@ class Report implements IRoute{
                         }else if ($postdata && isset($postdata['referencenr'])){
                             $data['referencenr'] = $postdata['referencenr'];
                         }
+
+                        if (!isset($data['address']) || $data['address']==''){
+                            $data['address'] = $db->singleValue(
+                                'select address from view_editor_relation_'.$type.' where referencenr={referencenr} and costcenter={costcenter}',$data,'address'
+                            );
+                        }
+                    
                 }
                 App::result('data',$data);
 
@@ -71,16 +78,16 @@ class Report implements IRoute{
                         'type'=>$matches['type'],
                         'report'=>json_encode($report)
                     ]);
-                    $mr = $db->moreResults();
+                    App::result('mr',$db->moreResults());
                     $data = json_decode( $db->singleValue('select @result report',[],'report'), true);
                     App::result('data',$data);
-                    App::result('mr',$mr);
                     App::result('success', true);
 
 
                 $db->direct('commit');
             }catch(Exception $e){
                 $db->direct('rollback');
+                App::result('mr',$db->moreResults());
                 App::result('last_sql', $db->last_sql );
                 App::result('msg', $e->getMessage());
             }
