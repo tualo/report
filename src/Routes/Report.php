@@ -16,6 +16,10 @@ class Report implements IRoute{
             $db = App::get('session')->getDB();
             $type = $matches['type'];
             try{
+
+                $postdata = file_get_contents("php://input");
+                $db->direct('set @currentRequest = {postdata}',['postdata'=>$postdata]);
+                
                 $db->direct('call `getReport`({type},{id},@o)',$matches);
                 $data = json_decode( $db->singleValue('select @o report',$matches,'report'), true);
                 if (is_null($data)) throw new \Exception('Report not found');
@@ -28,7 +32,7 @@ class Report implements IRoute{
             }
             Route::$finished=true;
             App::contenttype('application/json');
-        },['get'],true);
+        },['get','put','post'],true);
 
         Route::add('/report/(?P<type>\w+)/(?P<id>[\w\-]+)',function($matches){
             $db = App::get('session')->getDB();
