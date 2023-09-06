@@ -17,14 +17,13 @@ class Report implements IRoute{
             $type = $matches['type'];
             try{
 
-                $postdata = file_get_contents("php://input");
-                $db->direct('set @currentRequest = {postdata}',['postdata'=>$postdata]);
+                $postdata = json_decode(file_get_contents("php://input"),true);
+                $db->direct('set @currentRequest = {postdata}',['postdata'=>json_encode($postdata)]);
                 
                 $db->direct('call `getReport`({type},{id},@o)',$matches);
                 $data = json_decode( $db->singleValue('select @o report',$matches,'report'), true);
                 if (is_null($data)) throw new \Exception('Report not found');
                 if ($matches['id']<0){
-                    if ($data['referencenr']==0){
                         if ($postdata && isset($postdata['bezugsnummer'])){
                             $data['referencenr'] = $postdata['bezugsnummer'];
                         }else if ($postdata && isset($postdata['kundennummer'])){
@@ -32,7 +31,6 @@ class Report implements IRoute{
                         }else if ($postdata && isset($postdata['referencenr'])){
                             $data['referencenr'] = $postdata['referencenr'];
                         }
-                    }
                 }
                 App::result('data',$data);
 
