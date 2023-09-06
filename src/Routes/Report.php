@@ -41,7 +41,7 @@ class Report implements IRoute{
             }
             Route::$finished=true;
             App::contenttype('application/json');
-        },['get','put','post'],true);
+        },['get','post'],true);
 
         Route::add('/report/(?P<type>\w+)/(?P<id>[\w\-]+)',function($matches){
             $db = App::get('session')->getDB();
