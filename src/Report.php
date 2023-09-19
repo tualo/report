@@ -3,6 +3,28 @@ namespace Tualo\Office\Report;
 
 use Tualo\Office\Basic\TualoApplication as App;
 class Report  {
+    public static function convert(string $type, int $id, string $toType):mixed{
+        $db = App::get('session')->getDB();
+        $report = Report::get($type,$id);
+        $report['reporttype'] = $toType;
+        $report['id'] = -1;
+        foreach($report['positions'] as &$pos){
+            unset($pos['reportnr']);
+        }
+
+        $db->direct('set @report={report}',[
+            'report'=>json_encode($report)
+        ]);
+        $db->direct('call setReport({type},@report,@result)',[
+            'type'=>$toType,
+            'report'=>json_encode($report)
+        ]);
+
+        App::result('mr',$db->moreResults());
+        $data = json_decode( $db->singleValue('select @result report',[],'report'), true);
+        return $data;
+    }
+
     public static function get(string $type, int $id):mixed{
         $db = App::get('session')->getDB();
         $db->direct('call `getReport`({type},{id},@o)',[
