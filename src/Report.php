@@ -25,6 +25,19 @@ class Report  {
         return $data;
     }
 
+    public static function setHeader(string $type, int $id, array $data):bool{
+        $db = App::get('session')->getDB();
+        $data['id']=$id;
+        try{
+            $columns = array_keys($data);
+            $flds = $db->singleValue('select group_concat(concat(column_name,"={",column_name,"}") separator ",") c from  ds_columns where table_name="blg_hdr_'.$type.'" and existsreal=1 and column_name in ("'.implode('","',$columns).'") ',[],'c');
+            $db->direct('update blg_hdr_'.$type.' set '.$flds.' where id = {id}',$data);
+            return true;
+        }catch(\Exception $e){
+            return false;
+        }
+    }
+
     public static function get(string $type, int $id):mixed{
         $db = App::get('session')->getDB();
         $db->direct('call `getReport`({type},{id},@o)',[
