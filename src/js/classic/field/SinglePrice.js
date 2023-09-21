@@ -46,11 +46,11 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
     },
     
     depends: [
-        'article',
+        'article'/*,
         'source_language',
         'target_language',
         'gebiet',
-        'amount'
+        'amount'*/
     ]
     
 });
