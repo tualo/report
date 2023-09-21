@@ -1,5 +1,5 @@
 Ext.define('Tualo.report.data.field.SingleLanguagesPrice', {
-        extend: 'Ext.data.field.Number',
+        extend: 'Tualo.report.data.field.SinglePrice',
         alias: [
             'data.field.tualoreportsinglelanguagesprice'
         ],
