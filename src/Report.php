@@ -30,7 +30,7 @@ class Report  {
         $data['id']=$id;
         try{
             $columns = array_keys($data);
-            $flds = $db->singleValue('select group_concat(concat(column_name,"={",column_name,"}") separator ",") c from  ds_columns where table_name="blg_hdr_'.$type.'" and existsreal=1 and column_name in ("'.implode('","',$columns).'") ',[],'c');
+            $flds = $db->singleValue('select group_concat(concat(column_name,"={",column_name,"}") separator ",") c from  ds_column where table_name="blg_hdr_'.$type.'" and existsreal=1 and column_name in ("'.implode('","',$columns).'") ',[],'c');
             $db->direct('update blg_hdr_'.$type.' set '.$flds.' where id = {id}',$data);
             return true;
         }catch(\Exception $e){

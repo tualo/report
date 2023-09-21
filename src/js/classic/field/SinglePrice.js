@@ -5,7 +5,15 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
     ],
     convert: function (v,rec) {
         console.log('SinglePrice',this,v,rec);
-        if(rec.get('article')!=this._queriedArticles) this.queryArticles(v,rec);
+        if (
+            (rec.get('article')!=this._queriedArticles) ||
+            (rec.get('source_language')!=this._queriedSource_language) ||
+            (rec.get('target_language')!=this._queriedTarget_language) ||
+            (rec.get('amount')!=this._queriedAmount) ||
+            (rec.get('gebiet')!=this._queriedGebiet)
+        ) {
+            this.queryArticles(v,rec);
+        }
         return v;
     },
 
@@ -24,17 +32,25 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
             });
             let data = await resData.json();
             this._queriedArticles=rec.get('article');
+            this._queriedSource_language=rec.get('source_language');
+            this._queriedTarget_language=rec.get('target_language');
+            this._queriedAmount=rec.get('gebiet');
+            this._queriedGebiet=rec.get('amount');
             if(data.success){
                 if (data.singleprice!=rec.get('singleprice')) rec.set('singleprice',data.singleprice);
                 if (data.tax!=rec.get('tax')) rec.set('tax',data.tax);
-                if (data.account!=rec.get('account')) rec.set('account',data.account);
                 if (data.unit!=rec.get('unit')) rec.set('unit',data.unit);
+                if (data.account!=rec.get('account')) rec.set('account',data.account);
             }
         }
     },
     
     depends: [
-        'article'
+        'article',
+        'source_language',
+        'target_language',
+        'gebiet',
+        'amount'
     ]
     
 });
