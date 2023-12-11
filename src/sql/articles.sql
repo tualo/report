@@ -343,7 +343,7 @@ CREATE TABLE IF NOT EXISTS `brieffusstext` (
 );
 
 
-CREATE TABLE `blg_artikel` (
+CREATE TABLE IF NOT EXISTS `blg_artikel` (
   `id` int(11) NOT NULL,
   `belegart` int(11) NOT NULL,
   `artikel` varchar(255) NOT NULL,
@@ -359,7 +359,7 @@ CREATE TABLE `blg_artikel` (
 );
 
 
-CREATE TABLE `buchungskreise_logins` (
+CREATE TABLE IF NOT EXISTS `buchungskreise_logins` (
   `buchungskreis_id` varchar(10) NOT NULL,
   `login` varchar(100) NOT NULL,
   `aktiv` tinyint(4) DEFAULT 0,
@@ -368,7 +368,7 @@ CREATE TABLE `buchungskreise_logins` (
   CONSTRAINT `fk_buchungskreise_logins_buchungskreise` FOREIGN KEY (`buchungskreis_id`) REFERENCES `buchungskreise` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE `geschaeftsstellen_logins` (
+CREATE TABLE IF NOT EXISTS `geschaeftsstellen_logins` (
   `geschaeftsstelle` int(11) NOT NULL,
   `login` varchar(100) NOT NULL,
   `aktiv` tinyint(4) DEFAULT 0,

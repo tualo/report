@@ -1,5 +1,6 @@
 delimiter ;
-CREATE OR REPLACE DEFINER VIEW `view_blg_brieffusstextspalten` AS
+
+CREATE OR REPLACE VIEW `view_blg_brieffusstextspalten` AS
 select
     `brieffusstextspalten`.`id` AS `spalte`,
     `brieffusstextspalten`.`name` AS `name`,

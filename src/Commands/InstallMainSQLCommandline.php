@@ -1,5 +1,5 @@
 <?php
-namespace Tualo\Office\Report;
+namespace Tualo\Office\Report\Commands;
 use Garden\Cli\Cli;
 use Garden\Cli\Args;
 use phpseclib3\Math\BigInteger\Engines\PHP;
@@ -14,7 +14,7 @@ class InstallMainSQLCommandline implements ICommandline{
 
     public static function setup(Cli $cli){
         $cli->command(self::getCommandName())
-            ->description('installs needed sql procedures for report module')
+            ->description('installs needed sql for fibuconv module')
             ->opt('client', 'only use this client', true, 'string');
             
     }
@@ -51,13 +51,20 @@ class InstallMainSQLCommandline implements ICommandline{
             'main' => 'setup main report procedures ',
             'ext_base_type' => 'setup base types ',
             'blg_config'=> 'setup blg_config ds definition ',
-            'view_brieffusstext' => 'setup report footer view '
+            'view_brieffusstext' => 'setup report footer view ',
+
+            'install/addcommand'    => 'setup addcommand',
+
+            // immer zum schluss
+            'install/ds_fill'    => 'refreshing ds data',
+
         ];
+        
 
         foreach($files as $file=>$msg){
             $installSQL = function(string $file){
 
-                $filename = __DIR__.'/sql/'.$file.'.sql';
+                $filename = dirname(__DIR__).'/sql/'.$file.'.sql';
                 $sql = file_get_contents($filename);
                 $sql = preg_replace('!/\*.*?\*/!s', '', $sql);
                 $sql = preg_replace('#^\s*\-\-.+$#m', '', $sql);
