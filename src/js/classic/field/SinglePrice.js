@@ -4,6 +4,7 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
         'data.field.tualoreportsingleprice'
     ],
     convert: function (v,rec) {
+        console.log('SinglePrice',rec.);
         console.log('SinglePrice',this,v,rec);
         if (
             (rec.get('article')!=this._queriedArticles) ||
@@ -38,10 +39,22 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
             this._queriedGebiet=rec.get('amount');
             if(data.success){
                 console.log('queryArticles',data.singleprice,rec.data,data );
-                if (data.singleprice!=rec.get('singleprice')) rec.set('singleprice',data.singleprice);
-                if (data.tax!=rec.get('tax')) rec.set('tax',data.tax);
-                if (data.unit!=rec.get('unit')) rec.set('unit',data.unit);
-                if (data.account!=rec.get('account')) rec.set('account',data.account);
+                if (data.singleprice!=rec.get('singleprice')){ 
+                    rec.set('singleprice',data.singleprice);
+                    rec.commit(true);
+                }
+                if (data.tax!=rec.get('tax')){ 
+                    rec.set('tax',data.tax);
+                    rec.commit(true);
+                }
+                if (data.unit!=rec.get('unit')){ 
+                    rec.set('unit',data.unit);
+                    rec.commit(true);
+                }
+                if (data.account!=rec.get('account')){ 
+                    rec.set('account',data.account);
+                    rec.commit(true);
+                }
             }
         }
     },
