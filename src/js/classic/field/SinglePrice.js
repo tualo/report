@@ -4,7 +4,7 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
         'data.field.tualoreportsingleprice'
     ],
     convert: function (v,rec) {
-        console.log('SinglePrice',rec.);
+        console.log('SinglePrice',rec);
         console.log('SinglePrice',this,v,rec);
         if (
             (rec.get('article')!=this._queriedArticles) ||
