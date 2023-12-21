@@ -728,12 +728,13 @@ BEGIN
     execute stmt;
     DEALLOCATE PREPARE stmt;
 
-    for rec in (select * from blghdr_translations where is_required = 1) do
-        if JSON_VALUE(@result,concat('$.',rec.json_attribute_name)) is null then
-            SET @error = concat( "required field missing: ",rec.json_attribute_name);
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @error;
-        end if;
-    end for;
+    -- for rec in (select * from blghdr_translations where is_required = 1) do
+    --    if JSON_VALUE(@result,concat('$.',rec.json_attribute_name)) is null then
+    --        SET @error = concat( "required field missing: ",rec.json_attribute_name);
+    --        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @error;
+    --    end if;
+    -- end for;
+    --
 
     --  Belegpositionen
     call debug_message('get report pos');
