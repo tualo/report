@@ -41,19 +41,19 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
                 console.log('queryArticles',data.singleprice,rec.data,data );
                 if (data.singleprice!=rec.get('singleprice')){ 
                     rec.set('singleprice',data.singleprice);
-                    rec.commit(true);
+                    // rec.commit(true);
                 }
                 if (data.tax!=rec.get('tax')){ 
                     rec.set('tax',data.tax);
-                    rec.commit(true);
+                    // rec.commit(true);
                 }
                 if (data.unit!=rec.get('unit')){ 
                     rec.set('unit',data.unit);
-                    rec.commit(true);
+                    // rec.commit(true);
                 }
                 if (data.account!=rec.get('account')){ 
                     rec.set('account',data.account);
-                    rec.commit(true);
+                    // rec.commit(true);
                 }
             }
         }
