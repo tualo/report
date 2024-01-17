@@ -22,7 +22,8 @@ class Tables  extends PostCheck
             'preiskategorien' => ['codx_schluessel' => 'varchar(30)', 'id' => 'int(11)', 'name' => 'varchar(255)', 'status' => 'tinyint(4)'], 
             'staffeln' => ['bis' => 'int(11)', 'bruttopreis' => 'decimal(15,6)', 'epreis' => 'decimal(15,6)', 'gebiet' => 'varchar(50)', 'gld' => 'decimal(12,5)', 'gruppe' => 'varchar(255)', 'json_formel' => 'varchar(4000)', 'mpreis' => 'decimal(15,6)', 'preis' => 'decimal(15,6)', 'preiskategorie' => 'int(11)', 'von' => 'int(11)', 'zeitraum_bis' => 'date', 'zeitraum_von' => 'date'], 
             'warengruppen' => ['beleggruppierung' => 'varchar(20)', 'bestandsflag' => 'tinyint(4)', 'detailgruppe' => 'varchar(100)', 'farbe' => 'varchar(20)', 'ia_kennung' => 'char(2)', 'id' => 'int(11)', 'inventur' => 'tinyint(4)', 'leerzeile' => 'tinyint(4)', 'provision' => 'varchar(4)', 'skonto' => 'varchar(4)', 'sperre' => 'varchar(4)', 'status' => 'varchar(4)', 'suffix' => 'varchar(4)', 'touch' => 'varchar(4)', 'upoc' => 'varchar(20)', 'warengruppe' => 'varchar(100)', 'warenhauptgruppe' => 'int(11)', 'wgsort' => 'int(11)'], 
-            'warenhauptgruppen' => ['id' => 'int(11)', 'name' => 'varchar(255)']
+            'warenhauptgruppen' => ['id' => 'int(11)', 'name' => 'varchar(255)'],
+            'blg_config'=>[]
         ];
         self::tableCheck('report', $tables);
     }

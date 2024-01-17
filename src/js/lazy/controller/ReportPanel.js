@@ -71,7 +71,13 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                         if (d[k] instanceof Date) d[k]=Ext.util.Format.date(d[k],'Y-m-d');
                     }
                 }
-                o.positions.push(d);
+                if ((d.id==0)&&(d.amount==0)){
+                    // ignore emtpy lines
+
+                }else{
+                    if (d.id!=0) d.__id=d.id; // keep the original pos id
+                    o.positions.push(d);
+                }
             }
         });
         let data = await fetch(
@@ -109,6 +115,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         this.positionsList.getStore().removeAll();
 
         if (typeof tabellenzusatz=='undefined') return;
+        console.log('reportData',arguments)
         let config = this.getViewModel().get('config'),
             data = await fetch('./report/'+tabellenzusatz+'/'+id,{
                 method: 'POST',
@@ -116,7 +123,10 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             }).then((response)=>{return response.json()});
         if (data.success){
             let positions=[];
-            view.getForm().setValues(data.data);
+            let record = Ext.create('Tualo.DataSets.model.View_editor_blg_hdr_'+tabellenzusatz,data.data);
+            console.log(record.data,view.getForm().getValues());
+            view.getForm().setValues(record.data);
+            console.log(record.data,view.getForm().getValues());
             data.data.positions.forEach((item)=>{
                 let pos = {...item};
                 for(let k in config.translations.pos){
@@ -160,6 +170,10 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     },
     initializeReport: async function(){
         this.hideSaveButton();
+
+        if (this.getViewModel().get('initializeReport')===true) return;
+        this.getViewModel().set('initializeReport',true);
+        console.log('initializeReport',this.getViewModel().get('record').get('tabellenzusatz'));
         let config = await fetch('./reportconfig/'+this.getViewModel().get('record').get('tabellenzusatz')).then((response)=>{return response.json()});
         if (config.success){
             this.getViewModel().set('config',config);
@@ -187,7 +201,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 // bodyPadding: 10
             });
             
-
+            this.getView().getComponent('header').getComponent('reportheader').removeAll();
             this.getView().getComponent('header').getComponent('reportheader').add(
                 hdr
             );

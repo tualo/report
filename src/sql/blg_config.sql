@@ -1,9 +1,8 @@
 delimiter ;
 
-LOCK TABLES `ds` WRITE;
-INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('blg_config','Belegarten','',0,'name','name','name',1,'false','false','','',0,'tualomultirowmodel','',0,'','','','Warenwirtschaft','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
-UNLOCK TABLES;
-LOCK TABLES `ds_column` WRITE;
+REPLACE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('blg_config','Belegarten','',0,'name','name','name',1,'false','false','','',0,'tualomultirowmodel','',0,'','','','Warenwirtschaft','',1,'','','listview','XlsxWriter','{GUID}',0,100,1,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic')
+
+;
 INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('blg_config','adress_bezug','adressen',0,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(255)',255,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('blg_config','aktiv',NULL,10000000,0,NULL,0,0,NULL,NULL,'YES','NO',1,'','int','','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,''),
 ('blg_config','ausgangslager','1',0,0,'',0,0,'','','YES','NO',1,'','tinyint','','tinyint(4)',NULL,3,0,NULL,'select,insert,update,references',1,0,NULL,''),
@@ -39,15 +38,13 @@ INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `d
 ('blg_config','tabellenzusatz','',0,0,'',0,0,'','','YES','NO',1,'','varchar','UNI','varchar(20)',20,NULL,NULL,'utf8mb4','select,insert,update,references',1,0,NULL,''),
 ('blg_config','transitlager','0',0,0,'',0,0,'','','YES','NO',1,'','int','MUL','int(11)',NULL,10,0,NULL,'select,insert,update,references',1,0,NULL,''),
 ('blg_config','use_history_pk',NULL,10000000,0,NULL,0,0,NULL,NULL,'YES','NO',1,'','tinyint','','tinyint(4)',NULL,3,0,NULL,'select,insert,update,references',1,0,NULL,'');
-UNLOCK TABLES;
-LOCK TABLES `ds_column_list_label` WRITE;
+
 INSERT IGNORE INTO `ds_column_list_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `editor`, `position`, `summaryrenderer`, `renderer`, `summarytype`, `hidden`, `active`, `filterstore`, `grouped`, `flex`, `direction`, `align`, `listfiltertype`, `hint`) VALUES ('blg_config','belegnummer_bis','DE','Beleg-Nr. bis','gridcolumn','',3,'','','',1,1,'',0,1.00,'ASC','left','',NULL),
 ('blg_config','belegnummer_von','DE','Beleg-Nr. von','gridcolumn','',2,'','','',1,1,'',0,1.00,'ASC','left','',NULL),
 ('blg_config','id','DE','ID','gridcolumn','',4,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
 ('blg_config','name','DE','Name','gridcolumn','',1,'','','',0,1,'',0,1.00,'ASC','left','',NULL),
 ('blg_config','tabellenzusatz','DE','Tabellenzusatz','gridcolumn','',5,'','','',0,1,'',0,1.00,'ASC','left','',NULL);
-UNLOCK TABLES;
-LOCK TABLES `ds_column_form_label` WRITE;
+
 INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `language`, `label`, `xtype`, `field_path`, `position`, `hidden`, `active`, `allowempty`, `fieldgroup`, `flex`, `hint`) VALUES ('blg_config','adress_bezug','DE','Bezugstamm','combobox_ds_tabelle','Allgemein/Beleg',3,0,1,1,'',1.00,''),
 ('blg_config','ausgangslager','DE','Ausgangslager','checkbox','Optionen/Bestand',10,0,1,1,'',1.00,''),
 ('blg_config','auto_append_formel','DE','Formeln automatisch hinzufügen','checkbox','Optionen/Artikel',13,0,1,1,'',1.00,''),
@@ -76,11 +73,9 @@ INSERT IGNORE INTO `ds_column_form_label` (`table_name`, `column_name`, `languag
 ('blg_config','pv_report_class','DE','Berichtsklasse','textfield','Statistik/Auswertung',20,0,1,1,'',1.00,''),
 ('blg_config','tabellenzusatz','DE','Tabellenzusatz','textfield','Allgemein/Beleg',2,0,1,1,'',1.00,''),
 ('blg_config','transitlager','DE','Transitlager','combobox_lager_id','Optionen/Bestand',24,0,1,1,'',1.00,'');
-UNLOCK TABLES;
-LOCK TABLES `ds_dropdownfields` WRITE;
+
 INSERT IGNORE INTO `ds_dropdownfields` (`table_name`, `name`, `idfield`, `displayfield`, `filterconfig`) VALUES ('blg_config','ID','id','name','');
-UNLOCK TABLES;
-LOCK TABLES `ds_reference_tables` WRITE;
+
 INSERT IGNORE INTO `ds_reference_tables` (`table_name`, `reference_table_name`, `columnsdef`, `constraint_name`, `active`, `searchable`, `autosync`, `position`, `path`, `existsreal`, `tabtitle`) VALUES ('blg_config','lager','{\"blg_config__transitlager\":\"lager__id\"}','fk_blg_config_transitlager',0,0,1,99999,'',0,''),
 ('blg_config','lager','{\"blg_config__transitlager\":\"lager__id\"}','fk_blg_config_transitlager',0,0,0,999,'',0,''),
 ('blg_config','lager','{\"blg_config__transitlager\":\"lager__id\"}','fk_blg_config_transitlager',0,0,0,999,'',0,''),
@@ -117,10 +112,6 @@ INSERT IGNORE INTO `ds_reference_tables` (`table_name`, `reference_table_name`, 
 ('blg_config','preisorientierung','{\"preisorientierung\":\"name\"}','fk_blg_config_preisorientierung',0,0,0,999,'',0,''),
 ('blg_config','preisorientierung','{\"preisorientierung\":\"name\"}','fk_blg_config_preisorientierung',0,0,0,999,'',0,''),
 ('blg_config','preisorientierung','{\"preisorientierung\":\"name\"}','fk_blg_config_preisorientierung',0,0,0,999,'',1,'');
-UNLOCK TABLES;
-LOCK TABLES `ds_addcommands` WRITE;
+
 INSERT IGNORE INTO `ds_addcommands` (`table_name`, `xtype`, `location`, `position`, `label`, `iconCls`) VALUES ('blg_config','ds_report_ddl_command','toolbar',1,'','x-fa fa-plus');
-UNLOCK TABLES;
-LOCK TABLES `ds_access` WRITE;
 INSERT IGNORE INTO `ds_access` (`role`, `table_name`, `read`, `write`, `delete`, `append`, `existsreal`) VALUES ('administration','blg_config',1,1,0,1,1);
-UNLOCK TABLES;

@@ -4,14 +4,11 @@
 -- SOURCE FILE: ./src/000.RPT.getArticleAccountNumber.sql 
 
 DELIMITER //
-
-
-
-
+ 
 CREATE OR REPLACE FUNCTION `getArticleAccountNumber`( in_steuergruppe varchar(20), in_bookingdate date, in_article varchar(255) ) 
-RETURNS varchar(10)
-READS SQL DATA
-COMMENT ''
+    RETURNS varchar(10)
+    READS SQL DATA
+    COMMENT ''
 BEGIN 
     DECLARE fld varchar(10);
     DECLARE result varchar(10);
@@ -598,148 +595,199 @@ READS SQL DATA
 COMMENT ''
 BEGIN 
     DECLARE base_table varchar(128);
+
     DECLARE flds LONGTEXT;
  
     SELECT adress_bezug INTO base_table from blg_config where tabellenzusatz = reporttype;
 
 
-    --  ZAHLUNGEN 
-    call debug_message('get report payment');
-    call getReportPayments(reporttype,in_id,@payments);
-    --  MINDERUNGEN SQL
-    call debug_message('get report reductions');
-    call getReportReductions(reporttype,in_id,@reductions);
-
-    --  SPERREN ERMITTELN
-    call debug_message('get report locks');
-    set @locks='[]';
-    -- call getReportLocks(reporttype,in_id,@locks);
-
-    --  UNTERSCHRIFT SQL
-    call debug_message('get report signum');
-    SET @SQL = concat('SELECT  concat("[",ifnull(group_concat( 
-            JSON_OBJECT( 
-
-                    "pos", pos,
-                    "x", x,
-                    "y", y
-                )
-                separator ","
-            ),"")
-            ,"]"
-        ) o 
-        INTO @signum
-        FROM 
-            blg_signum_',reporttype,' 
-        WHERE id = ',in_id,'
-    ');
-    PREPARE stmt FROM @SQL;
-    execute stmt;
-    DEALLOCATE PREPARE stmt;
 
 
 
-    --  BELEGTEXTE SQL
-    call debug_message('get report txt');
-    SET @SQL = concat('
-        SELECT  
-            concat(
-                "[",
-                ifnull(group_concat( 
-                    JSON_OBJECT( 
 
-                        "type", typ,
-                        "text", text
+
+
+
+    IF in_id < 0 THEN
+
+
+    SET result = JSON_OBJECT(
+        "reporttype",  reporttype, 
+        "address", "",
+        "companycode", getSessionCurrentBKR(),
+        "office", getSessionCurrentOffice(),
+        "referencenr", 0,
+        "costcenter", 0,
+
+           "date", curdate(),
+        "payuntildate", curdate(),
+        "service_period_start", curdate(),
+        "service_period_stop", curdate(),
+        "reference", "",
+        "bookingdate", curdate(),
+
+        "positions",ifnull((
+            select 
+            JSON_ARRAYAGG(
+            JSON_OBJECT(
+                "pos", position,
+                "position", position,
+                "artikel", blg_artikel.artikel,
+                "amount", blg_artikel.anzahl,
+                "price", blg_artikel.epreis,
+                "note", blg_artikel.bemerkung
+            )
+            order by position
+            )
+            from 
+                blg_artikel 
+                join blg_config
+                    on blg_config.id = blg_artikel.belegart
+                    and blg_config.tabellenzusatz = reporttype
+        ),JSON_ARRAY()),
+        "payments",JSON_ARRAY(),
+        "reductions",JSON_ARRAY(),
+        "signum",JSON_ARRAY(),
+        "texts",JSON_ARRAY(),
+        "locks",JSON_ARRAY()
+    );
+
+
+    ELSE
+
+
+        --  ZAHLUNGEN 
+        call debug_message('get report payment');
+        call getReportPayments(reporttype,in_id,@payments);
+        --  MINDERUNGEN SQL
+        call debug_message('get report reductions');
+        call getReportReductions(reporttype,in_id,@reductions);
+
+        --  SPERREN ERMITTELN
+        call debug_message('get report locks');
+        set @locks='[]';
+        -- call getReportLocks(reporttype,in_id,@locks);
+
+        --  UNTERSCHRIFT SQL
+        call debug_message('get report signum');
+        SET @SQL = concat('SELECT  concat("[",ifnull(group_concat( 
+                JSON_OBJECT( 
+
+                        "pos", pos,
+                        "x", x,
+                        "y", y
                     )
                     separator ","
-                ),
-                ""),
-                "]"
+                ),"")
+                ,"]"
             ) o 
-        INTO @txt
-        FROM
-            blg_txt_',reporttype,' 
-        WHERE id = ',in_id,'
-    ');
-
-    PREPARE stmt FROM @SQL;
-    execute stmt;
-    DEALLOCATE PREPARE stmt;
-
+            INTO @signum
+            FROM 
+                blg_signum_',reporttype,' 
+            WHERE id = ',in_id,'
+        ');
+        PREPARE stmt FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
 
 
 
+        --  BELEGTEXTE SQL
+        call debug_message('get report txt');
+        SET @SQL = concat('
+            SELECT  
+                concat(
+                    "[",
+                    ifnull(group_concat( 
+                        JSON_OBJECT( 
 
-    select
-        group_concat(
-            concat(
-                quote(
-                    ifnull(
-                        blghdr_translations.json_attribute_name,
-                        ds_column.column_name
-                    )
-                ),
-                ',',
-                concat('hdr.',ds_column.column_name)
-            ) separator ','
-        ) j into flds
-    from
-        ds_column
-        left join blghdr_translations on blghdr_translations.column_name = ds_column.column_name
-    where
-        table_name = concat('blg_hdr_', reporttype)
-        and ds_column.existsreal = 1
-        and ds_column.writeable = 1;
+                            "type", typ,
+                            "text", text
+                        )
+                        separator ","
+                    ),
+                    ""),
+                    "]"
+                ) o 
+            INTO @txt
+            FROM
+                blg_txt_',reporttype,' 
+            WHERE id = ',in_id,'
+        ');
 
-
-
-    --  KOPFDATEN SQL
-    call debug_message('get report hdr');
-    SET @SQL = concat('
-    SELECT JSON_OBJECT(
+        PREPARE stmt FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
 
 
-        ',flds,',
 
-        "reporttype",  ',quote(reporttype),', 
-        "address", ifnull(adr.adresse,""),
-        "companycode", ifnull(bkr.buchungskreis_id,"0000"),
-        "referencenr", bez.kundennummer,
-        "costcenter", bez.kostenstelle,
 
-        "positions",JSON_MERGE("[]",@positions),
-        "payments",JSON_MERGE("[]",@payments),
-        "reductions",JSON_MERGE("[]",@reductions),
-        "signum",JSON_MERGE("[]",@signum),
-        "texts",JSON_MERGE("[]",@txt),
-        "locks",JSON_MERGE("[]",@locks)
 
-    ) INTO @result
-    FROM 
-        blg_hdr_',reporttype,'  hdr
-        LEFT JOIN blg_adr_',reporttype,'  adr ON hdr.id = adr.id
-        LEFT JOIN blg_bkr_',reporttype,'  bkr ON bkr.id = hdr.id
-        LEFT JOIN blg_',base_table,'_',reporttype,'  bez ON bez.id = hdr.id
-    WHERE hdr.id = ',in_id,'
-    ');
-    -- select @SQL; 
+        select
+            group_concat(
+                concat(
+                    quote(
+                        ifnull(
+                            blghdr_translations.json_attribute_name,
+                            ds_column.column_name
+                        )
+                    ),
+                    ',',
+                    concat('hdr.',ds_column.column_name)
+                ) separator ','
+            ) j into flds
+        from
+            ds_column
+            left join blghdr_translations on blghdr_translations.column_name = ds_column.column_name
+        where
+            table_name = concat('blg_hdr_', reporttype)
+            and ds_column.existsreal = 1
+            and ds_column.writeable = 1;
 
-    PREPARE stmt FROM @SQL;
-    execute stmt;
-    DEALLOCATE PREPARE stmt;
 
-    -- for rec in (select * from blghdr_translations where is_required = 1) do
-    --    if JSON_VALUE(@result,concat('$.',rec.json_attribute_name)) is null then
-    --        SET @error = concat( "required field missing: ",rec.json_attribute_name);
-    --        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @error;
-    --    end if;
-    -- end for;
-    --
 
-    --  Belegpositionen
-    call debug_message('get report pos');
-    call getReportPositions(reporttype,in_id,@positions);
-    SET result = JSON_SET(@result,'$.positions',JSON_MERGE('[]',@positions));
+        --  KOPFDATEN SQL
+        call debug_message('get report hdr');
+        SET @SQL = concat('
+        SELECT JSON_OBJECT(
+
+            ',flds,',
+
+            "reporttype",  ',quote(reporttype),', 
+            "address", ifnull(adr.adresse,""),
+            "companycode", ifnull(bkr.buchungskreis_id,"0000"),
+            "referencenr", bez.kundennummer,
+            "costcenter", bez.kostenstelle,
+
+            "positions",JSON_MERGE("[]",@positions),
+            "payments",JSON_MERGE("[]",@payments),
+            "reductions",JSON_MERGE("[]",@reductions),
+            "signum",JSON_MERGE("[]",@signum),
+            "texts",JSON_MERGE("[]",@txt),
+            "locks",JSON_MERGE("[]",@locks)
+
+        ) INTO @result
+        FROM 
+            blg_hdr_',reporttype,'  hdr
+            LEFT JOIN blg_adr_',reporttype,'  adr ON hdr.id = adr.id
+            LEFT JOIN blg_bkr_',reporttype,'  bkr ON bkr.id = hdr.id
+            LEFT JOIN blg_',base_table,'_',reporttype,'  bez ON bez.id = hdr.id
+        WHERE hdr.id = ',in_id,'
+        ');
+        -- select @SQL; 
+
+        PREPARE stmt FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
+
+
+        --  Belegpositionen
+        call debug_message('get report pos');
+        call getReportPositions(reporttype,in_id,@positions);
+        SET result = JSON_SET(@result,'$.positions',JSON_MERGE('[]',@positions));
+
+
+    END IF;
 
 END //
 
@@ -1052,7 +1100,7 @@ DELIMITER //
 
 
 
-CREATE OR REPLACE PROCEDURE setReport( in reporttype varchar(20), in in_json JSON, out out_json JSON )
+CREATE OR REPLACE PROCEDURE setReportOLD( in reporttype varchar(20), in in_json JSON, out out_json JSON )
 BEGIN
     DECLARE i INTEGER DEFAULT 0;
     DECLARE j INTEGER DEFAULT 0;
@@ -1117,17 +1165,17 @@ BEGIN
         SELECT JSON_EXTRACT(positions,CONCAT('$[',i,']')) INTO position;
 
 
-        IF @newrptnr IS NOT NULL AND NOT JSON_EXISTS(position,'$.id') THEN 
+        IF @newrptnr IS NOT NULL AND JSON_EXISTS(position,'$.id')=0 THEN 
             SET position:=JSON_INSERT(position,'$.id',@positionid); 
             SET @positionid:=@positionid+1;
             SET position:=JSON_SET(position,'$.reportnr',@use_rptnr); 
-        ELSEIF @newrptnr IS NOT NULL AND JSON_EXISTS(position,'$.id') THEN 
+        ELSEIF @newrptnr IS NOT NULL AND JSON_EXISTS(position,'$.id')=1 THEN 
             SET position:=JSON_SET(position,'$.id',@positionid); 
             SET @positionid:=@positionid+1;
             SET position:=JSON_SET(position,'$.reportnr',@use_rptnr); 
         END IF;
 
-        IF  NOT JSON_EXISTS(position,'$.id') THEN
+        IF  JSON_EXISTS(position,'$.id')=0 THEN
             SET position:=JSON_SET(position,'$.id',@positionid); 
             SET @positionid:=@positionid+1;
         END IF;
@@ -1342,8 +1390,6 @@ BEGIN
     
     -- call debug_message('REPORT SAVED');
 
-    call recalculateHeader(reporttype,JSON_VALUE(position,'$.reportnr'));
-
     call getReport(reporttype,JSON_VALUE(position,'$.reportnr'),@tempout);
     
     -- call debug_message(reporttype);
@@ -1409,7 +1455,7 @@ BEGIN
 
     call debug_message( concat('default report id ', json_value( in_json, '$.id') ));
 
-    IF json_value( in_json, '$.id') > 0  THEN
+    IF JSON_EXISTS( in_json, '$.id') = 1 OR   json_value( in_json, '$.id') > 0 THEN
         
         SET @old_rn = null;
         SET @SQL := CONCAT('select id into @old_rn from blg_hdr_',reporttype,' where id = ',json_value( in_json, '$.id'),' ');
@@ -1420,6 +1466,7 @@ BEGIN
         if @old_rn is null then
             set @newrptnr = json_value( in_json, '$.id');
             SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages',concat('new reportnumber ' ));
+            SET in_json = JSON_INSERT(in_json,'$.isNewReport',1=1);
         end if;
 
 
@@ -1440,9 +1487,7 @@ BEGIN
     call debug_message( concat('default report new id ', @SQL ));
         -- reserve the new id as soon as possible
         SET @SQL = concat('
-        insert into blg_hdr_',reporttype,' 
-        (id,datum,faelligam,login) values
-        (@newrptnr,current_date,current_date,getSessionUser())
+        insert into blg_hdr_',reporttype,' (id,datum,faelligam,login) values (@newrptnr,current_date,current_date,getSessionUser())
         ');
         PREPARE stmt FROM @SQL;
         execute stmt;
@@ -1458,10 +1503,15 @@ BEGIN
 
     set @newrptnr =  json_value( in_json, '$.id');
 
+
     
     IF NOT JSON_EXISTS( in_json, '$.costcenter'         ) THEN
         SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages','costcenter not set -> set to 0');
         SELECT JSON_INSERT(in_json, '$.costcenter',0) INTO in_json;
+    END IF;
+
+    IF NOT JSON_EXISTS( in_json, '$._in_warehouse'         ) THEN
+        SELECT JSON_INSERT(in_json, '$._in_warehouse',0) INTO in_json;
     END IF;
 
     IF NOT JSON_EXISTS( in_json, '$.date'                ) THEN  
@@ -1739,6 +1789,329 @@ call debug_message(upda);
 
 END //
 
+-- SOURCE FILE: ./src/000.RPTJSON.proc.setReportN.sql 
+DELIMITER //
+
+
+DELIMITER //
+
+CREATE OR REPLACE PROCEDURE setReportDefaultsN( in reporttype varchar(20), in in_json JSON, out out_json JSON )
+BEGIN
+    DECLARE strval varchar(255);
+
+    SELECT 
+        JSON_INSERT(in_json, '$.__messages', JSON_ARRAY() ) 
+    INTO in_json;
+
+    SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages','begin defaults');
+    SET in_json = JSON_INSERT(in_json,'$.isNewReport',1=0);
+
+    IF JSON_EXISTS( in_json, '$.id') = 0 THEN  
+        SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages','id not set -> set to -1');
+        SELECT JSON_INSERT(in_json, '$.id',-1) INTO in_json;
+    END IF;
+    IF JSON_VALUE( in_json, '$.id') > 0 THEN
+        
+        SET @old_rn = null;
+        SET @SQL := CONCAT('select id into @old_rn from blg_hdr_',reporttype,' where id = ',json_value( in_json, '$.id'),' ');
+        PREPARE stmt FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
+        if @old_rn is null then
+            set @newrptnr = JSON_VALUE( in_json, '$.id');
+            SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages',concat('new reportnumber the given one was not found' ));
+            SET in_json = JSON_SET(in_json,'$.isNewReport',1=1);
+        end if;
+    END IF;
+
+    IF JSON_VALUE( in_json, '$.id') < 0  THEN
+        SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages',concat('new id requested, query getReportNumber',reporttype,'()' ));
+        SET @SQL := CONCAT('set @newrptnr = getReportNumber',reporttype,'()   ');
+        PREPARE stmt FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
+        SELECT JSON_SET(in_json, '$.id',@newrptnr) INTO in_json;
+        SET in_json = JSON_SET(in_json,'$.isNewReport',1=1);
+        SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages',concat('new id requested, set to ',@newrptnr,'' ));
+
+    END IF;
+    IF NOT JSON_EXISTS( in_json, '$._in_warehouse'         ) THEN
+        SELECT JSON_INSERT(in_json, '$._in_warehouse',0) INTO in_json;
+    END IF;
+    IF NOT JSON_EXISTS( in_json, '$.payuntildate'         ) THEN
+        SELECT JSON_INSERT(in_json, '$.payuntildate',curdate()+interval+ 10 day) INTO in_json;
+    END IF;
+
+     IF NOT JSON_EXISTS( in_json, '$.reference'         ) THEN
+        SELECT JSON_INSERT(in_json, '$.reference','') INTO in_json;
+    END IF;
+
+    IF JSON_EXISTS( in_json, '$.costcenter'         ) = 0 THEN
+        SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages','costcenter not set -> set to 0');
+        SELECT JSON_INSERT(in_json, '$.costcenter',0) INTO in_json;
+    END IF;
+
+    IF JSON_EXISTS( in_json, '$.date'                ) = 0 THEN  
+        SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages','date not set -> set to current date');
+        SELECT JSON_INSERT(in_json, '$.date',CURRENT_DATE) INTO in_json;  
+    END IF;
+
+    IF JSON_EXISTS( in_json, '$.service_period_start') = 0 THEN
+        SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages','service_period_start not set -> set to current date');
+        SELECT JSON_INSERT(in_json, '$.service_period_start',CURRENT_DATE) INTO in_json;
+    END IF;
+    IF JSON_EXISTS( in_json, '$.service_period_stop' ) = 0 THEN
+        SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages','service_period_stop not set -> set to current date');
+        SELECT JSON_INSERT(in_json, '$.service_period_stop',CURRENT_DATE) INTO in_json;
+    END IF;
+
+
+    IF JSON_EXISTS( in_json, '$.bookingdate'         ) = 0 THEN
+        SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages','bookingdate not set -> set to current date');
+        SELECT JSON_INSERT(in_json, '$.bookingdate',CURRENT_DATE) INTO in_json;
+    END IF;
+
+
+    IF JSON_EXISTS( in_json, '$.companycode' ) = 0 THEN
+        SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages','companycode not set -> set to session default');
+        SELECT JSON_INSERT(in_json, '$.companycode',getSessionDefaultBKR() ) INTO in_json;
+    END IF;
+
+    IF JSON_EXISTS( in_json, '$.kindofbill' ) = 0 THEN
+        SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages','kindofbill not set -> query');
+        SELECT max(preisorientierung) INTO strval FROM blg_config WHERE lower(tabellenzusatz)=lower(reporttype);
+        SELECT JSON_INSERT(in_json, '$.kindofbill', strval ) INTO in_json;
+        SET in_json = JSON_ARRAY_APPEND(in_json,'$.__messages',concat( 'kindofbill not set -> ',strval ));
+    END IF;
+
+
+    SET in_json := JSON_INSERT(in_json,'$.create_timestamp',now());
+    SET in_json := JSON_INSERT(in_json,'$.login',getSessionUser());
+    
+
+    SELECT in_json INTO out_json;
+
+END //
+
+
+CREATE OR REPLACE PROCEDURE `recalculateHeader`(in reporttype varchar(20), IN in_reportnumber bigint)
+    MODIFIES SQL DATA
+BEGIN
+    SET @SQL = concat('SELECT 
+        round(sum(steuer),2) s,
+        round(sum(netto),2) n,
+        round(sum(brutto),2) b 
+    INTO
+        @use_s,
+        @use_n,
+        @use_b
+    FROM 
+        blg_pos_',reporttype,'
+    WHERE 
+        beleg = ?
+    ');
+
+    PREPARE stmt FROM @SQL;
+    execute stmt using in_reportnumber;
+    DEALLOCATE PREPARE stmt;
+    
+    SET @SQL = concat(' 
+    UPDATE 
+        blg_hdr_',reporttype,'
+    SET 
+        netto = @use_n,
+        brutto = @use_b,
+        steuer = @use_b - @use_n
+    WHERE
+        id = ?
+    ');
+    PREPARE stmt FROM @SQL;
+    execute stmt using in_reportnumber;
+    DEALLOCATE PREPARE stmt;
+
+    
+END //
+
+CREATE OR REPLACE PROCEDURE setReport( in reporttype varchar(20), in in_json JSON, out out_json JSON )
+BEGIN
+    DECLARE j INT DEFAULT 0;
+    DECLARE position JSON;
+    DECLARE positions JSON;
+
+    call checkReportRequirements(reporttype,in_json);
+    call setReportDefaultsN(reporttype,in_json,in_json);
+
+
+    FOR rec in (select * from blghdr_translations) DO
+        IF (
+            rec.is_required = 1
+            and JSON_EXISTS(in_json,concat('$.',rec.json_attribute_name)) = 0
+        ) THEN
+            SET @MSG = concat('Required field ',rec.json_attribute_name,' not found in JSON');
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @MSG;
+        ELSEIF JSON_EXISTS(in_json,concat('$.',rec.json_attribute_name)) = 1 THEN
+            SET in_json = JSON_SET(in_json,concat('$.',rec.column_name), JSON_VALUE(in_json,concat('$.',rec.json_attribute_name)));
+        END IF;
+        
+    END FOR;
+ 
+    SET positions = JSON_EXTRACT(in_json,'$.positions');
+
+    -- SET in_json = JSON_REMOVE(in_json,'$.positions');
+    -- SET in_json = JSON_REMOVE(in_json,'$.__messages');
+
+    SET @request = JSON_OBJECT(
+        'tablename',concat('blg_hdr_',reporttype),
+        'data',JSON_ARRAY( JSON_MERGE(in_json,'{}')),
+        'type','insert',
+        'update',1=1
+    );
+    call dsx_rest_api_set(@request,@result);
+    if(JSON_VALUE(@result,'$.success') <> 1) then
+        SET @MSG = concat('Error while inserting into blg_hdr_',reporttype,' : ',JSON_VALUE(@result,'$.message'));
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @MSG;
+    end if;
+
+    SET @SQL := concat('INSERT INTO blg_bkr_',reporttype,' (id,buchungskreis_id) values (', JSON_VALUE(in_json,'$.id' ),',',QUOTE( JSON_VALUE(in_json,'$.companycode' ) ),') ON DUPLICATE KEY UPDATE buchungskreis_id=values(buchungskreis_id) ');
+    PREPARE stmt FROM @SQL;
+    execute stmt;
+    DEALLOCATE PREPARE stmt;
+
+
+    SELECT 
+        ds.table_name rt,
+        bezug_id,
+        bezug_kst
+    INTO 
+        @base_table,
+        @readtable_bezug_id,
+        @readtable_bezug_kst
+    FROM
+        blg_config
+        join ds
+            on ds.table_name = blg_config.adress_bezug
+    WHERE upper(blg_config.tabellenzusatz) = upper(reporttype);
+    SET @SQL := concat('INSERT INTO blg_',@base_table,'_',reporttype,' (id,kundennummer,kostenstelle) values (', JSON_VALUE(in_json,'$.id' ),',',QUOTE( JSON_VALUE(in_json,'$.referencenr' ) ),',',QUOTE( JSON_VALUE(in_json,'$.costcenter' ) ),') ON DUPLICATE KEY UPDATE kundennummer=values(kundennummer),kostenstelle=values(kostenstelle) ');
+    PREPARE stmt FROM @SQL;
+    execute stmt;
+    DEALLOCATE PREPARE stmt;
+
+    SET @adr:= JSON_VALUE(in_json,'$.address');
+    IF @adr is null THEN SET @adr = ''; END IF;
+    SET @SQL := concat('INSERT INTO blg_adr_',reporttype,' (id,adresse) values (', JSON_VALUE(in_json,'$.id' ),',@adr) ON DUPLICATE KEY UPDATE adresse=values(adresse) ');
+    PREPARE stmt FROM @SQL;
+    execute stmt;
+    DEALLOCATE PREPARE stmt;
+
+
+
+    SET @positionid:=0;
+    SET @SQL := CONCAT('SELECT ifnull(max(id),0)+1 i INTO @positionid FROM blg_pos_',reporttype);
+    PREPARE stmt FROM @SQL;
+    execute stmt;
+    DEALLOCATE PREPARE stmt;
+
+    WHILE j < JSON_LENGTH(positions) DO
+        SELECT JSON_EXTRACT(positions,CONCAT('$[',j,']')) INTO position;
+        SET j:=j+1;
+
+        SET position = JSON_SET(position,'$.reportnr',JSON_VALUE(in_json,'$.id'));
+        IF JSON_VALUE(in_json,'$.isNewReport')=1 THEN
+            SET position = JSON_SET(position,'$.id',@positionid);
+            SET @positionid=@positionid+1;
+        ELSEIF 
+            JSON_VALUE(in_json,'$.isNewReport')=0 
+            and JSON_EXISTS(position,'$.id') = 0
+        THEN
+            SET position = JSON_SET(position,'$.id',@positionid);
+            SET @positionid=@positionid+1;
+        END IF;
+
+        IF JSON_EXISTS(position,'$.position') = 0 THEN
+            SET position = JSON_SET(position,'$.position',j);
+        END IF;
+
+        FOR rec in (select * from blgpos_translations) DO
+            IF (
+                rec.is_required = 1
+                and JSON_EXISTS(position,concat('$.',rec.json_attribute_name)) = 0
+            ) THEN
+                SET @MSG = concat('Required field ',rec.json_attribute_name,' not found in JSON');
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @MSG;
+            ELSEIF JSON_EXISTS(position,concat('$.',rec.json_attribute_name)) = 1 THEN
+                SET position = JSON_SET(position,concat('$.',rec.column_name), JSON_VALUE(position,concat('$.',rec.json_attribute_name)));
+            END IF;
+            
+        END FOR;
+
+        SET position = JSON_SET(position,'$.__id', JSON_VALUE(position,'$.id'));
+        
+        SET @request = JSON_OBJECT(
+            'tablename',concat('blg_pos_',reporttype),
+            'data',JSON_ARRAY( JSON_MERGE(position,'{}')),
+            'type','insert',
+            'update',1=1
+        );
+
+        call dsx_rest_api_set(@request,@result);
+    END WHILE;
+
+
+    call recalculateHeader(reporttype,JSON_VALUE(in_json,'$.id'));
+    call getReport(reporttype,JSON_VALUE(in_json,'$.id'),out_json);
+END //
+
+/*
+SET @sessionuser='thomas.hoffmann@tualo.de' //
+set @log_dsx_commands=0 //
+start transaction //
+SET @report ='{
+        "address": "Sammeldebitor     . . . . #22000 # # (0)",
+        "referencenr": "22000",
+        "costcenter": "0",
+        "office": "100",
+        "reference": "",
+        "_in_warehouse": "0",
+        "warehouse": "0",
+        "time": "00:00:00",
+        "order_id": "",
+        "bookingdate": "2023-07-20",
+        "reporttype": "angebot",
+        "positions": [
+            {
+                "__id": "view_editor_blg_pos_angebot-34",
+                "__table_name": "view_editor_blg_pos_angebot",
+                "__rownumber": 0,
+                "amount": 1,
+                "article": "Muster",
+                "einheit": "Stk.",
+                "einheit_faktor": "1",
+                "einheit_symbol": "Stk.",
+                "ekpreis": "0",
+                "ekpreis_summe": "0",
+                "gldpreis": "0",
+                "gldpreis_summe": "0",
+                "handwerkeranteil": "0",
+                "kombiartikel": "0",
+                "tax": 19,
+                "unit": "1",
+                "singleprice": 5.12,
+                "net": 5.12,
+                "gross": 6.0927999999999995,
+                "taxvalue": 0.9727999999999994,
+                "account": "8400"
+            }
+        ],
+        "date": "2023-07-20",
+        "payuntildate": "2023-07-20",
+        "service_period_stop": "2023-07-20",
+        "service_period_start": "2023-07-20"
+    }' //
+set @debug=0 //
+call setReportN('angebot',@report,@out) //
+commit //
+-- select * from test_ds_cmd //
+*/
 -- SOURCE FILE: ./src/000.RPTJSON.proc.setReportPosition.sql 
 
 DELIMITER ;
