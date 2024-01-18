@@ -38,7 +38,13 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
             this._queriedAmount=rec.get('gebiet');
             this._queriedGebiet=rec.get('amount');
             if(data.success){
-                console.log('queryArticles',data.singleprice,rec.data,data );
+                console.log('queryArticles',data.singleprice,rec.data,data);
+
+                console.log('queryArticles singleprice',data.singleprice!=rec.get('singleprice') , typeof data.singleprice, typeof rec.get('singleprice'));
+                console.log('queryArticles tax',data.tax!=rec.get('tax'), typeof data.tax, typeof rec.get('tax') );
+                console.log('queryArticles unit',data.unit!=rec.get('unit'), typeof data.unit, typeof rec.get('unit') );
+                console.log('queryArticles account',data.account!=rec.get('account'),   typeof data.account, typeof rec.get('account') );
+
                 if (data.singleprice!=rec.get('singleprice')){ 
                     rec.set('singleprice',data.singleprice);
                     // rec.commit(true);
