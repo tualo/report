@@ -11,3 +11,16 @@ Ext.define('Tualo.report.data.field.SingleLanguagesPrice', {
         ]
     }
 );
+
+Ext.define('Tualo.report.data.field.LanguagesAmount', {
+    extend: 'Tualo.report.data.field.SinglePrice',
+    alias: [
+        'data.field.tualoreportlanguagesamount'
+    ],
+    depends: [
+        'article',
+        'source_language',
+        'target_language',
+    ]
+}
+);
