@@ -54,6 +54,7 @@ class InstallMainSQLCommandline implements ICommandline{
             'view_brieffusstext' => 'setup report footer view ',
 
             'install/addcommand'    => 'setup addcommand',
+            'install/custom_types'    => 'setup custom_types',
 
             // immer zum schluss
             'install/ds_fill'    => 'refreshing ds data',
