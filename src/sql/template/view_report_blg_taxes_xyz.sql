@@ -3,7 +3,7 @@ delimiter ;
 CREATE OR REPLACE VIEW `view_report_blg_taxes_#####` AS
 select
     `blg_pos_#####`.`beleg` AS `beleg`,
-    100000 + `blg_pos_#####`.`steuersatz` AS `_prio`,
+    200000 + `blg_pos_#####`.`steuersatz` AS `_prio`,
     concat('tax') AS `cssattr`,
     concat(
         'Steuer (',
@@ -39,7 +39,7 @@ group by
 union
 select
     `blg_pos_#####`.`beleg` AS `beleg`,
-    200000 + `blg_pos_#####`.`steuersatz` AS `_prio`,
+    100000 + `blg_pos_#####`.`steuersatz` AS `_prio`,
     concat('totalnet') AS `cssattr`,
     concat(
         'Netto (',
