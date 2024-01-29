@@ -3,12 +3,19 @@ namespace Tualo\Office\Report;
 
 use Tualo\Office\Basic\TualoApplication as App;
 class Report  {
-    public static function convert(string $type, int $id, string $toType):mixed{
+    public static function convert(string $type, int $id, string $toType, int $factor=1):mixed{
         $db = App::get('session')->getDB();
         $report = Report::get($type,$id);
         $report['reporttype'] = $toType;
         $report['id'] = -1;
         foreach($report['positions'] as &$pos){
+            
+            $pos['taxvalue'] = $pos['taxvalue'] * $factor;
+            $pos['amount'] = $pos['amount'] * $factor;
+            $pos['net'] = $pos['net'] * $factor;
+            $pos['gross'] = $pos['gross'] * $factor;
+
+            unset($pos['id']);
             unset($pos['reportnr']);
         }
 
@@ -23,6 +30,98 @@ class Report  {
         App::result('mr',$db->moreResults());
         $data = json_decode( $db->singleValue('select @result report',[],'report'), true);
         return $data;
+    }
+
+    public static function reject(
+        string $type, 
+        string $reportnumber
+    ):mixed{
+        $report = self::convert($type,$reportnumber,$type,-1);
+        return $report;
+    }
+    
+    public static function addReduction(
+        string $type, 
+        string $reportnumber, 
+        float $amount, 
+        string $name='Minderung',
+        string $note=''
+    ):int{
+        $db = App::get('session')->getDB();
+       
+        try{
+
+            $data['betrag']=$amount;
+            $data['belegnummer']=$reportnumber;
+            $data['name']=$name;
+            $data['bemerkung']=$note;
+
+            $db->execute('start transaction');
+            $newID = $db->singleValue('select ifnull(max(id),0)+1 c from blg_pay_'.$type.'',[],'c');
+            $data['id']=$newID;
+            $db->direct('insert into blg_min_'.$type.' (
+                id
+                name
+                belegnummer
+                bemerkung
+                betrag
+            ) values 
+            (
+                {id}
+                {name},
+                {belegnummer},
+                {bemerkung},
+                {betrag}
+            )
+            where id = {id}',$data);
+            $db->execute('commit');
+            return $newID;
+        }catch(\Exception $e){
+            $db->execute('rollback');
+            return -1;
+        }
+    }
+
+    public static function addPayment(
+        string $type, 
+        string $reportnumber, 
+        float $amount, 
+        string $date='',
+        string $paymenttype='Überweisung',
+    ):int{
+        $db = App::get('session')->getDB();
+       
+        if ($date=='') $date = date('Y-m-d'.time());
+        try{
+            $data['datum']=$date;
+            $data['betrag']=$amount;
+            $data['belegnummer']=$reportnumber;
+            $data['art']=$paymenttype;
+
+            $db->execute('start transaction');
+            $newID = $db->singleValue('select ifnull(max(id),0)+1 c from blg_pay_'.$type.'',[],'c');
+            $data['id']=$newID;
+            $db->direct('insert into blg_pay_'.$type.' (
+                id
+                datum,
+                belegnummer,
+                art,
+                betrag
+            ) values 
+            (
+                {id}
+                {datum},
+                {belegnummer},
+                {art},
+                {betrag}
+            )
+            where id = {id}',$data);
+            $db->execute('commit');
+            return $newID;
+        }catch(\Exception $e){
+            $db->execute('rollback');
+            return -1;
+        }
     }
 
     public static function setHeader(string $type, int $id, array $data):bool{

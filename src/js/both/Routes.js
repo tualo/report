@@ -25,8 +25,12 @@ Ext.define('Tualo.routes.Report', {
             if (typeof id != 'undefined') {
                 opt.loadId = id;
             }
-            TualoOffice.getApplication().addView('Tualo.DataSets.' + type + '.' + tablenamecase, tablename, true, opt);
+            Ext.getApplication().addView('Tualo.report.lazy.ReportPanel', {
+                type: type,
+                reportnumber: id
+            });
             */
+
         },
         before: function (type, id, action) {
 

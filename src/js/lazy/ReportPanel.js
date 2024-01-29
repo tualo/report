@@ -46,6 +46,22 @@ Ext.define('Tualo.report.lazy.ReportPanel',{
                     tooltip: "Speichern",
                     handler: "save",
                     
+                },
+                {
+                    xtype: "glyphtool",
+                    glyphPrefix: "fas fa-",
+                    glyph: "coins",
+                    tooltip: "Zahlungen",
+                    handler: "pay",
+                    
+                },
+                {
+                    xtype: "glyphtool",
+                    glyphPrefix: "fa fa-",
+                    glyph: "ban",
+                    tooltip: "Stornieren",
+                    handler: "reject",
+                    
                 }
             ]
         }

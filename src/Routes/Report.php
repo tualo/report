@@ -6,6 +6,7 @@ use Exception;
 use Tualo\Office\Basic\TualoApplication as App;
 use Tualo\Office\Basic\Route ;
 use Tualo\Office\Basic\IRoute;
+use Tualo\Office\Report\Report as R;
 use Tualo\Office\DS\DSReadRoute;
 use Tualo\Office\DS\DSTable;
 
@@ -20,8 +21,12 @@ class Report implements IRoute{
                 $postdata = json_decode(file_get_contents("php://input"),true);
                 $db->direct('set @currentRequest = {postdata}',['postdata'=>json_encode($postdata)]);
                 
+                $data = R::get($type,$matches['id']);
+
+                /*
                 $db->direct('call `getReport`({type},{id},@o)',$matches);
                 $data = json_decode( $db->singleValue('select @o report',$matches,'report'), true);
+                */
                 if (is_null($data)) throw new \Exception('Report not found');
                 if ($matches['id']<0){
                         if ($postdata && isset($postdata['bezugsnummer'])){
@@ -49,6 +54,26 @@ class Report implements IRoute{
             Route::$finished=true;
             App::contenttype('application/json');
         },['get','post'],true);
+
+        Route::add('/rejectreport/(?P<type>\w+)/(?P<id>[\w\-]+)',function($matches){
+            try{
+                $db = App::get('session')->getDB();
+                Route::$finished=true;  
+                App::contenttype('application/json');
+                $report = R::reject($matches['type'],$matches['id']);
+                if (is_null($report)) throw new \Exception('Report not found');
+                $db->direct('call recalculateHeader({type},{id})',[
+                    'type'=>$matches['type'],
+                    'id'=>$report['id']
+                ]);
+                $report = R::get($matches['type'],$report['id']);
+
+                App::result('data',$report);
+                App::result('success', true);
+            }catch(Exception $e){
+                App::result('msg', $e->getMessage());
+            }
+        },['get'],true);
 
         Route::add('/report/(?P<type>\w+)/(?P<id>[\w\-]+)',function($matches){
             $db = App::get('session')->getDB();

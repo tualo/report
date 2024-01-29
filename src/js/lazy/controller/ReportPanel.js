@@ -249,5 +249,38 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         }
         this.reportData(this.getViewModel().get('record').get('tabellenzusatz'),this.getViewModel().get('record').get('id'));
 
+    },
+
+    reject: function(){
+        let me = this;
+        Ext.Msg.show({
+            title:'Stornieren?',
+            message: 'Möchten Sie diesen Beleg wirklich stornieren?',
+            buttons: Ext.Msg.YESNOCANCEL,
+            icon: Ext.Msg.QUESTION,
+            fn: async function(btn) {
+                if (btn === 'yes') {
+                    let report = await fetch(
+                        './rejectreport/'+me.getViewModel().get('record').get('tabellenzusatz')+'/'+me.getViewModel().get('record').get('id')+'',
+                        {
+                            method: 'GET'
+                        }
+                    ).then((response)=>{return response.json()});
+                    if (report.success){
+                        me.getViewModel().get('record').set('id',report.data.id);
+                        me.reportData(me.getViewModel().get('record').get('tabellenzusatz'),me.getViewModel().get('record').get('id'));
+                    }
+                } else if (btn === 'no') {
+                    console.log('No pressed');
+                } else {
+                    console.log('Cancel pressed');
+                }
+            }
+        });
+
+        
+    },
+    pay: function(){
+        Ext.getApplication().redirectTo('payreport/'+this.getViewModel().get('record').get('tabellenzusatz')+'/'+this.getViewModel().get('record').get('id'));
     }
 });
