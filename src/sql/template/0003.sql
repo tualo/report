@@ -210,6 +210,16 @@ from
 
 //
 
+create view if not exists view_editor_blg_pay_##### as 
+select
+    id id,
+    datum `date`,
+    belegnummer reportnr,
+    art `type`,
+    betrag `value`
+from blg_pay_#####
+;
+
 create view if not exists view_editor_relation_##### as 
 
 select 

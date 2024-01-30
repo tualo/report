@@ -21,7 +21,22 @@ Ext.define('Tualo.report.lazy.ReportPay', {
         type: 'vbox',
           align: 'stretch'
     },
+    bind:{
+      title: '{title}'
+    },
     items: [
+      {
+        xtype: 'panel',
+        itemId: 'paylist',
+        flex: 1,
+      },
+      {
+        xtype: 'panel',
+        itemId: 'payform',
+      }
+    ],  
+    itemsX: [
+
       {
         flex: 1,
         xtype: 'tabpanel',
@@ -35,57 +50,7 @@ Ext.define('Tualo.report.lazy.ReportPay', {
         ],
         */
         items: [
-          {
-            title: 'Übersicht',
-            xtype: 'grid',
-            bind:{
-              store: '{paystore}'
-            },
-            features    : [
-              
-            ],
-            columns:[
-              {
-                header: 'Datum',
-                xtype: 'datecolumn',
-                format: 'd.m.Y',
-                dataIndex: 'datum',
-                width: 80,
-                fixedSummaryType: 'count',
-                fixedSummaryRenderer: function(value, summaryData, dataIndex) {
-                  return Ext.String.format('{0} {1}', value, value > 1 ? 'Einträge' : 'Eintrag');
-                },
-                selectedSummaryType: 'count',
-                selectedSummaryRenderer: function(value, summaryData, dataIndex) {
-                  return Ext.String.format('{0} {1} ausgewählt', value, value > 1 ? 'Einträge' : 'Eintrag');
-                }
-              },
-              {
-                header: 'ID',
-                dataIndex: 'id',
-                width: 80,
-                hidden: true
-              },
-              {
-                header: 'Text',
-                dataIndex: 'text',
-                flex: 1
-              },
-              {
-                header: 'Wert',
-                dataIndex: 'value',
-                flex: 1,
-                xtype: 'numbercolumn',
-                format:'0.000,00/i',
-                align: 'right',
-                fixedSummaryType: 'sum',
-                fixedSummaryRenderer: Ext.util.Format.numberRenderer('0.000,00/i'),
-                selectedSummaryType: 'sum',
-                selectedSummaryRenderer: Ext.util.Format.numberRenderer('0.000,00/i')
-  
-              }
-            ]
-          },
+          
           {
             title: 'Kontoauszug',
             xtype: 'tualocontextgridpanel',

@@ -119,5 +119,34 @@ class Report implements IRoute{
             Route::$finished=true;
             App::contenttype('application/json');
         },['put'],true);
+
+
+        Route::add('/payreport/(?P<type>\w+)/(?P<id>[\w\-]+)',function($matches){
+            $db = App::get('session')->getDB();
+            $type = $matches['type'];
+            try{
+                $db->direct('start transaction');
+                
+                    $input = json_decode( file_get_contents('php://input'), true);
+                    if (is_null($input)) throw new \Exception('input not readable');
+                    if (!isset($input['value']) || $input['value']=='') throw new \Exception('value not readable');
+                    if (!isset($input['date']) || $input['date']=='') throw new \Exception('date not readable');
+                    if (!isset($input['type']) || $input['type']=='') throw new \Exception('type not readable');
+
+                    
+                    App::result('data',R::addPayment($matches['type'],$matches['id'],$input['value'],$input['date'],$input['type']));
+                    App::result('success', true);
+
+
+                $db->direct('commit');
+            }catch(Exception $e){
+                $db->direct('rollback');
+                App::result('mr',$db->moreResults());
+                App::result('last_sql', $db->last_sql );
+                App::result('msg', $e->getMessage());
+            }
+            Route::$finished=true;
+            App::contenttype('application/json');
+        },['put'],true);
     }
 };

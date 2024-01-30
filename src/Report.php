@@ -102,23 +102,25 @@ class Report  {
             $newID = $db->singleValue('select ifnull(max(id),0)+1 c from blg_pay_'.$type.'',[],'c');
             $data['id']=$newID;
             $db->direct('insert into blg_pay_'.$type.' (
-                id
+                id,
                 datum,
                 belegnummer,
                 art,
                 betrag
             ) values 
             (
-                {id}
+                {id},
                 {datum},
                 {belegnummer},
                 {art},
                 {betrag}
             )
-            where id = {id}',$data);
+            ',$data);
             $db->execute('commit');
             return $newID;
         }catch(\Exception $e){
+            App::result('sql',$db->last_sql);
+            App::result('error',$e->getMessage());
             $db->execute('rollback');
             return -1;
         }
