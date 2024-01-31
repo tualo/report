@@ -156,6 +156,21 @@ class Report  {
         }
     }
 
+
+    public static function recalculateHeader(string $type, int $id):bool{
+        $db = App::get('session')->getDB();
+        try{
+            $db->direct('call recalculateHeader({type},{id})',[
+                'type'=>$type,
+                'id'=>$id
+            ]);
+            return true;
+        }catch(\Exception $e){
+            return false;
+        }
+    }
+
+
     public static function setHeader(string $type, int $id, array $data):bool{
         $db = App::get('session')->getDB();
         $data['id']=$id;
