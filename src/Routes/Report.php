@@ -82,6 +82,7 @@ class Report implements IRoute{
                 $db->direct('start transaction');
                 
                     $report = json_decode( file_get_contents('php://input'), true);
+                    
                     if (is_null($report)) throw new \Exception('Report not readable');
 
                     if (!isset($report['bookingdate']) || $report['bookingdate']=='') $report['bookingdate'] = (new DateTime())->format('Y-m-d');
