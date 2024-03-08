@@ -218,7 +218,7 @@ select
     art `type`,
     betrag `value`
 from blg_pay_#####
-;
+//
 
 create view if not exists view_editor_relation_##### as 
 
