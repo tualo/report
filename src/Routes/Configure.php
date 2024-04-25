@@ -43,6 +43,9 @@ class Configure implements IRoute{
             $sql = str_replace('#BEZUG_KST_REF0#',',0',$sql);
             $sql = str_replace('#KST_REF0#','0',$sql);
         }
+        if (isset($_REQUEST['force']) && ($_REQUEST['force']==1)){
+            $sql = str_replace('INSERT IGNORE INTO ','REPLACE INTO ',$sql);
+        }
         return $sql;
     }
 
