@@ -61,6 +61,8 @@ class Configure implements IRoute{
                 
                 $config=$db->directSingleHash('select * from blg_config where tabellenzusatz={type}',$matches);
                 if ($config===false) throw new Exception('no config found');
+
+                $config['tabellenzusatz']=strtolower($config['tabellenzusatz']);
                 $sqls=[];
                 if (isset($_REQUEST['force']) && ($_REQUEST['force']==1)){
                     $db->direct('delete from ds_column_list_label where table_name={tn}',['tn'=>'view_editor_blg_pos_'.$config['tabellenzusatz']]);
