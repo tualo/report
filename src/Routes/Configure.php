@@ -65,8 +65,14 @@ class Configure implements IRoute{
                 if (isset($_REQUEST['force']) && ($_REQUEST['force']==1)){
                     $db->direct('delete from ds_column_list_label where table_name={tn}',['tn'=>'view_editor_blg_pos_'.$config['tabellenzusatz']]);
                     $db->direct('delete from ds_column_form_label where table_name={tn}',['tn'=>'view_editor_blg_hdr_'.$config['tabellenzusatz']]);
-                    $db->direct('delete from ds_column_form_label where table_name={tn}',['tn'=>'view_editor_relation_xzy'.$config['tabellenzusatz']]);
-                    $db->direct('delete from ds_column_list_label where table_name={tn}',['tn'=>'view_blg_list_xzy'.$config['tabellenzusatz']]);
+                    $db->direct('delete from ds_column_form_label where table_name={tn}',['tn'=>'view_editor_relation_'.$config['tabellenzusatz']]);
+                    $db->direct('delete from ds_column_list_label where table_name={tn}',['tn'=>'view_blg_list_'.$config['tabellenzusatz']]);
+
+                    $db->direct('delete from ds where table_name={tn}',['tn'=>'view_blg_list_'.$config['tabellenzusatz']]);
+                    $db->direct('delete from ds where table_name={tn}',['tn'=>'view_editor_blg_hdr_'.$config['tabellenzusatz']]);
+                    $db->direct('delete from ds where table_name={tn}',['tn'=>'view_editor_blg_pos_'.$config['tabellenzusatz']]);
+                    $db->direct('delete from ds where table_name={tn}',['tn'=>'view_editor_relation_'.$config['tabellenzusatz']]);
+                    
                 }
                 foreach($templates as $template){
                     $commands = $db->explode_by_delimiter(file_get_contents(dirname(__DIR__,1).'/sql/template/'.$template));
