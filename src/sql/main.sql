@@ -1960,6 +1960,7 @@ BEGIN
     -- SET in_json = JSON_REMOVE(in_json,'$.positions');
     -- SET in_json = JSON_REMOVE(in_json,'$.__messages');
 
+    
     SET @request = JSON_OBJECT(
         'tablename',concat('blg_hdr_',reporttype),
         'data',JSON_ARRAY( JSON_MERGE(in_json,'{}')),

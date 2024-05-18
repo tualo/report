@@ -115,7 +115,15 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         this.positionsList.getStore().removeAll();
 
         if (typeof tabellenzusatz=='undefined') return;
-        console.log('reportData',arguments)
+
+        if (id<0){
+            if (
+                view.getViewModel().get('record').get('bezugsnummer')=="" || 
+                view.getViewModel().get('record').get('bezugsnummer')==null)
+            {
+                view.getViewModel().get('record').set('bezugsnummer',view.getViewModel().get('record').get('kundennummer'));
+            }
+        }
         let config = this.getViewModel().get('config'),
             data = await fetch('./report/'+tabellenzusatz+'/'+id,{
                 method: 'POST',
