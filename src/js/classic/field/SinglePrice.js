@@ -8,10 +8,10 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
         let doQuery = false,
             map = rec.getFieldsMap();
         if (!Ext.isEmpty(rec.get('article'))){
-            if (rec.get('article')!=this._queriedArticles) doQuery=true;
+            if (rec.get('article')!=rec.get('_queriedArticles')) doQuery=true;
             if (map['source_language'] && rec.get('source_language')!=this._queriedSource_language) doQuery=true;
             if (map['target_language'] && rec.get('target_language')!=this._queriedTarget_language) doQuery=true;
-            if (map['amount'] && rec.get('amount')!=this._queriedAmount) doQuery=true;
+            if (map['amount'] && rec.get('amount')!=rec.get('_queriedAmount')) doQuery=true;
             if (map['gebiet'] && rec.get('gebiet')!=this._queriedGebiet) doQuery=true;
         }
         if (doQuery) {
@@ -35,10 +35,20 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
             });
             let data = await resData.json();
             this._queriedArticles=rec.get('article');
+            rec.set('_queriedArticles',rec.get('article'));
+
             this._queriedSource_language=rec.get('source_language');
+            rec.set('_queriedSource_language',rec.get('source_language'));
+
             this._queriedTarget_language=rec.get('target_language');
-            this._queriedAmount=rec.get('gebiet');
-            this._queriedGebiet=rec.get('amount');
+            rec.set('_queriedTarget_language',rec.get('target_language'));
+
+            this._queriedAmount=rec.get('amount');
+            rec.set('_queriedAmount',rec.get('amount'));
+
+            this._queriedGebiet=rec.get('gebiet');
+            rec.set('_queriedGebiet',rec.get('gebiet'));
+            
             if(!data.success){
                 let msg = data.msg;
                 if (!msg) msg = "Leider ist ein unbekannter Fehler aufgetreten.";
@@ -83,11 +93,11 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
     },
     
     depends: [
-        'article'/*,
-        'source_language',
-        'target_language',
-        'gebiet',
-        'amount'*/
+        'article',
+        //'source_language',
+        //'target_language',
+        //'gebiet',
+        'amount'
     ]
     
 });

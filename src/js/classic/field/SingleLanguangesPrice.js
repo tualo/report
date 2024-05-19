@@ -22,6 +22,7 @@ Ext.define('Tualo.report.data.field.LanguagesAmount', {
         'article',
         'source_language',
         'target_language',
+        'amount'
     ]
 }
 );
