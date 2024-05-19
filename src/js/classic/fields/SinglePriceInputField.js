@@ -6,6 +6,7 @@ Ext.define('Tualo.report.fields.SinglePriceInputField',  {
     maxValue:  9999999,
     minValue: -9999999,
     decimalPrecision: 5,
+    selectOnFocus: true,
 
     renderer: function(value, field){
 

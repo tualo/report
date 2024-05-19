@@ -37,6 +37,16 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
             this._queriedTarget_language=rec.get('target_language');
             this._queriedAmount=rec.get('gebiet');
             this._queriedGebiet=rec.get('amount');
+            if(!data.success){
+                let msg = data.msg;
+                if (!msg) msg = "Leider ist ein unbekannter Fehler aufgetreten.";
+                Ext.toast({
+                    html: msg,
+                    title: 'Fehler',
+                    width: 200,
+                    align: 't'
+                });
+            }
             if(data.success){
                 console.log('queryArticles',data.singleprice,rec.data,data);
                 console.log('queryArticles singleprice', data.singleprice, rec.get('singleprice'));
