@@ -4,22 +4,24 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
         'data.field.tualoreportsingleprice'
     ],
     convert: function (v,rec) {
-        console.log('SinglePrice',rec);
-        console.log('SinglePrice',this,v,rec);
-        if (
-            (rec.get('article')!=this._queriedArticles) ||
-            (rec.get('source_language')!=this._queriedSource_language) ||
-            (rec.get('target_language')!=this._queriedTarget_language) ||
-            (rec.get('amount')!=this._queriedAmount) ||
-            (rec.get('gebiet')!=this._queriedGebiet)
-        ) {
+        console.log('SinglePrice',rec.get('article'),this._queriedArticles);
+        let doQuery = false,
+            map = rec.getFieldsMap();
+        if (!Ext.isEmpty(rec.get('article'))){
+            if (rec.get('article')!=this._queriedArticles) doQuery=true;
+            if (map['source_language'] && rec.get('source_language')!=this._queriedSource_language) doQuery=true;
+            if (map['target_language'] && rec.get('target_language')!=this._queriedTarget_language) doQuery=true;
+            if (map['amount'] && rec.get('amount')!=this._queriedAmount) doQuery=true;
+            if (map['gebiet'] && rec.get('gebiet')!=this._queriedGebiet) doQuery=true;
+        }
+        if (doQuery) {
             this.queryArticles(v,rec);
         }
         return v;
     },
 
     queryArticles: async function(v,rec){
-        console.log('queryArticles',this,arguments);
+        //console.log('queryArticles',this,arguments);
         if (!Ext.isEmpty(rec.store)){
             let params = {};
             if (typeof rec.store.getHeader == 'function') params.header=rec.store.getHeader();
@@ -48,30 +50,31 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
                 });
             }
             if(data.success){
+                /*
                 console.log('queryArticles',data.singleprice,rec.data,data);
                 console.log('queryArticles singleprice', data.singleprice, rec.get('singleprice'));
                 console.log('queryArticles singleprice',data.singleprice!=rec.get('singleprice') , typeof data.singleprice, typeof rec.get('singleprice'));
                 console.log('queryArticles tax',data.tax!=rec.get('tax'), typeof data.tax, typeof rec.get('tax') );
                 console.log('queryArticles unit',data.unit!=rec.get('unit'), typeof data.unit, typeof rec.get('unit') );
                 console.log('queryArticles account',data.account!=rec.get('account'),   typeof data.account, typeof rec.get('account') );
-
+                */
                 if (data.singleprice!=rec.get('singleprice')){ 
-                    console.log('queryArticles set singleprice');
+                    //console.log('queryArticles set singleprice');
                     rec.set('singleprice',data.singleprice);
                     // rec.commit(true);
                 }
                 if (data.tax!=rec.get('tax')){ 
-                    console.log('queryArticles set tax');
+                    // console.log('queryArticles set tax');
                     rec.set('tax',data.tax);
                     // rec.commit(true);
                 }
                 if (data.unit!=rec.get('unit')){ 
-                    console.log('queryArticles set unit');
+                    // console.log('queryArticles set unit');
                     rec.set('unit',data.unit);
                     // rec.commit(true);
                 }
                 if (data.account!=rec.get('account')){ 
-                    console.log('queryArticles set account');
+                    // console.log('queryArticles set account');
                     rec.set('account',data.account);
                     // rec.commit(true);
                 }

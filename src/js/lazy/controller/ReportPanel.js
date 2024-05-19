@@ -132,9 +132,11 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         if (data.success){
             let positions=[];
             let record = Ext.create('Tualo.DataSets.model.View_editor_blg_hdr_'+tabellenzusatz,data.data);
+            
             console.log(record.data,view.getForm().getValues());
             view.getForm().setValues(record.data);
             console.log(record.data,view.getForm().getValues());
+
             data.data.positions.forEach((item)=>{
                 let pos = {...item};
                 for(let k in config.translations.pos){
