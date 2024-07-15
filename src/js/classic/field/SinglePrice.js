@@ -74,6 +74,7 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
                     });
 
                     store.add({
+                        id: Ext.id(),
                         combination_id: combination_id,
                         article: c.resultarticle,
                         amount: rec.get('amount')*c.result_amount_factor,
