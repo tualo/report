@@ -20,6 +20,72 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
         return v;
     },
 
+    processCombinations: function(rec){
+        let store = rec.store;
+        if (typeof store=='undefined') return;
+
+        let range = store.getRange(),
+            combination_id = rec.get('combination_id'),
+            combination_config = rec.get('combination_config');
+
+        if (Ext.isEmpty(combination_config)){
+            if (!Ext.isEmpty(combination_id)){
+                range.filter((r)=>{
+                    return r.get('combination_id')==combination_id;
+                }).forEach((r)=>{
+                    let c = r.get('combination_config');
+                    if (c){
+                        r.set({
+                            amount: rec.get('amount')*c.result_amount_factor,
+                            singleprice: (c.original_price==1)? rec.get('singleprice')*c.result_price_factor: c.singleprice*c.result_price_factor,
+                        });
+                    }
+                });
+            }
+        }
+    },
+
+    addCombinations: function(rec){
+        let store = rec.store,
+            combination_id = rec.get('combination_id'),
+            combination_config = rec.get('combinations'),
+            range = store.getRange();
+        if (typeof combination_config!='undefined'){
+            if (typeof combination_id=='undefined'){
+                combination_id = Ext.id();
+                rec.set('combination_id',combination_id);
+            }
+
+            combination_config.forEach((c)=>{
+                let list = range.filter((r)=>{
+                    return (r.get('combination_id')==combination_id && r.get('article')==c.resultarticle);
+                });
+                
+                if (list.length==0){
+                    
+                    let records_to_remove = [];
+                    store.getRange().forEach((r)=>{
+                        if (r.get('article')==""){
+                            records_to_remove.push(r);
+                        }
+                    });
+                    records_to_remove.forEach((r)=>{
+                        store.remove(r);
+                    });
+
+                    store.add({
+                        combination_id: combination_id,
+                        article: c.resultarticle,
+                        amount: rec.get('amount')*c.result_amount_factor,
+                        singleprice: (c.original_price==1)? rec.get('singleprice')*c.result_price_factor: c.singleprice*c.result_price_factor,
+                        combination_config: c,
+                    });
+                };
+            });
+        
+        }
+    },
+
     queryArticles: async function(v,rec){
         //console.log('queryArticles',this,arguments);
         if (!Ext.isEmpty(rec.store)){
@@ -36,6 +102,10 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
             let data = await resData.json();
             this._queriedArticles=rec.get('article');
             rec.set('_queriedArticles',rec.get('article'));
+
+            console.log('queryArticles',data,this,rec.store)
+
+            
 
             this._queriedSource_language=rec.get('source_language');
             rec.set('_queriedSource_language',rec.get('source_language'));
@@ -68,14 +138,15 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
                 console.log('queryArticles unit',data.unit!=rec.get('unit'), typeof data.unit, typeof rec.get('unit') );
                 console.log('queryArticles account',data.account!=rec.get('account'),   typeof data.account, typeof rec.get('account') );
                 */
-                if (data.singleprice!=rec.get('singleprice')){ 
+                // rec.suspendEvents();
+                if (data.singleprice*1.0!=rec.get('singleprice')){ 
                     //console.log('queryArticles set singleprice');
-                    rec.set('singleprice',data.singleprice);
+                    rec.set('singleprice',data.singleprice*1.0);
                     // rec.commit(true);
                 }
-                if (data.tax!=rec.get('tax')){ 
+                if (data.tax*1.0!=rec.get('tax')){ 
                     // console.log('queryArticles set tax');
-                    rec.set('tax',data.tax);
+                    rec.set('tax',data.tax*1.0);
                     // rec.commit(true);
                 }
                 if (data.unit!=rec.get('unit')){ 
@@ -88,6 +159,12 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
                     rec.set('account',data.account);
                     // rec.commit(true);
                 }
+                // rec.commit(true);
+                if (data.combinations){
+                    rec.set('combinations',data.combinations);
+                    this.addCombinations(rec);
+                }
+                this.processCombinations(rec);
             }
         }
     },

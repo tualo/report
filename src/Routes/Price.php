@@ -12,7 +12,8 @@ class Price implements IRoute{
     public static function register(){
         Route::add('/report/price',function($matches){
             $db = App::get('session')->getDB();
-            //$reporttype = $matches['reporttype'];
+            
+            
             try{
                 $payload = json_decode(file_get_contents('php://input'),true);
                 $db->direct('call `reportArticleInformation`({payload},@o)',['payload'=>json_encode( $payload )]);
@@ -22,7 +23,28 @@ class Price implements IRoute{
                     App::result($key,$value);
                 }
                 App::result('success', true);
-                // App::result('payload', $payload);
+
+                try{
+                    
+                    $db->direct('call `reportArticleCombinations`({payload},@o)',['payload'=>json_encode( $payload )]);
+                    $db->moreResults();
+                    $result = json_decode( $db->singleValue('select @o o',[],'o'), true);
+                    if(!is_null($result)){
+                        foreach($result as $index=>$row){
+                            $p = $payload;
+                            $p['position']['article'] = $row['resultarticle'];
+                            $db->direct('call `reportArticleInformation`({payload},@o)',['payload'=>json_encode( $p )]);
+                            $db->moreResults();
+                            $x = json_decode( $db->singleValue('select @o o',[],'o'), true);
+                            $result[$index]['singleprice'] = $x['singleprice'];
+                        }
+                        App::result('combinations', $result );
+                    }
+
+                }catch(Exception $e){
+                    App::result('combination_msg', $e->getMessage());
+                }
+                
             }catch(Exception $e){
                 App::result('last_sql', $db->last_sql );
                 App::result('msg', $e->getMessage());
