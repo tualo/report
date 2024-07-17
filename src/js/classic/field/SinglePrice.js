@@ -35,6 +35,10 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
                 }).forEach((r)=>{
                     let c = r.get('combination_config');
                     if (c){
+                        console.log('processCombinations hint',r.data,{
+                            amount: rec.get('amount')*c.result_amount_factor,
+                            singleprice: (c.original_price==1)? rec.get('singleprice')*c.result_price_factor: c.singleprice*c.result_price_factor,
+                        });
                         r.set({
                             amount: rec.get('amount')*c.result_amount_factor,
                             singleprice: (c.original_price==1)? rec.get('singleprice')*c.result_price_factor: c.singleprice*c.result_price_factor,
@@ -142,7 +146,11 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
                 // rec.suspendEvents();
                 if (data.singleprice*1.0!=rec.get('singleprice')){ 
                     //console.log('queryArticles set singleprice');
-                    rec.set('singleprice',data.singleprice*1.0);
+                    let factor=1,c = rec.get('combination_config');
+                    if(!Ext.isEmpty(c)){
+                        factor = c.result_price_factor;
+                    }
+                    rec.set('singleprice',data.singleprice*factor);
                     // rec.commit(true);
                 }
                 if (data.tax*1.0!=rec.get('tax')){ 

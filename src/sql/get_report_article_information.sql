@@ -30,7 +30,7 @@ BEGIN
     END IF;
 
     IF @PREISBEZUG is NULL THEN
-        set @PREISBEZUG = 'epreis';
+        set @PREISBEZUG = 'preis';
     END IF;
 
     IF @FLD is NULL THEN
