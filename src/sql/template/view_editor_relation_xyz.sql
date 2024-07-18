@@ -1,4 +1,5 @@
 DELIMITER ;
+delete from `ds` where `table_name` = 'view_editor_relation_#####' and (`title` = ''  or  `title` is null);
 
 INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('view_editor_relation_#####','Belegeditor (Bezugsdropdown)','',0,'display','display','display',0,'','','','',0,'','',0,'','','','Belegarten','',1,'','','','','',0,10,NULL,'',0,'Tualo.DataSets.model.Basic');
 

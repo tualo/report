@@ -1,5 +1,8 @@
 DELIMITER ;
 
+
+delete from `ds` where `table_name` = 'view_blg_list_#####' and (`title` = ''  or  `title` is null);
+
 INSERT IGNORE INTO `ds` (`table_name`, `title`, `reorderfield`, `use_history`, `searchfield`, `displayfield`, `sortfield`, `searchany`, `hint`, `overview_tpl`, `sync_table`, `writetable`, `globalsearch`, `listselectionmodel`, `sync_view`, `syncable`, `cssstyle`, `alternativeformxtype`, `read_table`, `class_name`, `special_add_panel`, `existsreal`, `character_set_name`, `read_filter`, `listxtypeprefix`, `phpexporter`, `phpexporterfilename`, `combined`, `default_pagesize`, `allowForm`, `listviewbaseclass`, `showactionbtn`, `modelbaseclass`) VALUES ('view_blg_list_#####','##### (Liste)','',0,'belegnummer','belegnummer','belegnummer',1,'','','','',0,'tualomultirowmodel','',0,'','cmp_belege_report_editorform','','ERP','',1,'','','listview','XlsxWriter','',0,100,NULL,'Tualo.DataSets.ListView',1,'Tualo.DataSets.model.Basic');
 INSERT IGNORE INTO `ds_column` (`table_name`, `column_name`, `default_value`, `default_max_value`, `default_min_value`, `update_value`, `is_primary`, `syncable`, `referenced_table`, `referenced_column_name`, `is_nullable`, `is_referenced`, `writeable`, `note`, `data_type`, `column_key`, `column_type`, `character_maximum_length`, `numeric_precision`, `numeric_scale`, `character_set_name`, `privileges`, `existsreal`, `deferedload`, `hint`, `fieldtype`) VALUES ('view_blg_list_#####','belegnummer','-1',10000000,0,'',1,0,'','','NO','NO',1,'\'\'','bigint','','bigint(20)',NULL,19,0,NULL,'select,insert,update,references',1,0,'NULL',''),
 ('view_blg_list_#####','belegnummer_anzeige','',10000000,0,'',0,0,'','','YES','NO',1,'','varchar','','varchar(32)',32,NULL,NULL,'utf8mb3','select,insert,update,references',1,0,NULL,''),
