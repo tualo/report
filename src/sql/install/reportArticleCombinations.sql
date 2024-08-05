@@ -20,9 +20,7 @@ BEGIN
     from 
         kombiartikel 
     where triggerartikel = ',QUOTE(JSON_VALUE(request,'$.position.article')));
-
-select @SQL;
-
+ 
     PREPARE stmt FROM @SQL;
     EXECUTE stmt;
     DEALLOCATE PREPARE stmt;

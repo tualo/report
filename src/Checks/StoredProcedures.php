@@ -20,7 +20,7 @@ class StoredProcedures extends PostCheck {
             'getReportPositions'=>'d8467e62cd59ac0409aa080cd4fba0c5',
             'getReportReductions'=>'8e77e1a31b9301ff1e3d91dc518ee7e2',
             'getReportLocks'=>'7150f9793457fe532dad4cabe15b3529',
-            'setReport'=>'155f73c55f519a61891bffe4a40b203b',
+            'setReport'=>'b437ac7e4aab60e91eca5056b2d90fc5',
             'setReportDefaults'=>'d4d6ffa57887a689162122a73109bb65',
             'setReportHeader'=>'7127ac7c9c3acc137cbefead2ebbfe80',
             'setReportPosition'=>'a72146349c3271bc48192f80ae044c81',
