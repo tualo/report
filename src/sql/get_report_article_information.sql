@@ -33,6 +33,10 @@ BEGIN
         set @PREISBEZUG = 'preis';
     END IF;
 
+    IF @PREISKATEGORIE is NULL THEN
+        set @PREISKATEGORIE = 1 ;
+    END IF;
+
     IF @FLD is NULL THEN
         set @FLD = '';
     END IF;

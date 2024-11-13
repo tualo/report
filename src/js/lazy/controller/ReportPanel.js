@@ -13,7 +13,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 sel  =fld.picker.getSelection();
                  
                 if ((sel.length>0) && (sel[0].get('referencenr')!=null)){
-                     
+                    if (sel[0].get('__rownumber')==0) return;
+                    
                     view.getForm().setValues({
                         referencenr: sel[0].get('referencenr'),
                         costcenter: sel[0].get('costcenter'),
