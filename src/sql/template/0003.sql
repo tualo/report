@@ -28,7 +28,7 @@ select
     concat(FORMAT(sum(steuer),2 ,'de_DE'),' €') wert,
     
     concat('Steuer (',FORMAT(steuersatz,0),'%):') pos_text,
-    concat(FORMAT(sum(steuer),2 ,'de_DE'),' €') pos_wert
+    concat(FORMAT(sum(steuer),2 ,'de_DE'),' €') pos_wert 
 from 
 	blg_pos_#####
 group by beleg, steuersatz

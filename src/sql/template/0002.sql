@@ -1,6 +1,6 @@
 DELIMITER //
 
-CREATE FUNCTION IF NOT EXISTS `getReport_#####`(  in_id bigint ) 
+CREATE OR REPLACE FUNCTION /*IF NOT EXISTS*/ `getReport_#####`(  in_id bigint ) 
 RETURNS JSON 
 READS SQL DATA 
 BEGIN 
@@ -10,6 +10,13 @@ BEGIN
     DECLARE payments LONGTEXT;
     DECLARE txt LONGTEXT;
     DECLARE reductions LONGTEXT;
+
+    DECLARE taxregistration JSON;
+    DECLARE buyerinformation JSON;
+    DECLARE sellerinformation JSON;
+    DECLARE seller_global_ids JSON;
+    DECLARE taxes JSON;
+
 
 
     SET result = "{}";
@@ -26,9 +33,11 @@ BEGIN
                 "notes", bemerkung,
                 "additionaltext", zusatztext,
                 "singleprice",epreis, 
+
                 "tax",steuersatz,
                 "net",netto,
                 "taxvalue",steuer,
+                
                 "gross",brutto,
                 "reference", referenz,
 
@@ -117,6 +126,76 @@ BEGIN
     FROM blg_txt_##### 
     WHERE id = in_id;
 
+
+    SELECT  
+        JSON_OBJECTAGG( `key`, `val` )
+    INTO taxregistration
+    FROM 
+        blg_taxregistration_##### 
+    WHERE id = in_id;
+
+
+    SELECT 
+        JSON_OBJECTAGG( `key`, `val` )
+    INTO 
+        sellerinformation
+    FROM 
+        blg_seller_##### 
+    WHERE id = in_id;
+
+
+    SELECT 
+        JSON_OBJECTAGG( `key`, `val` )
+    INTO 
+        buyerinformation
+    FROM 
+        blg_buyer_##### 
+    WHERE id = in_id;
+
+    SELECT 
+        JSON_OBJECTAGG( `key`, `val` )
+    INTO 
+        seller_global_ids
+    FROM 
+        blg_seller_globalid_##### 
+    WHERE id = in_id;
+
+    
+    SELECT 
+        JSON_ARRAYAGG(
+            JSON_OBJECT(
+                "category", `category`,
+                "type", `type`,
+                "rate", `rate`,
+                "net", `net`,
+                "gross", `gross`,
+                "tax", `tax`
+            )
+        )
+    INTO 
+        taxes
+    FROM
+        (
+            SELECT
+                beleg, 
+                steuersatz,
+                'S' `category`,
+                'VAT' `type`,
+                steuersatz `rate`,
+                sum(brutto) `gross`,
+                sum(netto) `net`,
+                sum(steuer) `tax`
+            FROM 
+                view_report_blg_taxes_##### 
+            WHERE 
+                id = in_id
+            GROUP BY 
+                beleg, 
+                steuersatz 
+        ) x
+    ;
+
+
     SELECT JSON_OBJECT(
 
         "id", hdr.id,
@@ -138,15 +217,30 @@ BEGIN
 
         "zbeleg", hdr.zbeleg,
         "zbeleg_zusatz", hdr.zbeleg_zusatz,
+
+        "gross", hdr.brutto,
+        "net", hdr.netto,
+        "steuer", hdr.steuer,
+        "payed", hdr.bezahlt,
+        "open", hdr.offen,
         
 
         "positions",JSON_MERGE("[]",positions),
         "payments",JSON_MERGE("[]",payments),
         "reductions",JSON_MERGE("[]",reductions),
         "signum",JSON_MERGE("[]",signum),
-        "texts",JSON_MERGE("[]",txt)
+        "texts",JSON_MERGE("[]",txt),
 
-    ) INTO result
+        "tax_registration",     ifnull(taxregistration,JSON_OBJECT()),
+        "buyer_information",    ifnull(buyerinformation,JSON_OBJECT()),
+        "seller_information",   ifnull(sellerinformation,JSON_OBJECT()),
+        "seller_global_ids",    ifnull(seller_global_ids,JSON_OBJECT()),
+
+        "taxes", JSON_MERGE("[]", taxes )
+
+    ) 
+    INTO result
+
     FROM 
         blg_hdr_##### hdr
         LEFT JOIN blg_adr_##### adr ON hdr.id = adr.id
@@ -156,8 +250,6 @@ BEGIN
 
     RETURN result;
 END //
-
-
 
 
 CREATE FUNCTION IF NOT EXISTS `getReportNumber#####`()

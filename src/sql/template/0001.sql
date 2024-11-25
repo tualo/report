@@ -445,3 +445,39 @@ create table if not exists `blg_abschluss_#####`(
     constraint `fk_blg_abschluss_#####_belegnummer` foreign key (`belegnummer`) references `blg_hdr_#####` (`id`) on delete restrict on update cascade
 )//
 
+
+create table if not exists blg_taxregistration_#####(
+    `id` bigint,
+    `key` varchar(36),
+    `val` varchar(20),
+    primary key (`id`,`key`),
+    constraint `fk_blg_taxregistration_#####_id` foreign key (`id`) references `blg_hdr_#####` (`id`) on delete restrict on update cascade
+) //
+
+
+
+create table if not exists blg_buyer_#####(
+    `id` bigint,
+    `key` varchar(36),
+    `val` varchar(255),
+    primary key (`id`,`key`),
+    constraint `fk_blg_buyer_#####_id` foreign key (`id`) references `blg_hdr_#####` (`id`) on delete restrict on update cascade
+) //
+
+
+create table if not exists blg_seller_#####(
+    `id` bigint,
+    `key` varchar(36),
+    `val` varchar(255),
+    primary key (`id`,`key`),
+    constraint `fk_blg_seller_#####_id` foreign key (`id`) references `blg_hdr_#####` (`id`) on delete restrict on update cascade
+) //
+
+
+create table if not exists blg_seller_globalid_#####(
+    `id` bigint,
+    `key` varchar(36),
+    `val` varchar(255),
+    primary key (`id`,`key`),
+    constraint `fk_blg_seller_globalid_#####_id` foreign key (`id`) references `blg_hdr_#####` (`id`) on delete restrict on update cascade
+) //

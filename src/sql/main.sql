@@ -611,46 +611,46 @@ BEGIN
     IF in_id < 0 THEN
 
 
-    SET result = JSON_OBJECT(
-        "reporttype",  reporttype, 
-        "address", "",
-        "companycode", getSessionCurrentBKR(),
-        "office", getSessionCurrentOffice(),
-        "referencenr", 0,
-        "costcenter", 0,
+        SET result = JSON_OBJECT(
+            "reporttype",  reporttype, 
+            "address", "",
+            "companycode", getSessionCurrentBKR(),
+            "office", getSessionCurrentOffice(),
+            "referencenr", 0,
+            "costcenter", 0,
 
-           "date", curdate(),
-        "payuntildate", curdate(),
-        "service_period_start", curdate(),
-        "service_period_stop", curdate(),
-        "reference", "",
-        "bookingdate", curdate(),
+            "date", curdate(),
+            "payuntildate", curdate(),
+            "service_period_start", curdate(),
+            "service_period_stop", curdate(),
+            "reference", "",
+            "bookingdate", curdate(),
 
-        "positions",ifnull((
-            select 
-            JSON_ARRAYAGG(
-            JSON_OBJECT(
-                "pos", position,
-                "position", position,
-                "artikel", blg_artikel.artikel,
-                "amount", blg_artikel.anzahl,
-                "price", blg_artikel.epreis,
-                "note", blg_artikel.bemerkung
-            )
-            order by position
-            )
-            from 
-                blg_artikel 
-                join blg_config
-                    on blg_config.id = blg_artikel.belegart
-                    and blg_config.tabellenzusatz = reporttype
-        ),JSON_ARRAY()),
-        "payments",JSON_ARRAY(),
-        "reductions",JSON_ARRAY(),
-        "signum",JSON_ARRAY(),
-        "texts",JSON_ARRAY(),
-        "locks",JSON_ARRAY()
-    );
+            "positions",ifnull((
+                select 
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        "pos", position,
+                        "position", position,
+                        "artikel", blg_artikel.artikel,
+                        "amount", blg_artikel.anzahl,
+                        "price", blg_artikel.epreis,
+                        "note", blg_artikel.bemerkung
+                    )
+                    order by position
+                )
+                from 
+                    blg_artikel 
+                    join blg_config
+                        on blg_config.id = blg_artikel.belegart
+                        and blg_config.tabellenzusatz = reporttype
+            ),JSON_ARRAY()),
+            "payments", JSON_ARRAY(),
+            "reductions",JSON_ARRAY(),
+            "signum",JSON_ARRAY(),
+            "texts",JSON_ARRAY(),
+            "locks",JSON_ARRAY()
+        );
 
 
     ELSE
@@ -721,6 +721,105 @@ BEGIN
 
 
 
+        set @SQL = replace(concat('select  ifnull(
+                    (SELECT  
+                        JSON_OBJECTAGG( `key`, `val` )
+                    FROM 
+                        blg_taxregistration_##### 
+                    WHERE id = ',in_id,')
+                    ,json_object()
+                ) into @tax_registration'),'#####',reporttype);
+        PREPARE stmt FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
+
+
+        set @SQL = replace(concat('select  ifnull(
+                    (SELECT  
+                        JSON_OBJECTAGG( `key`, `val` )
+                    FROM 
+                        blg_buyer_##### 
+                    WHERE id = ',in_id,')
+                    ,json_object()
+                ) into @buyer_information'),'#####',reporttype);
+        PREPARE stmt FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
+
+
+        set @SQL = replace(concat('select  ifnull(
+                    (SELECT  
+                        JSON_OBJECTAGG( `key`, `val` )
+                    FROM 
+                        blg_seller_##### 
+                    WHERE id = ',in_id,')
+                    ,json_object()
+                ) into @seller_information'),'#####',reporttype);
+        PREPARE stmt FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
+
+
+        set @SQL = replace(concat('select  ifnull(
+                    (SELECT  
+                        JSON_OBJECTAGG( `key`, `val` )
+                    FROM 
+                        blg_seller_globalid_##### 
+                    WHERE id = ',in_id,')
+                    ,json_object()
+                ) into @seller_global_ids'),'#####',reporttype);
+        PREPARE stmt FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
+
+
+set @SQL = replace(
+            concat('
+                select  ifnull(
+                    (
+                        
+                        SELECT 
+                            JSON_ARRAYAGG(
+                                JSON_OBJECT(
+                                    "category", `category`,
+                                    "type", `type`,
+                                    "rate", `rate`,
+                                    "net", `net`,
+                                    "gross", `gross`,
+                                    "tax", `tax`
+                                )
+                            )
+                        FROM
+                            (
+                                SELECT
+                                    beleg, 
+                                    steuersatz,
+                                    "S" `category`,
+                                    "VAT" `type`,
+                                    steuersatz `rate`,
+                                    sum(brutto) `gross`,
+                                    sum(netto) `net`,
+                                    sum(steuer) `tax`
+                                FROM 
+                                    blg_pos_##### 
+                                WHERE 
+                                    beleg = ',in_id,'
+                                GROUP BY 
+                                    beleg, 
+                                    steuersatz 
+                            ) x
+                    )
+                    ,json_array()
+                ) into @taxes'
+            ),'#####',
+            reporttype
+        );
+        PREPARE stmt FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
+
+        
+
 
 
         select
@@ -764,9 +863,18 @@ BEGIN
             "reductions",JSON_MERGE("[]",@reductions),
             "signum",JSON_MERGE("[]",@signum),
             "texts",JSON_MERGE("[]",@txt),
-            "locks",JSON_MERGE("[]",@locks)
+            "locks",JSON_MERGE("[]",@locks),
 
-        ) INTO @result
+            "tax_registration", @tax_registration,
+            "seller_information", @seller_information,
+            "buyer_information", @buyer_information,
+            "seller_global_ids", @seller_global_ids,
+            "taxes", @taxes               
+
+        ) 
+
+        INTO 
+            @result
         FROM 
             blg_hdr_',reporttype,'  hdr
             LEFT JOIN blg_adr_',reporttype,'  adr ON hdr.id = adr.id
@@ -1560,10 +1668,14 @@ END //
 DELIMITER //
 
 CREATE TABLE IF NOT EXISTS blghdr_translations (
-    column_name varchar(128) primary key,
+    column_name varchar(128),
     json_attribute_name varchar(128),
+    primary key (column_name,json_attribute_name),
     is_required tinyint default 0
 ) //
+
+alter table blghdr_translations drop primary key//
+alter table blghdr_translations add primary key (column_name,json_attribute_name)//
 
 INSERT IGNORE INTO blghdr_translations (column_name,json_attribute_name,is_required) values ('id','id',1) //
 INSERT IGNORE INTO blghdr_translations (column_name,json_attribute_name,is_required) values ('geschaeftsstelle','office',0) //
@@ -1607,6 +1719,12 @@ INSERT IGNORE INTO blghdr_translations (column_name,json_attribute_name,is_requi
 
 INSERT IGNORE INTO blghdr_translations (column_name,json_attribute_name,is_required) values ('svkunde','svkunde',0) //
 INSERT IGNORE INTO blghdr_translations (column_name,json_attribute_name,is_required) values ('svmodel','svmodel',0) //
+
+
+INSERT IGNORE INTO blghdr_translations (column_name,json_attribute_name,is_required) values ('netto','net',0) //
+INSERT IGNORE INTO blghdr_translations (column_name,json_attribute_name,is_required) values ('brutto','gross',0) //
+INSERT IGNORE INTO blghdr_translations (column_name,json_attribute_name,is_required) values ('bezahlt','payed',0) //
+INSERT IGNORE INTO blghdr_translations (column_name,json_attribute_name,is_required) values ('offen','open',0) //
 
 
 CREATE OR REPLACE PROCEDURE setReportHeader( in reporttype varchar(20), in in_json JSON )
