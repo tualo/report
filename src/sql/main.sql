@@ -4,7 +4,37 @@
 -- SOURCE FILE: ./src/000.RPT.getArticleAccountNumber.sql 
 
 DELIMITER //
- 
+
+
+
+
+
+CREATE OR REPLACE FUNCTION `getArticleTaxRate`( in_steuergruppe varchar(20), in_bookingdate date, in_article varchar(255) ) 
+    RETURNS fixed(15,6)
+    READS SQL DATA
+    COMMENT ''
+BEGIN 
+    DECLARE fld varchar(10);
+    DECLARE result varchar(10);
+
+    SELECT ifnull(feld,'') INTO fld FROM steuergruppen where steuergruppe = in_steuergruppe;
+
+    select
+       ifnull( JSON_VALUE(json_row,concat('$.steuer',fld)),19)
+    INTO
+        result
+    from 
+        view_readtable_bfkonten_jsonrow
+        join bfkonten_zuordnung 
+            on view_readtable_bfkonten_jsonrow.id = bfkonten_zuordnung.konto_id 
+            and view_readtable_bfkonten_jsonrow.gueltig = bfkonten_zuordnung.gueltig 
+            and bfkonten_zuordnung.gruppe = in_article
+    WHERE 
+        in_bookingdate between view_readtable_bfkonten_jsonrow.gueltig_von and view_readtable_bfkonten_jsonrow.gueltig;
+
+    return result;
+END //
+
 CREATE OR REPLACE FUNCTION `getArticleAccountNumber`( in_steuergruppe varchar(20), in_bookingdate date, in_article varchar(255) ) 
     RETURNS varchar(10)
     READS SQL DATA
@@ -13,23 +43,24 @@ BEGIN
     DECLARE fld varchar(10);
     DECLARE result varchar(10);
 
-    SELECT feld INTO fld FROM steuergruppen where steuergruppe = in_steuergruppe;
+    SELECT ifnull(feld,'') INTO fld FROM steuergruppen where steuergruppe = in_steuergruppe;
 
     select
-        JSON_VALUE(js,concat('$.konto',fld))
+        JSON_VALUE(json_row,concat('$.konto',fld))
     INTO
         result
     from 
-        view_readtable_bfkonten
+        view_readtable_bfkonten_jsonrow
         join bfkonten_zuordnung 
-            on view_readtable_bfkonten.id = bfkonten_zuordnung.konto_id 
-            and view_readtable_bfkonten.gueltig = bfkonten_zuordnung.gueltig 
+            on view_readtable_bfkonten_jsonrow.id = bfkonten_zuordnung.konto_id 
+            and view_readtable_bfkonten_jsonrow.gueltig = bfkonten_zuordnung.gueltig 
             and bfkonten_zuordnung.gruppe = in_article
     WHERE 
-        in_bookingdate between view_readtable_bfkonten.gueltig_von and view_readtable_bfkonten.gueltig;
+        in_bookingdate between view_readtable_bfkonten_jsonrow.gueltig_von and view_readtable_bfkonten_jsonrow.gueltig;
 
     return result;
 END //
+
 
 DELIMITER ;
 -- SOURCE FILE: ./src/000.RPTJSON.func.get.sql 
