@@ -1,6 +1,6 @@
 DELIMITER //
 
-CREATE OR REPLACE FUNCTION `getReportToAccount`(intabellenzusatz VARCHAR(20), kundennummer VARCHAR(50),kostenstelle integer) RETURNS varchar(50) CHARSET utf8mb4
+CREATE OR REPLACE FUNCTION `getReportToAccount`(intabellenzusatz VARCHAR(20), kundennummer VARCHAR(50),kostenstelle integer) RETURNS varchar(50)  
     DETERMINISTIC
 BEGIN
     DECLARE res VARCHAR(50);
@@ -27,7 +27,7 @@ insert ignore into pos_preistyp (id,name) values (0,'unbestimmt'),(1,'preiskateg
 
 
 
-CREATE  FUNCTION IF NOT EXISTS `getGiroCodeText#####`(in_number bigint) RETURNS longtext CHARSET utf8mb4 COLLATE utf8mb4_general_ci
+CREATE  FUNCTION IF NOT EXISTS `getGiroCodeText#####`(in_number bigint) RETURNS longtext 
     READS SQL DATA
 BEGIN 
 

@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS `zahlungsarten` (
   `referenzds` varchar(255) DEFAULT NULL,
   `belegid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Erlaubte Zahlarten.';
+)  COMMENT='Erlaubte Zahlarten.';
