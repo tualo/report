@@ -180,7 +180,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         }catch(e){}
     },
     initializeReport: async function(){
-        this.hideSaveButton();
+        // this.hideSaveButton();
 
         if (this.getViewModel().get('initializeReport')===true) return;
         this.getViewModel().set('initializeReport',true);
