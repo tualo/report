@@ -58,7 +58,8 @@ class Setup extends BaseSetup implements ISetupCommandline{
             'install-sql-tualojs',
             'install-sql-monaco',
             'install-sql-dashboard',
-            'install-sql-bootstrap'
+            'install-sql-bootstrap',
+            'install-sql-report'
             // 'compile'
         ];
  

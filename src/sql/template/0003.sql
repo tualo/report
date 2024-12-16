@@ -234,6 +234,26 @@ from view_readtable_#BEZ# #BEZ# //
 call fill_ds('view_editor_relation_#####')  //
 call fill_ds_column('view_editor_relation_#####')  //
 
+
+create view if not exists view_readtable_buyer_relation_##### as 
+
+select 
+concat(#BEZ#.#id_column#,'|',#KST_REF0#) id,
+#BEZ#.#id_column# referencenr,
+#KST_REF0# costcenter,
+'' line1,
+'' line2,
+'' line3,
+'' city,
+'' postcode
+
+from view_readtable_#BEZ# #BEZ# //
+
+call fill_ds('view_readtable_buyer_relation_#####')  //
+call fill_ds_column('view_readtable_buyer_relation_#####')  //
+
+
+
 insert ignore into ds_dropdownfields
 (
     table_name,

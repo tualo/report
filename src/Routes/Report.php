@@ -23,26 +23,31 @@ class Report implements IRoute{
                 
                 $data = R::get($type,$matches['id']);
 
+                
                 /*
                 $db->direct('call `getReport`({type},{id},@o)',$matches);
                 $data = json_decode( $db->singleValue('select @o report',$matches,'report'), true);
                 */
                 if (is_null($data)) throw new \Exception('Report not found');
                 if ($matches['id']<0){
-                        if ($postdata && isset($postdata['bezugsnummer'])){
-                            $data['referencenr'] = $postdata['bezugsnummer'];
-                        }else if ($postdata && isset($postdata['kundennummer'])){
-                            $data['referencenr'] = $postdata['kundennummer'];
-                        }else if ($postdata && isset($postdata['referencenr'])){
-                            $data['referencenr'] = $postdata['referencenr'];
-                        }
+                    if ($type=='krechnung'){
+                        if ( $data['positions'] && count($data['positions'])==0){
 
-                        if (!isset($data['address']) || $data['address']==''){
-                            $data['address'] = $db->singleValue(
-                                'select address from view_editor_relation_'.$type.' where referencenr={referencenr} and costcenter={costcenter}',$data,'address'
-                            );
+                            $data['positions'] = [
+                                [
+                                    'article'=>'Eingangsrechnung',
+                                    'amount'=>0,
+                                    'taxrate'=>19
+                                ],
+                                [
+                                    'article'=>'Eingangsrechnung, Steuerfrei',
+                                    'amount'=>0,
+                                    'taxrate'=>0
+                                ]
+
+                                ];
                         }
-                    
+                    }
                 }
                 App::result('data',$data);
 

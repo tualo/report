@@ -56,10 +56,18 @@ class Configure implements IRoute{
 
             try{
                 $templates = [
-                    '0001.sql','0002.sql','0003.sql','0100.sql' ,
-                    'view_editor_blg_hdr_xzy.sql','view_editor_blg_pos_xzy.sql' ,
-                    'view_editor_relation_xyz.sql' ,'view_blg_list_xzy.sql',
-                    'view_report_blg_taxes_xyz.sql'
+                    '0001.sql',
+                    '0002.sql',
+                    '0003.sql',
+                    '0100.sql' ,
+                    'view_editor_blg_hdr_xzy.sql',
+                    'view_editor_blg_pos_xzy.sql' ,
+                    'view_editor_relation_xyz.sql' ,
+                    'view_blg_list_xzy.sql',
+                    'view_report_blg_taxes_xyz.sql',
+                    'view_report_blg_taxes_xyz.sql',
+                    'zugferd.seller.information.sql',
+                    'zugferd.buyer.information.sql'
                 ];
                 
                 $config=$db->directSingleHash('select * from blg_config where tabellenzusatz={type}',$matches);

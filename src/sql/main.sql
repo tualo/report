@@ -896,11 +896,11 @@ set @SQL = replace(
             "texts",JSON_MERGE("[]",@txt),
             "locks",JSON_MERGE("[]",@locks),
 
-            "tax_registration", @tax_registration,
-            "seller_information", @seller_information,
-            "buyer_information", @buyer_information,
-            "seller_global_ids", @seller_global_ids,
-            "taxes", @taxes               
+            "tax_registration",  JSON_MERGE("{}",@tax_registration),
+            "seller_information", JSON_MERGE("{}",@seller_information),
+            "buyer_information",  JSON_MERGE("{}",@buyer_information),
+            "seller_global_ids",  JSON_MERGE("{}",@seller_global_ids),
+            "taxes", JSON_MERGE("[]",@taxes)               
 
         ) 
 

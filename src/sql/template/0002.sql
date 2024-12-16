@@ -233,7 +233,7 @@ BEGIN
 
         "tax_registration",     ifnull(taxregistration,JSON_OBJECT()),
         "buyer_information",    ifnull(buyerinformation,JSON_OBJECT()),
-        "seller_information",   ifnull(sellerinformation,JSON_OBJECT()),
+        "seller_information",   JSON_MERGE('{}',ifnull(sellerinformation,JSON_OBJECT())),
         "seller_global_ids",    ifnull(seller_global_ids,JSON_OBJECT()),
 
         "taxes", JSON_MERGE("[]", taxes )
