@@ -1947,6 +1947,7 @@ DELIMITER //
 CREATE OR REPLACE PROCEDURE setReportDefaultsN( in reporttype varchar(20), in in_json JSON, out out_json JSON )
 BEGIN
     DECLARE strval varchar(255);
+    DECLARE text JSON;
 
     SELECT 
         JSON_INSERT(in_json, '$.__messages', JSON_ARRAY() ) 
@@ -2084,7 +2085,10 @@ END //
 CREATE OR REPLACE PROCEDURE setReport( in reporttype varchar(20), in in_json JSON, out out_json JSON )
 BEGIN
     DECLARE j INT DEFAULT 0;
+    DECLARE i INT DEFAULT 0;
     DECLARE position JSON;
+    DECLARE texts JSON;
+    DECLARE textval JSON;
     DECLARE positions JSON;
 
     call checkReportRequirements(reporttype,in_json);
@@ -2152,6 +2156,22 @@ BEGIN
     PREPARE stmt FROM @SQL;
     execute stmt;
     DEALLOCATE PREPARE stmt;
+
+
+    IF JSON_EXISTS(in_json,'$.texts') THEN 
+    SELECT JSON_EXTRACT(in_json,'$.texts') INTO texts;
+    SET i:=0;
+    WHILE i < JSON_LENGTH(texts) DO
+
+        SELECT JSON_EXTRACT(texts,CONCAT('$[',i,']')) INTO textval;
+        SET @USQL = concat( 'insert into blg_txt_',reporttype,' (`id`,`typ`,`text`) values (' , JSON_VALUE(position,'$.reportnr'), ',\'' ,JSON_VALUE(textval,'$.type'), '\',\'' , JSON_VALUE(textval,'$.text') , '\') on duplicate key update `text`=values(`text`)');
+        PREPARE stmt FROM @USQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
+        SET i:=i+1;
+        
+    END WHILE;
+    END IF;
 
 
 
