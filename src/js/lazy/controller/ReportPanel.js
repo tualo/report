@@ -58,7 +58,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             }
         }
 
-        window.v = view;
+        if (this.headtextElement){
+            console.log('headtextElement',this.headtextElement, this.headtextElement.getValue())
+        }
 //        this.getView().getComponent('reportheader')
         
         o.positions = [];
@@ -252,7 +254,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 this.getView().getComponent('reportheader').setHidden(true);
             }else{
                 this.getView().getComponent('reportheader').setHidden(false);
-                this.getView().getComponent('reportheader').add(Ext.create(config.headtext));
+                let cpm = Ext.create(config.headtext);
+                this.headtextElement = cpm;
+                this.getView().getComponent('reportheader').add(cpm);
             }
             if (Ext.isEmpty(config.foottext)){
                 this.getView().getComponent('reportfooter').setHidden(true);
