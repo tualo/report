@@ -57,6 +57,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 if (o[k] instanceof Date) o[k]=Ext.util.Format.date(o[k],'Y-m-d');
             }
         }
+
+        window.v = view;
+//        this.getView().getComponent('reportheader')
         
         o.positions = [];
         this.positionsList.getStore().each((item)=>{
