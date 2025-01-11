@@ -30,6 +30,10 @@ class Report implements IRoute{
                 */
                 if (is_null($data)) throw new \Exception('Report not found');
                 if ($matches['id']<0){
+                    if (!isset($data['id'])){
+                        $data['id'] = $matches['id'];
+                    }
+                    
                     if ($type=='krechnung'){
                         if ( $data['positions'] && count($data['positions'])==0){
 

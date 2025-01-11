@@ -4,15 +4,22 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
         'data.field.tualoreportsingleprice'
     ],
     convert: function (v,rec) {
-        console.log('SinglePrice',rec.get('article'),this._queriedArticles);
+        console.log('SinglePrice',rec.get('article'),this._queriedArticles,rec.modified);
         let doQuery = false,
             map = rec.getFieldsMap();
         if (!Ext.isEmpty(rec.get('article'))){
-            if (rec.get('article')!=rec.get('_queriedArticles')) doQuery=true;
-            if (map['source_language'] && rec.get('source_language')!=this._queriedSource_language) doQuery=true;
-            if (map['target_language'] && rec.get('target_language')!=this._queriedTarget_language) doQuery=true;
-            if (map['amount'] && rec.get('amount')!=rec.get('_queriedAmount')) doQuery=true;
-            if (map['gebiet'] && rec.get('gebiet')!=this._queriedGebiet) doQuery=true;
+            if (typeof rec.modified=='undefined') return v;
+            /*if (
+                rec.isModified('article') &&
+                rec.isModified('amount') 
+            ) {
+                */
+                if (rec.get('article')!=rec.get('_queriedArticles')) doQuery=true;
+                if (map['source_language'] && rec.get('source_language')!=this._queriedSource_language) doQuery=true;
+                if (map['target_language'] && rec.get('target_language')!=this._queriedTarget_language) doQuery=true;
+                if (map['amount'] && rec.get('amount')!=rec.get('_queriedAmount')) doQuery=true;
+                if (map['gebiet'] && rec.get('gebiet')!=this._queriedGebiet) doQuery=true;
+            // }
         }
         if (doQuery) {
             this.queryArticles(v,rec);
@@ -144,7 +151,7 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
                 console.log('queryArticles account',data.account!=rec.get('account'),   typeof data.account, typeof rec.get('account') );
                 */
                 // rec.suspendEvents();
-                if (data.singleprice*1.0!=rec.get('singleprice')){ 
+                if (data.singleprice*1.0!=rec.get('singleprice')*1.0){ 
                     //console.log('queryArticles set singleprice');
                     let factor=1,c = rec.get('combination_config');
                     if(!Ext.isEmpty(c)){
@@ -153,7 +160,7 @@ Ext.define('Tualo.report.data.field.SinglePrice', {
                     rec.set('singleprice',data.singleprice*factor);
                     // rec.commit(true);
                 }
-                if (data.tax*1.0!=rec.get('tax')){ 
+                if (data.tax*1.0!=rec.get('tax')*1.0){ 
                     // console.log('queryArticles set tax');
                     rec.set('tax',data.tax*1.0);
                     // rec.commit(true);
