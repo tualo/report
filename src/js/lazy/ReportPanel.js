@@ -117,8 +117,14 @@ Ext.define('Tualo.report.lazy.ReportPanel',{
             xtype: 'panel',
             itemId: 'reportheader',
             layout: 'fit',
-            flex: 0.5,
-            hidden: true
+            flex: 0.2,
+            items: [
+                {
+                    xtype: 'textarea',
+                    name: 'headtext'
+                }
+            ],
+            hidden: false
         },
         {
             xtype: 'panel',
