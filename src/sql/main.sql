@@ -2164,7 +2164,7 @@ BEGIN
     WHILE i < JSON_LENGTH(texts) DO
 
         SELECT JSON_EXTRACT(texts,CONCAT('$[',i,']')) INTO textval;
-        SET @USQL = concat( 'insert into blg_txt_',reporttype,' (`id`,`typ`,`text`) values (' , JSON_VALUE(position,'$.reportnr'), ',\'' ,JSON_VALUE(textval,'$.type'), '\',\'' , JSON_VALUE(textval,'$.text') , '\') on duplicate key update `text`=values(`text`)');
+        SET @USQL = concat( 'insert into blg_txt_',reporttype,' (`id`,`typ`,`text`) values (' , JSON_VALUE(in_json,'$.id'), ',\'' ,JSON_VALUE(textval,'$.type'), '\',\'' , JSON_VALUE(textval,'$.text') , '\') on duplicate key update `text`=values(`text`)');
         PREPARE stmt FROM @USQL;
         execute stmt;
         DEALLOCATE PREPARE stmt;

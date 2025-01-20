@@ -68,6 +68,16 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 }
             )
         }
+
+        if (this.foottextElement){
+            console.log('headtextElement',this.foottextElement, this.foottextElement.getValue())
+            o.texts.push(
+                {
+                    type: 'foot',
+                    text: this.foottextElement.getValue()
+                }
+            )
+        }
 //        this.getView().getComponent('reportheader')
         
         o.positions = [];
@@ -159,6 +169,20 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 let record = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_'+tabellenzusatz,pos);
                 positions.push(record);
             });
+
+            data.data.positions.forEach((item)=>{
+                if (item.type=='head'){
+                    if (this.headtextElement){
+                        this.headtextElement.setValue(item.text);
+                    }
+                }
+                if (item.type=='foot'){
+                    if (this.foottextElement){
+                        this.foottextElement.setValue(item.text);
+                    }
+                }
+            });
+
             if (positions.length==0){
                 positions.push(Ext.create('Tualo.DataSets.model.View_editor_blg_pos_'+tabellenzusatz,{}));
             }
@@ -269,7 +293,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 this.getView().getComponent('reportfooter').setHidden(true);
             }else{
                 this.getView().getComponent('reportfooter').setHidden(false);
-                this.getView().getComponent('reportfooter').add(Ext.create(config.foottext));
+                let cpm = Ext.create(config.foottext);
+                this.foottextElement = cpm;
+                this.getView().getComponent('reportfooter').add(cpm);
             }
         }
         this.reportData(this.getViewModel().get('record').get('tabellenzusatz'),this.getViewModel().get('record').get('id'));
