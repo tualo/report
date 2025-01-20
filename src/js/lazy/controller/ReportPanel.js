@@ -170,7 +170,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 positions.push(record);
             });
 
-            data.data.positions.forEach((item)=>{
+            data.data.texts.forEach((item)=>{
                 if (item.type=='head'){
                     if (this.headtextElement){
                         this.headtextElement.setValue(item.text);
