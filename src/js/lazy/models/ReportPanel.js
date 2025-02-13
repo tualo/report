@@ -1,14 +1,15 @@
 Ext.define('Tualo.report.lazy.models.ReportPanel', {
     extend: 'Ext.app.ViewModel',
     alias: 'viewmodel.lazy_report_panel',
-    data:{
+    data: {
         saving: false,
         initialized: false,
         record: null,
+        loadedRecord: null,
         config: null
     },
     formulas: {
-        disabled: function(get){
+        disabled: function (get) {
             return Ext.isEmpty(get('record')) || get('saving');
         }
     }

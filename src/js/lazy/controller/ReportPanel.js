@@ -50,6 +50,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
     loadRecord: function (record) {
         this.getViewModel().set('record', record);
+        this.getViewModel().set('loadedRecord', record.data);
+
         if (!Ext.isEmpty(record)) {
             if (typeof this.positionsList == 'undefined') {
                 this.initializeReport();
@@ -66,7 +68,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         return this.getView().getForm().getValues(false, false, false, true);
     },
     save: async function () {
-        let view = this.getView(); o = view.getForm().getValues(false, false, false, true);
+        let view = this.getView(),
+            original = this.getViewModel().get('loadedRecord'),
+            o = { ...view.getForm().getValues(false, false, false, true), ...original };
         view.setDisabled(true);
         for (let k in o) {
             if (o.hasOwnProperty(k)) {
@@ -120,7 +124,6 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 }
             }
         });
-
 
 
         let data = await fetch(
