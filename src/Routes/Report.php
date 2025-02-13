@@ -27,35 +27,24 @@ class Report implements IRoute
                 $data = R::get($type, $matches['id']);
 
 
-                /*
-                $db->direct('call `getReport`({type},{id},@o)',$matches);
-                $data = json_decode( $db->singleValue('select @o report',$matches,'report'), true);
-                */
                 if (is_null($data)) throw new \Exception('Report not found');
                 if ($matches['id'] < 0) {
                     if (!isset($data['id'])) {
                         $data['id'] = $matches['id'];
                     }
 
-                    if ($type == 'krechnung') {
-                        if ($data['positions'] && count($data['positions']) == 0) {
-
-                            $data['positions'] = [
-                                [
-                                    'article' => 'Eingangsrechnung',
-                                    'amount' => 0,
-                                    'taxrate' => 19
-                                ],
-                                [
-                                    'article' => 'Eingangsrechnung, Steuerfrei',
-                                    'amount' => 0,
-                                    'taxrate' => 0
-                                ]
-
-                            ];
-                        }
+                    if (!(isset($postdata['bezugsnummer'])) && (isset($postdata['kundennummer']))) {
+                        $postdata['bezugsnummer'] = $postdata['kundennummer'];
+                    }
+                    if (
+                        ($data['referencenr'] == 0 || $data['referencenr'] == '')
+                        && (isset($postdata['bezugsnummer']))
+                    ) {
+                        $data['referencenr'] = $postdata['bezugsnummer'];
                     }
                 }
+
+
                 App::result('data', $data);
 
                 App::result('success', true);

@@ -5,15 +5,16 @@ Ext.define('Tualo.report.controller.Form', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.report_panel',
 
-    loadRecord: function(record){
+    loadRecord: function (record) {
 
-        
 
-        console.log('controller loadRecord',record);
-        this.getViewModel().set('record',record);
-        if (!Ext.isEmpty(record)){
-            if (typeof this.myPanel=='undefined'){
-                this.myPanel = Ext.create('Tualo.report.lazy.ReportPanel',{});
+        // window.CF = this.getView();
+        this.getViewModel().set('record', record);
+        if (!Ext.isEmpty(record)) {
+            this.getView().up().getViewModel().set('isModified', false)
+            this.getView().up().getViewModel().set('isNew', false)
+            if (typeof this.myPanel == 'undefined') {
+                this.myPanel = Ext.create('Tualo.report.lazy.ReportPanel', {});
                 this.getView().add(this.myPanel);
             }
             this.myPanel.loadRecord(record);
