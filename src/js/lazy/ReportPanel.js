@@ -1,15 +1,15 @@
-Ext.define('Tualo.report.lazy.ReportPanel',{
+Ext.define('Tualo.report.lazy.ReportPanel', {
     extend: "Ext.form.Panel",
-    requires:[
+    requires: [
         'Tualo.report.lazy.controller.ReportPanel',
         'Tualo.report.lazy.models.ReportPanel'
     ],
     bodyPadding: 10,
-    
+    alias: 'widget.lazy_report_panel',
     controller: 'lazy_report_panel',
-	viewModel: {
-		type: 'lazy_report_panel'
-	},
+    viewModel: {
+        type: 'lazy_report_panel'
+    },
     bind: {
         disabled: "{disabled}"
     },
@@ -23,10 +23,11 @@ Ext.define('Tualo.report.lazy.ReportPanel',{
     },
 
     dockedItems: [
-        {   
+        {
             xtype: "toolbar",
             dock: "top",
             layout: 'hbox',
+            itemId: 'tools',
             cls: "x-panel-header-default",
             listeners: {
                 boxready: 'toolbarBoxReady'
@@ -38,14 +39,14 @@ Ext.define('Tualo.report.lazy.ReportPanel',{
                     glyph: "refresh",
                     handler: "refresh",
                     tooltip: "neu Laden",
-                    
+
                 },
                 {
                     xtype: "glyphtool",
                     glyph: "save",
                     tooltip: "Speichern",
                     handler: "save",
-                    
+
                 },
                 {
                     xtype: "glyphtool",
@@ -53,7 +54,7 @@ Ext.define('Tualo.report.lazy.ReportPanel',{
                     glyph: "coins",
                     tooltip: "Zahlungen",
                     handler: "pay",
-                    
+
                 },
                 {
                     xtype: "glyphtool",
@@ -61,7 +62,16 @@ Ext.define('Tualo.report.lazy.ReportPanel',{
                     glyph: "ban",
                     tooltip: "Stornieren",
                     handler: "reject",
-                    
+
+                },
+                {
+                    xtype: "glyphtool",
+                    glyphPrefix: "fa fa-",
+                    glyph: "eye",
+                    tooltip: "Öffnen",
+                    itemId: "openView",
+                    handler: "openView",
+
                 }
             ]
         }
@@ -77,7 +87,7 @@ Ext.define('Tualo.report.lazy.ReportPanel',{
                 align: 'stretch'
             },
 
-            
+
 
             items: [
                 {
@@ -141,7 +151,7 @@ Ext.define('Tualo.report.lazy.ReportPanel',{
             hidden: true
         }
     ],
-    loadRecord: function(record){
+    loadRecord: function (record) {
         this.getController().loadRecord(record);
     }
 });

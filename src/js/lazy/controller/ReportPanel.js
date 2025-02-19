@@ -220,6 +220,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             }
 
             this.positionsList.getStore().loadData(positions);
+
+            this.getView().fireEvent('report_ready', this);
         }
     },
 
@@ -291,6 +293,10 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                     title: null,
                     border: true,
                     xtype: 'dslist_view_editor_blg_pos_' + this.getViewModel().get('record').get('tabellenzusatz'),
+                    features: {
+                        ftype: 'summary',
+                        dock: 'bottom'
+                    },
                     plugins: {
                         gridfilters: true,
                         cellediting: {
@@ -329,9 +335,36 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 this.foottextElement = cpm;
                 this.getView().getComponent('reportfooter').add(cpm);
             }
+
+            if (config.renderer) {
+                this.getViewModel().set('renderer', config.renderer);
+                let menuItems = [],
+                    viewEye = this.getView().getComponent('tools').getComponent('openView');
+                config.renderer.forEach((item) => {
+                    menuItems.push({
+                        text: item.label,
+                        pug_template: item.pug_template,
+                        useremote: item.useremote
+                    });
+
+                });
+
+                if (menuItems.length > 1) {
+                    viewEye.setMenu(
+                        Ext.create('Ext.menu.Menu', {
+                            items: menuItems
+                        }), true);
+                }
+
+                // window.viewEye = viewEye;
+            }
         }
         this.reportData(this.getViewModel().get('record').get('tabellenzusatz'), this.getViewModel().get('record').get('id'));
 
+    },
+
+    openView: function () {
+        console.log(arguments)
     },
 
     reject: function () {

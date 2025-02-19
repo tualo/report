@@ -6,7 +6,8 @@ Ext.define('Tualo.report.lazy.models.ReportPanel', {
         initialized: false,
         record: null,
         loadedRecord: null,
-        config: null
+        config: null,
+        renderer: []
     },
     formulas: {
         disabled: function (get) {
