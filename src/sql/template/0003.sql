@@ -1,6 +1,7 @@
 DELIMITER //
 
 
+
 create  view  if not exists view_point_of_sale_belege_##### as 
 SELECT 
 
@@ -85,54 +86,6 @@ group by beleg
 // 
 
 
-
-create view if not exists view_report_blg_pos_##### as 
-select 
-
-    pos.id,
-
-    pos.pos,
-    pos.beleg,
-    pos.artikel,
-
-    pos.bemerkung,
-
-    pos.zusatztext,
-
-    concat(FORMAT( (pos.anzahl),0 ,'de_DE'), ifnull(mengeneinheiten.symbol,'')) anzahl,
-
-    concat(FORMAT( (pos.epreis), if(pos.beleg between 435000000 and 435999999 ,3,2) ,'de_DE'),' €') epreis,
-
-    concat(FORMAT( (pos.netto),2 ,'de_DE'),' €') netto,
-    concat(FORMAT( (pos.brutto),2 ,'de_DE'),' €') brutto,
-
-    concat(pos.artikel ) pos_text,
-    concat(FORMAT( (pos.brutto),2 ,'de_DE'),' EUR') pos_brutto,
-
-    concat(FORMAT( (pos.steuer),2 ,'de_DE'),' €') steuer,
-    concat(FORMAT( (pos.steuersatz),0 ,'de_DE'),' %') steuersatz,
-
-    pos.anzahl number_anzahl,
-    pos.netto number_netto,
-    pos.epreis number_epreis,
-    pos.brutto number_brutto,
-    pos.steuer number_steuer,
-    pos.steuersatz number_steuersatz,
-
-    pos.referenz,
-    pos.konto
-
-from
-
-    blg_pos_##### pos
-    join artikelgruppen
-    on pos.artikel = artikelgruppen.gruppe
-    left join mengeneinheiten 
-    on artikelgruppen.einheit = mengeneinheiten.id
-where
-    pos.anzahl<>0
-
-order by pos.pos //
 
 
 create view if not exists view_report_blg_adr_##### as
@@ -313,6 +266,28 @@ from
 
 call fill_ds('view_editor_blg_pos_#####')  //
 call fill_ds_column('view_editor_blg_pos_#####')  //
+
+
+create or replace view view_report_blg_pos_##### as 
+select 
+
+    pos.*,
+    mengeneinheiten.symbol mengeneinheiten_symbol,
+    mengeneinheiten.faktor mengeneinheiten_faktor
+
+from
+
+    view_editor_blg_pos_##### pos
+    join artikelgruppen
+    on pos.artikel = artikelgruppen.gruppe
+    left join mengeneinheiten 
+    on artikelgruppen.einheit = mengeneinheiten.id
+where
+    pos.anzahl<>0
+
+order by pos.pos //
+call fill_ds('view_report_blg_pos_#####')  //
+call fill_ds_column('view_report_blg_pos_#####')  //
 
 
 create or replace view `view_editor_blg_hdr_#####` as
