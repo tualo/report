@@ -248,6 +248,16 @@ class Report
             ];
         } catch (\Exception $e) {
         }
+
+
+        // deprecated!
+        if (!isset($data['offen']) && isset($data['open'])) {
+            $data['offen'] = $data['open'];
+        }
+        if (!isset($data['brutto']) && isset($data['gross'])) {
+            $data['brutto'] = $data['gross'];
+        }
+        
         try {
             $data['sender_address'] = $db->singleValue('select zusatztext from geschaeftsstellen where id={office}', $data, 'zusatztext');
             if ($data['sender_address'] === false) {
