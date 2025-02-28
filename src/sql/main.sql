@@ -977,7 +977,11 @@ INSERT IGNORE INTO blgpayments_translations (column_name, json_attribute_name, i
 values ('betrag', 'value', 1);
 INSERT IGNORE INTO blgpayments_translations (column_name, json_attribute_name, is_required)
 values ('belegnummer', 'reportnr', 1);
-DELIMITER // DROP PROCEDURE IF EXISTS getReportPayments // CREATE PROCEDURE `getReportPayments`(
+DELIMITER // 
+
+DROP PROCEDURE IF EXISTS getReportPayments // 
+
+CREATE PROCEDURE `getReportPayments`(
     in reporttype varchar(20),
     in in_id bigint,
     out result JSON
