@@ -257,11 +257,11 @@ class Report
         if (!isset($data['brutto']) && isset($data['gross'])) {
             $data['brutto'] = $data['gross'];
         }
-        
+
         try {
             $data['sender_address'] = $db->singleValue('select zusatztext from geschaeftsstellen where id={office}', $data, 'zusatztext');
             if ($data['sender_address'] === false) {
-                $data['sender_address'] = $db->singleValue('select max(zusatztext) from geschaeftsstellen', $data, 'zusatztext');
+                $data['sender_address'] = $db->singleValue('select max(zusatztext) zusatztext from geschaeftsstellen', $data, 'zusatztext');
             }
         } catch (\Exception $e) {
         }
