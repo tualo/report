@@ -135,6 +135,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         ).then((response) => { return response.json() });
         view.setDisabled(false);
         if (data.success) {
+
+            //this.loadRecord(data.data);
+            this.getViewModel().get('record').set(data.data);
             this.reportData(this.getViewModel().get('record').get('tabellenzusatz'), data.data.id);
             view.up().up().getViewModel().set('viewTypeOnLoad', 'form');
             view.up().up().getComponent('list').getStore().load({
@@ -201,6 +204,14 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 let record = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, pos);
                 positions.push(record);
             });
+
+            if (this.headtextElement) {
+                this.headtextElement.setValue(config.defaultheadtext);
+            }
+            if (this.foottextElement) {
+                this.foottextElement.setValue(config.defaultfoottext);
+            }
+
 
             data.data.texts.forEach((item) => {
                 if (item.type == 'head') {
@@ -364,8 +375,24 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     },
 
     openView: function () {
-        console.log(arguments)
+        console.log(arguments, this.getViewModel().get('renderer'))
+        let me = this,
+            renderer = this.getViewModel().get('renderer');
+
+        if (renderer.length == 1) {
+            me.openViewRenderer(renderer[0]);
+        } else {
+        }
+        // window.open('./'+typ+'/view_blg_list_'+me.getViewModel().get('record').get('tabellenzusatz') +'/report_2025_content/3
     },
+
+    openViewRenderer: function (renderer) {
+        let me = this,
+            typ = renderer.useremote ? 'remote/pdf' : 'pugreportpdf';
+        window.open('./' + typ + '/view_blg_list_' + me.getViewModel().get('record').get('tabellenzusatz') + '/' + renderer.pug_template + '/' + me.getViewModel().get('record').get('id'), '_blank');
+
+    },
+
 
     reject: function () {
         let me = this;
