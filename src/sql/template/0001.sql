@@ -294,6 +294,14 @@ call addFieldIfNotExists('blg_#BEZ#_#####','gegenkonto','varchar(10)') //
 update blg_#BEZ#_##### set gegenkonto=getReportToAccount('#####',kundennummer,kostenstelle) where gegenkonto is null //
 
 
+
+create table if not exists blg_rejected_##### (
+  tabellenzusatz varchar(255),
+  source bigint primary key,
+  destination bigint not null
+) //
+call addForeignKeyIfNotExists ('blg_rejected_#####','blg_hdr_#####','fk_blg_rejected_#####_id','source','id','cascade','cascade') //
+
 create table if not exists blg_min_#####(
 
     id bigint primary key,

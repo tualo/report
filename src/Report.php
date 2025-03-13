@@ -12,6 +12,8 @@ class Report
         $report = Report::get($type, $id);
         $report['reporttype'] = $toType;
         $report['id'] = -1;
+
+
         foreach ($report['positions'] as &$pos) {
 
             $pos['taxvalue'] = $pos['taxvalue'] * $factor;
@@ -41,6 +43,19 @@ class Report
         string $reportnumber
     ): mixed {
         $report = self::convert($type, $reportnumber, $type, -1);
+        $db = App::get('session')->getDB();
+
+        try {
+            $sql = 'insert into blg_rejected_' . $type . '(tabellenzusatz,source,destination) values ({totype},{source},{destination})';
+            $db->direct($sql, [
+                'source'        => $reportnumber,
+                'destination'   => $report['id'],
+                'totype'        => $type
+            ]);
+        } catch (\Exception $e) {
+            App::result('error', $e->getMessage());
+        }
+
         return $report;
     }
 
