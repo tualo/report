@@ -151,5 +151,40 @@ class Report implements IRoute
             Route::$finished = true;
             App::contenttype('application/json');
         }, ['put'], true);
+
+        Route::add('/reducereport/(?P<type>\w+)/(?P<id>[\w\-]+)', function ($matches) {
+            $db = App::get('session')->getDB();
+            $type = $matches['type'];
+            try {
+                $db->direct('start transaction');
+
+                $input = json_decode(file_get_contents('php://input'), true);
+                if (is_null($input)) throw new \Exception('input not readable');
+                if (!isset($input['value']) || $input['value'] == '') throw new \Exception('value not readable');
+                if (!isset($input['name']) || $input['name'] == '') throw new \Exception('name not readable');
+                if (!isset($input['note']) || $input['note'] == '') throw new \Exception('note not readable');
+
+
+                App::result('data', R::addReduction(
+                    $matches['type'],
+                    $matches['id'],
+                    $input['value'],
+                    $input['name'],
+                    $input['note']
+                ));
+                R::recalculateHeader($matches['type'], $matches['id']);
+                App::result('success', true);
+
+
+                $db->direct('commit');
+            } catch (Exception $e) {
+                $db->direct('rollback');
+                App::result('mr', $db->moreResults());
+                App::result('last_sql', $db->last_sql);
+                App::result('msg', $e->getMessage());
+            }
+            Route::$finished = true;
+            App::contenttype('application/json');
+        }, ['put'], true);
     }
 };

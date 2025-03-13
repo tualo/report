@@ -2119,50 +2119,8 @@ SET in_json := JSON_INSERT(in_json, '$.create_timestamp', now());
 SET in_json := JSON_INSERT(in_json, '$.login', getSessionUser());
 SELECT in_json INTO out_json;
 END //
-CREATE OR REPLACE PROCEDURE `recalculateHeader`(
-        in reporttype varchar(20),
-        IN in_reportnumber bigint
-    ) MODIFIES SQL DATA BEGIN
-SET @SQL = concat(
-        'SELECT 
-        round(sum(steuer),2) s,
-        round(sum(netto),2) n,
-        round(sum(brutto),2) b 
-    INTO
-        @use_s,
-        @use_n,
-        @use_b
-    FROM 
-        blg_pos_',
-        reporttype,
-        '
-    WHERE 
-        beleg = ?
-    '
-    );
-PREPARE stmt
-FROM @SQL;
-execute stmt using in_reportnumber;
-DEALLOCATE PREPARE stmt;
-SET @SQL = concat(
-        ' 
-    UPDATE 
-        blg_hdr_',
-        reporttype,
-        '
-    SET 
-        netto = @use_n,
-        brutto = @use_b,
-        steuer = @use_b - @use_n
-    WHERE
-        id = ?
-    '
-    );
-PREPARE stmt
-FROM @SQL;
-execute stmt using in_reportnumber;
-DEALLOCATE PREPARE stmt;
-END //
+
+
 CREATE OR REPLACE PROCEDURE setReport(
         in reporttype varchar(20),
         in in_json JSON,

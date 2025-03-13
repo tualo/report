@@ -91,26 +91,29 @@ class Report
             $data['bemerkung'] = $note;
 
             $db->execute('start transaction');
-            $newID = $db->singleValue('select ifnull(max(id),0)+1 c from blg_pay_' . $type . '', [], 'c');
+            $newID = $db->singleValue('select ifnull(max(id),0)+1 c from blg_min_' . $type . '', [], 'c');
             $data['id'] = $newID;
             $db->direct('insert into blg_min_' . $type . ' (
-                id
-                name
-                belegnummer
-                bemerkung
+                id,
+                name,
+                belegnummer,
+                bemerkung,
                 betrag
             ) values 
             (
-                {id}
+                {id},
                 {name},
                 {belegnummer},
                 {bemerkung},
                 {betrag}
             )
-            where id = {id}', $data);
+            ', $data);
+            App::result('xsql', $db->last_sql);
             $db->execute('commit');
             return $newID;
         } catch (\Exception $e) {
+
+            App::result('xmsg', $e->getMessage());
             $db->execute('rollback');
             return -1;
         }

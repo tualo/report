@@ -1,6 +1,6 @@
 DELIMITER //
 
-CREATE OR REPLACE PROCEDURE `recalculateHeader`(IN tabellenzusatz varchar(50),  IN in_reportnumber bigint)
+CREATE  or replace PROCEDURE `recalculateHeader`(IN tabellenzusatz varchar(50),  IN in_reportnumber bigint)
     MODIFIES SQL DATA
 BEGIN
 
@@ -39,7 +39,9 @@ BEGIN
         netto = ?,
         brutto = ?,
         steuer = ?-?,
-        offen = ? - ifnull( (select sum(betrag) from ( select betrag from blg_pay_',tabellenzusatz,' where belegnummer=? union all select betrag from blg_min_',tabellenzusatz,' where belegnummer=? ) x ), 0)
+        offen = ? - ifnull( (select sum(betrag) from ( 
+            select betrag from blg_pay_',tabellenzusatz,' where belegnummer=? union all 
+            select betrag from blg_min_',tabellenzusatz,' where belegnummer=? ) x ), 0)
     WHERE
         id = ?
     '); 
