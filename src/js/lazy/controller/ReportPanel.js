@@ -201,8 +201,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                     let o = config.translations.pos[k][0];
                     pos[o.column_name] = item[k];
                 }
-                let record = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, pos);
-                positions.push(record);
+                let precord = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, pos);
+                positions.push(precord);
             });
 
             if (this.headtextElement) {
