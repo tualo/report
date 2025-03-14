@@ -161,6 +161,8 @@ class Report implements IRoute
                 $input = json_decode(file_get_contents('php://input'), true);
                 if (is_null($input)) throw new \Exception('input not readable');
                 if (!isset($input['value']) || $input['value'] == '') throw new \Exception('value not readable');
+                if (!isset($input['name']) || isset($input['type']))  $input['name'] = $input['type'];
+
                 if (!isset($input['name']) || $input['name'] == '') throw new \Exception('name not readable');
                 if (!isset($input['note']) || $input['note'] == '') throw new \Exception('note not readable');
 

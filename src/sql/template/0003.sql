@@ -173,6 +173,18 @@ select
 from blg_pay_#####
 //
 
+
+create view if not exists view_editor_blg_min_##### as 
+select
+    id id,
+    bemerkung `note`,
+    belegnummer reportnr,
+    name `type`,
+    betrag `value`
+from blg_min_#####
+//
+
+
 create view if not exists view_editor_relation_##### as 
 
 select 

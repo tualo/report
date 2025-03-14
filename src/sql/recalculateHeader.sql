@@ -41,12 +41,17 @@ BEGIN
         steuer = ?-?,
         offen = ? - ifnull( (select sum(betrag) from ( 
             select betrag from blg_pay_',tabellenzusatz,' where belegnummer=? union all 
+            select betrag from blg_min_',tabellenzusatz,' where belegnummer=? ) x ), 0),
+        bezahlt =   ifnull( (select sum(betrag) from ( 
+            select betrag from blg_pay_',tabellenzusatz,' where belegnummer=?
+            ) x ), 0),
+        minderung =  ifnull( (select sum(betrag) from ( 
             select betrag from blg_min_',tabellenzusatz,' where belegnummer=? ) x ), 0)
     WHERE
         id = ?
     '); 
 
     PREPARE stmt FROM @SQL;
-    execute stmt using @use_n,@use_b,@use_b,@use_n,@use_b, in_reportnumber, in_reportnumber, in_reportnumber;
+    execute stmt using @use_n,@use_b,@use_b,@use_n,@use_b, in_reportnumber, in_reportnumber, in_reportnumber,  in_reportnumber, in_reportnumber;
     DEALLOCATE PREPARE stmt;
 END //
