@@ -52,6 +52,11 @@ Ext.define('Tualo.report.lazy.controller.Reminder', {
             property: 'offen',
             operator: '!=',
             value: 0
+        },
+        {
+            property: 'overdue',
+            operator: '=',
+            value: 1
         }
         ]);
 
