@@ -260,7 +260,7 @@ class Report
 
         try {
             $data['layout'] = [
-                'positions' => $db->direct('select * from  ds_column_list_label where table_name={type} and active=1 and hidden=0', [
+                'positions' => $db->direct('select * from  ds_column_list_label where table_name={type} and active=1 and hidden=0 order by position', [
                     'type' => 'view_report_blg_pos_' . $type
                 ], '')
             ];
