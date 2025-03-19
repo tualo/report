@@ -68,7 +68,7 @@ Ext.define('Tualo.report.lazy.controller.Reminder', {
                 my_store.getRange().forEach((row) => {
                     positions.push(Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, {
                         article: row.get('belegnummer'),
-                        reference: row.get('reference'),
+                        note: row.get('reference'),
                         account: '0000',
                         amount: 1,
                         singleprice: row.get('offen'),
