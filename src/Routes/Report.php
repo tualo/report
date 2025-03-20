@@ -86,6 +86,11 @@ class Report implements IRoute
 
                 if (is_null($report)) throw new \Exception('Report not readable');
 
+                if (isset($report['__id'])) {
+                    $report['__clientid'] = $report['__id'];
+                    unset($report['__id']);
+                }
+
                 if (isset($report['id']) && $report['id'] == 0) unset($report['id']);
                 if (!isset($report['bookingdate']) || $report['bookingdate'] == '') $report['bookingdate'] = (new DateTime())->format('Y-m-d');
                 if (!isset($report['date']) || $report['date'] == '') $report['date'] = (new DateTime())->format('Y-m-d');
