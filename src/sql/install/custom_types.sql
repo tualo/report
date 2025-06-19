@@ -11,6 +11,28 @@ insert ignore into custom_types (
     description
 )
 values (
+    'Tualo.report.data.field.SinglePriceByGross',
+    'data.field.tualoreportsinglepricebygross',
+    'data.field.tualoreportsinglepricebygross',
+    'Ext.data.field.Number',
+    'Ext.data.field.Number',
+    'Tualo.report.data.field.SinglePriceByGross',
+    'Tualo',
+    'Tualo.report.data.field.SinglePriceByGross'
+);
+
+
+insert ignore into custom_types (
+    id,
+    xtype_long_classic,
+    xtype_long_modern,
+    extendsxtype_classic,
+    extendsxtype_modern,
+    name,
+    vendor,
+    description
+)
+values (
     'Tualo.report.data.field.SinglePrice',
     'data.field.tualoreportsingleprice',
     'data.field.tualoreportsingleprice',
@@ -20,6 +42,7 @@ values (
     'Tualo',
     'Tualo.report.data.field.SinglePrice'
 );
+
 
 insert ignore into custom_types (
     id,
