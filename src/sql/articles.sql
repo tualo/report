@@ -1,5 +1,5 @@
 delimiter ;
-
+/*
 CREATE TABLE IF NOT EXISTS `hauptkassenbuecher` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -40,7 +40,9 @@ CREATE TABLE IF NOT EXISTS `buchungskreise` (
   PRIMARY KEY (`id`)
 ) ;
 insert ignore into buchungskreise (id,name) values ('0000','Standard');
+*/
 
+/*
 CREATE TABLE IF NOT EXISTS `vertriebsregion` (
   `region` char(1) NOT NULL DEFAULT '0',
   `name` varchar(255) DEFAULT '',
@@ -48,6 +50,7 @@ CREATE TABLE IF NOT EXISTS `vertriebsregion` (
 );
 
 insert ignore into vertriebsregion (region,name) values ('0','');
+
 
 CREATE TABLE IF NOT EXISTS `geschaeftsstellen` (
   `id` int(11) NOT NULL,
@@ -66,7 +69,8 @@ CREATE TABLE IF NOT EXISTS `geschaeftsstellen` (
   CONSTRAINT `fk_geschaeftsstellen_vertriebsregion` FOREIGN KEY (`region`) REFERENCES `vertriebsregion` (`region`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ;
 insert ignore into geschaeftsstellen (id,name) values (100,'Standard');
-
+*/
+/*
 CREATE TABLE IF NOT EXISTS `warenhauptgruppen` (
   `id` int(11) NOT NULL DEFAULT 0,
   `name` varchar(255) DEFAULT NULL,
@@ -74,7 +78,8 @@ CREATE TABLE IF NOT EXISTS `warenhauptgruppen` (
   UNIQUE KEY `uidx_warenhauptgruppen_name` (`name`)
 );
 INSERT IGNORE INTO warenhauptgruppen (id, name) values (0, 'Keine Hauptgruppe');
-
+*/
+/*
 CREATE TABLE IF NOT EXISTS `buchungskonten` (
   `konto` varchar(100) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -93,6 +98,7 @@ CREATE TABLE IF NOT EXISTS `mengeneinheiten` (
 );
 
 INSERT IGNORE INTO mengeneinheiten (id, name, symbol, faktor) values (1, 'STK', 'Stk.', 1.000000);
+
 
 CREATE TABLE IF NOT EXISTS `warengruppen` (
   `id` int(11) NOT NULL,
@@ -171,6 +177,7 @@ CREATE TABLE IF NOT EXISTS `bfkonten` (
   CONSTRAINT `fk_bfkonten_konto_8` FOREIGN KEY (`konto_8`) REFERENCES `buchungskonten` (`konto`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_bfkonten_konto_9` FOREIGN KEY (`konto_9`) REFERENCES `buchungskonten` (`konto`) ON DELETE SET NULL ON UPDATE CASCADE
 );
+
 
 
 CREATE TABLE IF NOT EXISTS `artikelgruppen` (
@@ -266,7 +273,7 @@ BEGIN
 END //
 
 delimiter ;
-
+*//*
 CREATE TABLE  IF NOT EXISTS `steuergruppen` (
   `steuergruppe` varchar(25) NOT NULL,
   `feld` varchar(20) DEFAULT NULL,
@@ -296,8 +303,8 @@ CREATE TABLE IF NOT EXISTS `preiskategorien` (
 ) 
 COMMENT='Preiskategorien für das ermitteln des Einzelpreises, dies kann im Bezugsstamm oder im Belege festgelegt werden.'
 ;
-
-
+*/
+/*
 CREATE TABLE IF NOT EXISTS `staffeln` (
   `gruppe` varchar(255) NOT NULL,
   `von` int(11) NOT NULL DEFAULT -1000000,
@@ -342,8 +349,9 @@ CREATE TABLE IF NOT EXISTS `brieffusstext` (
   CONSTRAINT `fk_brieffusstext_spalte_id` FOREIGN KEY (`spalte_id`) REFERENCES `brieffusstextspalten` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+*/
 
-CREATE TABLE IF NOT EXISTS `blg_artikel` (
+/*CREATE TABLE IF NOT EXISTS `blg_artikel` (
   `id` int(11) NOT NULL,
   `belegart` int(11) NOT NULL,
   `artikel` varchar(255) NOT NULL,
@@ -357,8 +365,8 @@ CREATE TABLE IF NOT EXISTS `blg_artikel` (
   CONSTRAINT `fk_blg_artikel_artikelgruppen` FOREIGN KEY (`artikel`) REFERENCES `artikelgruppen` (`gruppe`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_blg_artikel_blg_config` FOREIGN KEY (`belegart`) REFERENCES `blg_config` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-
+*/
+/*
 CREATE TABLE IF NOT EXISTS `buchungskreise_logins` (
   `buchungskreis_id` varchar(10) NOT NULL,
   `login` varchar(100) NOT NULL,
@@ -386,8 +394,8 @@ RETURN ifnull( (  select buchungskreis_id from buchungskreise_logins where login
 CREATE OR REPLACE FUNCTION `getSessionCurrentBKR`() RETURNS varchar(255) CHARSET utf8mb4
     DETERMINISTIC
 RETURN ( SELECT ifnull(@sessionbuchungskreis,getSessionDefaultBKR()) );
-
-
+*/
+/*
 CREATE OR REPLACE  FUNCTION `getSessionCurrentOffice`() RETURNS varchar(255) CHARSET utf8mb4
     DETERMINISTIC
 RETURN ( SELECT ifnull(@sessionoffice,getSessionDefaultOffice()) );
@@ -396,4 +404,4 @@ RETURN ( SELECT ifnull(@sessionoffice,getSessionDefaultOffice()) );
 CREATE OR REPLACE  FUNCTION `getSessionDefaultOffice`() RETURNS varchar(255) CHARSET utf8mb4
     DETERMINISTIC
 RETURN ifnull( (  select max(geschaeftsstelle) from geschaeftsstellen_logins where login=getSessionUser() and standard=1 ), ifnull( (  select min(geschaeftsstelle) from geschaeftsstellen_logins where login=getSessionUser() ),'0')  );
-
+*/
