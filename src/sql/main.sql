@@ -2502,7 +2502,10 @@ FROM @SQL;
 execute stmt;
 DEALLOCATE PREPARE stmt;
 END // -- SOURCE FILE: ./src/000.RPTJSON.proc.setReportTSE.sql 
-DELIMITER // DROP PROCEDURE IF EXISTS setReportTSE // CREATE PROCEDURE setReportTSE(
+DELIMITER // 
+
+DROP PROCEDURE IF EXISTS setReportTSE // 
+CREATE PROCEDURE setReportTSE(
     in reporttype varchar(20),
     in in_json JSON,
     out out_json JSON
