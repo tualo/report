@@ -1,22 +1,27 @@
 {
-    "name": "tualo/report",
-    "description": "Datasets Component for tualo office",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Thomas Hoffmann",
-            "email": "thomas.hoffmann@tualo.de"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "Tualo\\Office\\Report\\": "src/"
-        },
-        "files": ["src/functions.php"]
-    },
-    "minimum-stability": "dev",
-    "require": {
-       
+  "name": "tualo/report",
+  "description": "report for tualo office",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Thomas Hoffmann",
+      "email": "thomas.hoffmann@tualo.de"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Tualo\\Office\\Report\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "tualo/ds": "^1.0.1",
+    "tualo/pug": "^1.0.2",
+    "tualo/erp": "^1.0.1"
+  },
+  "version": "1.0.1"
 }
