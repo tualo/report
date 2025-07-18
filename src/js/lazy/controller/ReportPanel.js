@@ -130,6 +130,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             './report/' + this.getViewModel().get('record').get('tabellenzusatz') + '/' + this.getViewModel().get('record').get('id'),
             {
                 method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify(o)
             }
         ).then((response) => { return response.json() });
@@ -181,6 +184,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         let config = this.getViewModel().get('config'),
             data = await fetch('./report/' + tabellenzusatz + '/' + id, {
                 method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify(this.getViewModel().get('record').getData())
             }).then((response) => { return response.json() });
         if (data.success) {
