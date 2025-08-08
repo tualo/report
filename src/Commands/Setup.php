@@ -1,5 +1,7 @@
 <?php
+
 namespace Tualo\Office\Report\Commands;
+
 use Garden\Cli\Cli;
 use Garden\Cli\Args;
 use phpseclib3\Math\BigInteger\Engines\PHP;
@@ -8,10 +10,43 @@ use Tualo\Office\ExtJSCompiler\Helper;
 use Tualo\Office\Basic\TualoApplication as App;
 use Tualo\Office\Basic\PostCheck;
 use Tualo\Office\Basic\CommandLineInstallSessionSQL;
-use Tualo\Office\Basic\BaseSetupCommand as BaseSetup;
+use Tualo\Office\ERP\Commands\Setup as BaseSetup;
 
-class Setup extends BaseSetup implements ISetupCommandline{
+class Setup extends BaseSetup
+{
 
+
+
+    public static function getHeadLine(): string
+    {
+        return 'ERP Setup Command';
+    }
+    public static function getCommands(Args $args): array
+    {
+        $parentCommands = parent::getCommands($args);
+        return [
+            ...$parentCommands,
+            'install-sql-report'
+        ];
+    }
+
+    public static function getCommandName(): string
+    {
+        return 'report';
+    }
+    public static function getCommandDescription(): string
+    {
+        return 'perform a complete report setup';
+    }
+    public static function setup(Cli $cli)
+    {
+        $cli->command(self::getCommandName())
+            ->description(self::getCommandDescription())
+            ->opt('client', 'only use this client', true, 'string');
+        // ->opt('user', 'only use this user', true, 'string');
+    }
+
+    /*
     public static function getCommandName(): string { return 'report'; }
     public static function getCommandDescription(): string { return 'perform a complete report setup'; }
     public static function setup(Cli $cli){
@@ -27,7 +62,7 @@ class Setup extends BaseSetup implements ISetupCommandline{
         PostCheck::formatPrintLn(['blue'], "==========================================================");
         
 
-        /*
+        / *
         exec(implode(' ',['which','scss']),$result,$return_code);
         $sass_cmd = $result[0];
 
@@ -43,7 +78,7 @@ class Setup extends BaseSetup implements ISetupCommandline{
         foreach($installCommands as $cmdString){
             self::performInstall($cmdString,'');
         }
-        */
+        * /
 
         $installCommands = [
             'install-sessionsql-bsc-main',
@@ -67,5 +102,5 @@ class Setup extends BaseSetup implements ISetupCommandline{
             self::performInstall($cmdString,$clientName);
         }
 
-    }
+    }*/
 }
