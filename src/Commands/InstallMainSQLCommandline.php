@@ -57,7 +57,8 @@ class InstallMainSQLCommandline implements ICommandline
             'steuergruppen_field' => 'setup steuergruppen_field ds definition ',
             'main' => 'setup main report procedures ',
             'ext_base_type' => 'setup base types ',
-            'blg_config' => 'setup blg_config ds definition ',
+
+
             'view_brieffusstext' => 'setup report footer view ',
 
             'install/addcommand'    => 'setup addcommand',
