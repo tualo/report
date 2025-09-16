@@ -459,7 +459,7 @@ create table if not exists blg_taxregistration_#####(
     `key` varchar(36),
     `val` varchar(20),
     primary key (`id`,`key`),
-    constraint `fk_blg_taxregistration_#####_id` foreign key (`id`) references `blg_hdr_#####` (`id`) on delete restrict on update cascade
+    constraint `fk_blg_taxregistration_#####_id` foreign key (`id`) references `blg_hdr_#####` (`id`) on delete cascade on update cascade
 ) //
 
 
@@ -469,7 +469,7 @@ create table if not exists blg_buyer_#####(
     `key` varchar(36),
     `val` varchar(255),
     primary key (`id`,`key`),
-    constraint `fk_blg_buyer_#####_id` foreign key (`id`) references `blg_hdr_#####` (`id`) on delete restrict on update cascade
+    constraint `fk_blg_buyer_#####_id` foreign key (`id`) references `blg_hdr_#####` (`id`) on delete cascade on update cascade
 ) //
 
 
@@ -478,9 +478,8 @@ create table if not exists blg_seller_#####(
     `key` varchar(36),
     `val` varchar(255),
     primary key (`id`,`key`),
-    constraint `fk_blg_seller_#####_id` foreign key (`id`) references `blg_hdr_#####` (`id`) on delete restrict on update cascade
+    constraint `fk_blg_seller_#####_id` foreign key (`id`) references `blg_hdr_#####` (`id`) on delete cascade on update cascade
 ) //
-
 
 create table if not exists blg_seller_globalid_#####(
     `id` bigint,
