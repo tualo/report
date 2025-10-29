@@ -10,7 +10,7 @@ use Tualo\Office\DS\DSReadRoute;
 use Tualo\Office\DS\DSTable;
 
 
-class Configure implements IRoute
+class Configure extends \Tualo\Office\Basic\RouteWrapper
 {
     public static function replacements($sql, $config)
     {

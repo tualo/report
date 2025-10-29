@@ -255,6 +255,8 @@ create table if not exists blg_pos_#####(
     bezugsnebenkosten integer default 0
 
 ) // 
+
+
 call addForeignKeyIfNotExists ('blg_pos_#####','blg_hdr_#####','fk_blg_pos_#####_id','beleg','id','cascade','cascade') //
 
 call addFieldIfNotExists('blg_pos_#####','gewicht','decimal(15,6) DEFAULT 0.000000') //

@@ -10,7 +10,7 @@ use Tualo\Office\DS\DSReadRoute;
 use Tualo\Office\DS\DSTable;
 
 
-class Config implements IRoute
+class Config extends \Tualo\Office\Basic\RouteWrapper
 {
     public static function register()
     {
