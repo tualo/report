@@ -62,11 +62,18 @@ BEGIN
         'update', 1 = 1
     );
 
+    
+
     -- translate json attributes to column names
     for checkrecord in (select column_name,json_attribute_name,is_required from blghdr_translations) do
         if JSON_VALUE(in_json, concat('$.', checkrecord.json_attribute_name)) is not null then
             set in_json=JSON_SET(in_json, concat('$.', checkrecord.column_name), JSON_VALUE(in_json, concat('$.', checkrecord.json_attribute_name)));
         end if;
+
+        if JSON_VALUE(in_json, concat('$.', checkrecord.column_name)) is not null then
+            set in_json=JSON_SET(in_json, concat('$.', checkrecord.json_attribute_name), JSON_VALUE(in_json, concat('$.', checkrecord.column_name)));
+        end if;
+
         -- check required fields
         if checkrecord.is_required = 1 then
             if JSON_VALUE(in_json, concat('$.', checkrecord.json_attribute_name)) is null then

@@ -87,20 +87,20 @@ create table if not exists blg_hdr_#####(
   von_lager integer default 0,
   an_lager integer default 0,
 
-  skonto_netto fixed(12,5) not null,
-  skonto_brutto  fixed(12,5) not null,
+  skonto_netto decimal(15,5) not null,
+  skonto_brutto  decimal(15,5) not null,
 
-  provision_netto  fixed(12,5) not null,
-  provision_brutto  fixed(12,5) not null,
+  provision_netto  decimal(15,5) not null,
+  provision_brutto  decimal(15,5) not null,
 
-  netto  fixed(12,5) not null,
-  brutto  fixed(12,5) not null,
-  steuer  fixed(12,5) not null,
+  netto  decimal(15,5) not null,
+  brutto  decimal(15,5) not null,
+  steuer  decimal(15,5) not null,
 
-  bezahlt  fixed(12,5) not null,
-  minderung  fixed(12,5) not null,
-  gegeben  fixed(12,5) not null,
-  zurueck  fixed(12,5) not null,
+  bezahlt  decimal(15,5) not null,
+  minderung  decimal(15,5) not null,
+  gegeben  decimal(15,5) not null,
+  zurueck  decimal(15,5) not null,
   zahlart varchar(20) default 'bar',
 
   referenz varchar(255),
@@ -146,17 +146,17 @@ call addFieldIfNotExists('blg_hdr_#####','geschaeftsstelle','integer default NUL
 
 
 
-alter table `blg_hdr_#####` modify skonto_netto	decimal(12,5) default 0 //
-alter table `blg_hdr_#####` modify skonto_brutto	decimal(12,5) default 0 //
-alter table `blg_hdr_#####` modify provision_netto	decimal(12,5) default 0 //
-alter table `blg_hdr_#####` modify provision_brutto	decimal(12,5) default 0 //
-alter table `blg_hdr_#####` modify netto	decimal(12,5) default 0 //
-alter table `blg_hdr_#####` modify brutto	decimal(12,5) default 0 //
-alter table `blg_hdr_#####` modify steuer	decimal(12,5) default 0 //
-alter table `blg_hdr_#####` modify bezahlt	decimal(12,5) default 0 //
-alter table `blg_hdr_#####` modify minderung	decimal(12,5) default 0 //
-alter table `blg_hdr_#####` modify gegeben	decimal(12,5) default 0 //
-alter table `blg_hdr_#####` modify zurueck	decimal(12,5) default 0 //
+alter table `blg_hdr_#####` modify skonto_netto	decimal(15,5) default 0 //
+alter table `blg_hdr_#####` modify skonto_brutto	decimal(15,5) default 0 //
+alter table `blg_hdr_#####` modify provision_netto	decimal(15,5) default 0 //
+alter table `blg_hdr_#####` modify provision_brutto	decimal(15,5) default 0 //
+alter table `blg_hdr_#####` modify netto	decimal(15,5) default 0 //
+alter table `blg_hdr_#####` modify brutto	decimal(15,5) default 0 //
+alter table `blg_hdr_#####` modify steuer	decimal(15,5) default 0 //
+alter table `blg_hdr_#####` modify bezahlt	decimal(15,5) default 0 //
+alter table `blg_hdr_#####` modify minderung	decimal(15,5) default 0 //
+alter table `blg_hdr_#####` modify gegeben	decimal(15,5) default 0 //
+alter table `blg_hdr_#####` modify zurueck	decimal(15,5) default 0 //
 alter table `blg_hdr_#####` modify faelligam date default CURRENT_TIMESTAMP //
 
 create table if not exists blg_ueb_#####(
@@ -244,12 +244,12 @@ create table if not exists blg_pos_#####(
     artikel varchar(255),
     bemerkung varchar(4000),
     zusatztext varchar(4000),
-    anzahl  fixed(12,5) not null,
-    epreis  fixed(12,5) not null,
-    netto  fixed(12,5) not null,
-    brutto  fixed(12,5) not null,
-    steuer  fixed(12,5) not null,
-    steuersatz  fixed(12,5) not null,
+    anzahl  decimal(15,5) not null,
+    epreis  decimal(15,5) not null,
+    netto  decimal(15,5) not null,
+    brutto  decimal(15,5) not null,
+    steuer  decimal(15,5) not null,
+    steuersatz  decimal(15,5) not null,
     konto integer not null,
     referenz varchar(255),
     bezugsnebenkosten integer default 0
@@ -310,7 +310,7 @@ create table if not exists blg_min_#####(
     name varchar(255) not null,
     belegnummer bigint not null,
     bemerkung varchar(255) not null,
-    betrag fixed(12,5) not null
+    betrag decimal(15,5) not null
 
 ) //
 call addForeignKeyIfNotExists ('blg_min_#####','blg_hdr_#####','fk_blg_pos_#####_belegnummer','belegnummer','id','cascade','cascade') //
@@ -322,7 +322,7 @@ create table if not exists blg_pay_#####(
     datum date not null,
     belegnummer bigint not null,
     art varchar(255) not null,
-    betrag fixed(12,5) not null
+    betrag decimal(15,5) not null
 
 ) //
 call addForeignKeyIfNotExists ('blg_pay_#####','blg_hdr_#####','fk_blg_pay_#####_belegnummer','belegnummer','id','cascade','cascade') //
