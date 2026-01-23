@@ -2266,54 +2266,57 @@ FROM @SQL;
 execute stmt;
 DEALLOCATE PREPARE stmt;
 WHILE j < JSON_LENGTH(positions) DO
-SELECT JSON_EXTRACT(positions, CONCAT('$[', j, ']')) INTO position;
-SET j := j + 1;
-SET position = JSON_SET(position, '$.reportnr', JSON_VALUE(in_json, '$.id'));
-IF JSON_VALUE(in_json, '$.isNewReport') = 1 THEN
-SET position = JSON_SET(position, '$.id', @positionid);
-SET @positionid = @positionid + 1;
-ELSEIF JSON_VALUE(in_json, '$.isNewReport') = 0
-and JSON_EXISTS(position, '$.id') = 0 THEN
-SET position = JSON_SET(position, '$.id', @positionid);
-SET @positionid = @positionid + 1;
-END IF;
-IF JSON_EXISTS(position, '$.position') = 0 THEN
-SET position = JSON_SET(position, '$.position', j);
-END IF;
-FOR rec in (
-    select *
-    from blgpos_translations
-) DO IF (
-    rec.is_required = 1
-    and JSON_EXISTS(position, concat('$.', rec.json_attribute_name)) = 0
-) THEN
-SET @MSG = concat(
-        'Required field ',
-        rec.json_attribute_name,
-        ' not found in JSON'
-    );
-SIGNAL SQLSTATE '45000'
-SET MESSAGE_TEXT = @MSG;
-ELSEIF JSON_EXISTS(position, concat('$.', rec.json_attribute_name)) = 1 THEN
-SET position = JSON_SET(
-        position,
-        concat('$.', rec.column_name),
-        JSON_VALUE(position, concat('$.', rec.json_attribute_name))
-    );
-END IF;
-END FOR;
-SET position = JSON_SET(position, '$.__id', JSON_VALUE(position, '$.id'));
-SET @request = JSON_OBJECT(
-        'tablename',
-        concat('blg_pos_', reporttype),
-        'data',
-        JSON_ARRAY(JSON_MERGE(position, '{}')),
-        'type',
-        'insert',
-        'update',
-        1 = 1
-    );
-call dsx_rest_api_set(@request, @result);
+    SELECT JSON_EXTRACT(positions, CONCAT('$[', j, ']')) INTO position;
+    SET j := j + 1;
+    SET position = JSON_SET(position, '$.reportnr', JSON_VALUE(in_json, '$.id'));
+    IF JSON_VALUE(in_json, '$.isNewReport') = 1 THEN
+        SET position = JSON_SET(position, '$.id', @positionid);
+        SET @positionid = @positionid + 1;
+    ELSEIF JSON_VALUE(in_json, '$.isNewReport') = 0
+        and JSON_EXISTS(position, '$.id') = 0 THEN
+        SET position = JSON_SET(position, '$.id', @positionid);
+        SET @positionid = @positionid + 1;
+    END IF;
+    IF JSON_EXISTS(position, '$.position') = 0 THEN
+        SET position = JSON_SET(position, '$.position', j);
+    END IF;
+
+    FOR rec in (
+        select *
+        from blgpos_translations
+    ) DO 
+        IF (
+        rec.is_required = 1
+            and JSON_EXISTS(position, concat('$.', rec.json_attribute_name)) = 0
+        ) THEN
+            SET @MSG = concat(
+                    'Required field ',
+                    rec.json_attribute_name,
+                    ' not found in JSON'
+                );
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = @MSG;
+        ELSEIF JSON_EXISTS(position, concat('$.', rec.json_attribute_name)) = 1 THEN
+            SET position = JSON_SET(
+                    position,
+                    concat('$.', rec.column_name),
+                    JSON_VALUE(position, concat('$.', rec.json_attribute_name))
+                );
+        END IF;
+    END FOR;
+
+    SET position = JSON_SET(position, '$.__id', JSON_VALUE(position, '$.id'));
+    SET @request = JSON_OBJECT(
+            'tablename',
+            concat('blg_pos_', reporttype),
+            'data',
+            JSON_ARRAY(JSON_MERGE(position, '{}')),
+            'type',
+            'insert',
+            'update',
+            1 = 1
+        );
+    call dsx_rest_api_set(@request, @result);
 END WHILE;
 call recalculateHeader(reporttype, JSON_VALUE(in_json, '$.id'));
 call getReport(reporttype, JSON_VALUE(in_json, '$.id'), out_json);

@@ -332,6 +332,8 @@ call fill_ds('view_editor_blg_hdr_#####')  //
 call fill_ds_column('view_editor_blg_hdr_#####')  //
 
 
+
+
 create view if not exists `view_blg_list_#####`  as  select
     hdr.id,
     '#####' tabellenzusatz,

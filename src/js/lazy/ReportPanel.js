@@ -90,30 +90,17 @@ Ext.define('Tualo.report.lazy.ReportPanel', {
 
 
             items: [
-                {
+                /*{
                     xtype: 'panel',
-                    // flex: 1,
+                    itemId: 'reportaddress',
                     layout: {
                         type: 'hbox',
                         align: 'stretch'
                     },
                     items: [
-                        {
-                            xtype: 'fieldset',
-                            title: 'Anschrift',
-                            layout: {
-                                type: 'hbox',
-                                align: 'stretch'
-                            },
-                            items: [
-                                {
-                                    xtype: 'textarea',
-                                    name: 'address'
-                                }
-                            ]
-                        }
+
                     ]
-                },
+                },*/
                 {
                     xtype: 'panel',
                     flex: 2,

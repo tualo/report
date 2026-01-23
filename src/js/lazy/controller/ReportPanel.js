@@ -286,6 +286,13 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 console.info('Der Belegkopf ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_hdr_' + this.getViewModel().get('record').get('tabellenzusatz') + ' anpassen.');
                 return;
             }
+            if (Ext.isEmpty(Ext.ClassManager.getByAlias('widget.dslist_view_editor_blg_adr_' + this.getViewModel().get('record').get('tabellenzusatz')))) {
+                Ext.toast('Die Beleg-Adresse ist nicht konfiguriert', 2000);
+                console.info('Die Beleg-Adresse ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_adr_' + this.getViewModel().get('record').get('tabellenzusatz') + ' anpassen.');
+                return;
+            }
+
+
 
 
 

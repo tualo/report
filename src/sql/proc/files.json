@@ -1,0 +1,22 @@
+[
+    {
+        "file": "appendReportID.sql",
+        "text": "setup appendReportID procedure"
+    },
+    {
+        "file": "setReportAddInNotExistsReportID.sql",
+        "text": "setup setReportAddInNotExistsReportID procedure"
+    },
+    {
+        "file": "setReportTSE.sql",
+        "text": "setup setReportTSE procedure"
+    },
+    {
+        "file": "setReportTexts.sql",
+        "text": "setup setReportTexts procedure"
+    },
+    {
+        "file": "setReport.sql",
+        "text": "setup setReport procedure"
+    }
+]
