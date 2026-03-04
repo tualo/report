@@ -53,6 +53,7 @@ BEGIN
     DECLARE header JSON;
     DECLARE result JSON;
     DECLARE reportid bigint;
+    DECLARE sql_command varchar(1000);
 
     -- Template for DSX request
     SET dsx_request = JSON_OBJECT(
@@ -93,8 +94,25 @@ BEGIN
         SET MSG = concat('Header could not be saved: ', JSON_VALUE(result,'$.error'));
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
     end if;
-    select id into reportid from temp_dsx_rest_data;
-    -- if no id was given a new report was created
+
+
+    if JSON_EXISTS(result,'$.temporary_table_name')=0 then
+        SET MSG = concat('temporary_table_name not returned by dsx_rest_api_set');
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
+    end if;
+
+    if JSON_VALUE(result,'$.temporary_table_name') is not null then
+        set sql_command = concat('select id into @reportid from ', JSON_VALUE(result,'$.temporary_table_name'));
+        PREPARE stmt FROM sql_command;
+        EXECUTE stmt;
+        DEALLOCATE PREPARE stmt;    
+    end if;
+    
+    SET reportid = @reportid;
+    IF reportid IS NULL THEN
+        SET MSG = concat('Report ID could not be retrieved after header insert');
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
+    END IF;
 
     -- add reportid to positions if not exists
     SET in_json = setReportAddInNotExistsReportID(in_json, reportid);
@@ -114,6 +132,16 @@ BEGIN
 
     -- Texts
     call setReportTexts(reporttype, in_json, reportid, result);
+
+    -- Bezug
+    call setReportReferenceNr(reporttype, in_json, reportid, result);
+
+    -- Address
+    call setReportAddress(reporttype, in_json, reportid, result);
+
+    -- BookingCircle
+    call setReportBookingCircle(reporttype, in_json, reportid, result);
+
 
     -- finally recalculate header
     call recalculateHeader(reporttype, reportid);

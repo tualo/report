@@ -55,7 +55,7 @@ class InstallMainSQLCommandline implements ICommandline
             'article_dropdown' => 'setup article_dropdown ds definition ',
             'preisorientierung' => 'setup preisorientierung ds definition ',
             'steuergruppen_field' => 'setup steuergruppen_field ds definition ',
-            'main' => 'setup main report procedures ',
+            // 'main' => 'setup main report procedures ',
             'ext_base_type' => 'setup base types ',
 
 
@@ -64,8 +64,21 @@ class InstallMainSQLCommandline implements ICommandline
             'install/addcommand'    => 'setup addcommand',
             'install/custom_types'    => 'setup custom_types',
 
+
+            'proc/appendReportID'    => 'setup custom_types',
+            'proc/setReportAddInNotExistsReportID'    => 'setup custom_types',
+            'proc/setReportReferenceNr'    => 'setup custom_types',
+            'proc/setReportAddress'    => 'setup custom_types',
+            'proc/setReportTexts'    => 'setup custom_types',
+            'proc/setReportBookingCircle'    => 'setup custom_types',
+            'proc/setReportTSE'    => 'setup custom_types',
+            'proc/setReport'    => 'setup custom_types',
+
+
             // immer zum schluss
             'install/ds_fill'    => 'refreshing ds data',
+
+
 
         ];
 

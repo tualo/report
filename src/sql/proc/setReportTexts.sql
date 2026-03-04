@@ -26,14 +26,15 @@ BEGIN
     );
 
     IF JSON_EXISTS(in_json,'$.texts') THEN 
-
-        set dsx_request=JSON_SET(dsx_request,'$.data',appendReportID(JSON_EXTRACT(in_json,'$.texts'), reportid));
-        set dsx_request=JSON_SET(dsx_request,'$.tablename',concat('blg_txt_', reporttype));
-        call dsx_rest_api_set(dsx_request, result);
-        if JSON_VALUE(result,'$.success')=0 then
-            SET MSG = concat('Texts could not be saved: ', JSON_VALUE(result,'$.error'));
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
-        end if;
+      IF JSON_LENGTH(JSON_EXTRACT(in_json,'$.texts'))>0 THEN
+          set dsx_request=JSON_SET(dsx_request,'$.data',appendReportID(JSON_EXTRACT(in_json,'$.texts'), reportid));
+          set dsx_request=JSON_SET(dsx_request,'$.tablename',concat('blg_txt_', reporttype));
+          call dsx_rest_api_set(dsx_request, result);
+          if JSON_VALUE(result,'$.success')=0 then
+              SET MSG = concat('Texts could not be saved: ', JSON_VALUE(result,'$.error'));
+              SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
+          end if;
+      END IF;
 
     END IF;
 
