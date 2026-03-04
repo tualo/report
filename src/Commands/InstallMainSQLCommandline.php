@@ -65,14 +65,14 @@ class InstallMainSQLCommandline implements ICommandline
             'install/custom_types'    => 'setup custom_types',
 
 
-            'proc/appendReportID'    => 'setup custom_types',
-            'proc/setReportAddInNotExistsReportID'    => 'setup custom_types',
-            'proc/setReportReferenceNr'    => 'setup custom_types',
-            'proc/setReportAddress'    => 'setup custom_types',
-            'proc/setReportTexts'    => 'setup custom_types',
-            'proc/setReportBookingCircle'    => 'setup custom_types',
-            'proc/setReportTSE'    => 'setup custom_types',
-            'proc/setReport'    => 'setup custom_types',
+            'proc/appendReportID'    => 'setup appendReportID',
+            'proc/setReportAddInNotExistsReportID'    => 'setup setReportAddInNotExistsReportID',
+            'proc/setReportReferenceNr'    => 'setup setReportReferenceNr',
+            'proc/setReportAddress'    => 'setup setReportAddress',
+            'proc/setReportTexts'    => 'setup setReportTexts',
+            'proc/setReportBookingCircle'    => 'setup setReportBookingCircle',
+            'proc/setReportTSE'    => 'setup setReportTSE',
+            'proc/setReport'    => 'setup setReport',
 
 
             // immer zum schluss
