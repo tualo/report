@@ -26,7 +26,7 @@ BEGIN
             JSON_OBJECT(
               "id",reportid,
               "kundennummer", JSON_VALUE(in_json,'$.referencenr'),
-              "kostenstelle", ifnull( JSON_VALUE(in_json,'$.costcenter'), 0),
+              "kostenstelle", ifnull( JSON_VALUE(in_json,'$.costcenter'), 0)
             )
           )
         );
