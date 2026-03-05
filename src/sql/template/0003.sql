@@ -272,7 +272,8 @@ select
     blg_pos_#####.steuer taxvalue,
     blg_pos_#####.einheit unit,
     blg_pos_#####.bemerkung notes,
-    blg_pos_#####.zusatztext additionaltext
+    blg_pos_#####.zusatztext additionaltext,
+    blg_pos_#####.epreis - blg_pos_#####.ekpreis singlemargin
 from 
     blg_pos_##### 
 //
