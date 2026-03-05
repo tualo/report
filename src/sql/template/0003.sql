@@ -273,7 +273,9 @@ select
     blg_pos_#####.einheit unit,
     blg_pos_#####.bemerkung notes,
     blg_pos_#####.zusatztext additionaltext,
-    blg_pos_#####.epreis - blg_pos_#####.ekpreis singlemargin
+    blg_pos_#####.epreis - blg_pos_#####.ekpreis singlemargin,
+    blg_pos_#####.anzahl * (blg_pos_#####.epreis - blg_pos_#####.ekpreis) totalmargin
+    
 from 
     blg_pos_##### 
 //
