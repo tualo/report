@@ -164,7 +164,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     reportData: async function (tabellenzusatz, id) {
         let view = this.getView();
         view.getForm().reset(true);
-        this.positionsList.getStore().removeAll();
+        if (this.positionsList)
+            this.positionsList.getStore().removeAll();
 
         if (typeof tabellenzusatz == 'undefined') return;
 

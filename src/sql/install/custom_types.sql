@@ -176,3 +176,50 @@ values (
     'Tualo',
     'Tualo.report.data.field.NetPrice'
 );
+
+
+
+
+
+insert ignore into custom_types (
+    id,
+    xtype_long_classic,
+    xtype_long_modern,
+    extendsxtype_classic,
+    extendsxtype_modern,
+    name,
+    vendor,
+    description
+)
+values (
+    'Tualo.report.data.field.MarginPrice',
+    'data.field.tualo_report_marginprice',
+    'data.field.tualo_report_marginprice',
+    'Ext.data.field.Number',
+    'Ext.data.field.Number',
+    'Tualo.report.data.field.MarginPrice',
+    'Tualo',
+    'Tualo.report.data.field.MarginPrice'
+);
+
+
+insert ignore into custom_types (
+    id,
+    xtype_long_classic,
+    xtype_long_modern,
+    extendsxtype_classic,
+    extendsxtype_modern,
+    name,
+    vendor,
+    description
+)
+values (
+    'Tualo.report.data.field.MarginTotalPrice',
+    'data.field.tualo_report_margintotalprice',
+    'data.field.tualo_report_margintotalprice',
+    'Ext.data.field.Number',
+    'Ext.data.field.Number',
+    'Tualo.report.data.field.MarginTotalPrice',
+    'Tualo',
+    'Tualo.report.data.field.MarginTotalPrice'
+);
