@@ -369,13 +369,13 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 });
 
                 if (menuItems.length > 1) {
-                    viewEye.setMenu(
-                        Ext.create('Ext.menu.Menu', {
-                            items: menuItems
-                        }), true);
+                    if (viewEye) {
+                        viewEye.setMenu(
+                            Ext.create('Ext.menu.Menu', {
+                                items: menuItems
+                            }), true);
+                    }
                 }
-
-                // window.viewEye = viewEye;
             }
         }
         this.reportData(this.getViewModel().get('record').get('tabellenzusatz'), this.getViewModel().get('record').get('id'));

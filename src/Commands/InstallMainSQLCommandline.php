@@ -65,6 +65,12 @@ class InstallMainSQLCommandline implements ICommandline
             'install/custom_types'    => 'setup custom_types',
 
 
+            'install/blgpayments_translations'    => 'setup blgpayments_translations',
+            'install/blgpos_translations'    => 'setup blgpos_translations',
+            'install/blghdr_translations'    => 'setup blghdr_translations',
+
+            'install/blgreductions_translations'    => 'setup blgreductions_translations',
+
             'proc/appendReportID'    => 'setup appendReportID',
             'proc/setReportAddInNotExistsReportID'    => 'setup setReportAddInNotExistsReportID',
             'proc/setReportReferenceNr'    => 'setup setReportReferenceNr',
@@ -73,6 +79,13 @@ class InstallMainSQLCommandline implements ICommandline
             'proc/setReportBookingCircle'    => 'setup setReportBookingCircle',
             'proc/setReportTSE'    => 'setup setReportTSE',
             'proc/setReport'    => 'setup setReport',
+
+            'proc/checkReportRequirements'    => 'setup checkReportRequirements',
+            'proc/getReportLocks'    => 'setup getReportLocks',
+            'proc/getReportPayments'    => 'setup getReportPayments',
+            'proc/getReportPositions'    => 'setup getReportPositions',
+            'proc/getReportReductions'    => 'setup getReportReductions',
+            'proc/getReport'    => 'setup getReport',
 
 
             // immer zum schluss
