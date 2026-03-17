@@ -81,13 +81,13 @@ class ImportDSTemplates implements ICommandline
         foreach ($files as $file) {
             $installSQL = function (string $file) {
 
-                $filename = dirname(__DIR__) . '/sql/' . $file . '.sql';
+                $filename = dirname(__DIR__) . '/sql/dstemplate/' . $file;
                 $sql = file_get_contents($filename);
 
 
                 $statement = 'insert ignore into blg_ds_templates (template_type, template_name, template) values ({template_type}, {template_name}, {template})';
                 try {
-                    App::get('clientDB')->execute($statement, [
+                    App::get('clientDB')->direct($statement, [
                         'template_type' => 'ds',
                         'template_name' => $file,
                         'template' => $sql
