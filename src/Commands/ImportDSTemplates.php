@@ -78,7 +78,7 @@ class ImportDSTemplates implements ICommandline
         ];
 
 
-        foreach ($files as $file => $msg) {
+        foreach ($files as $file) {
             $installSQL = function (string $file) {
 
                 $filename = dirname(__DIR__) . '/sql/' . $file . '.sql';
@@ -100,7 +100,7 @@ class ImportDSTemplates implements ICommandline
             };
             $clientName = $args->getOpt('client');
             if (is_null($clientName)) $clientName = '';
-            self::setupClients($msg, $clientName, $file, $installSQL);
+            self::setupClients('', $clientName, $file, $installSQL);
         }
     }
 }
