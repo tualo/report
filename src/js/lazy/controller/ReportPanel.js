@@ -95,6 +95,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             o.texts.push(
                 {
                     type: 'head',
+                    typ: 'head',
                     text: this.headtextElement.getValue()
                 }
             )
@@ -105,6 +106,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             o.texts.push(
                 {
                     type: 'foot',
+                    typ: 'foot',
                     text: this.foottextElement.getValue()
                 }
             )
