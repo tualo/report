@@ -10,7 +10,7 @@ use Tualo\Office\ExtJSCompiler\Helper;
 use Tualo\Office\Basic\TualoApplication as App;
 use Tualo\Office\Basic\PostCheck;
 
-class InstallMainSQLCommandline implements ICommandline
+class ImportDSTemplates implements ICommandline
 {
 
     public static function getCommandName(): string
