@@ -62,25 +62,34 @@ class Configure extends \Tualo\Office\Basic\RouteWrapper
         Route::add('/reportsetupds/(?P<type>\w+)', function ($matches) {
             $db = App::get('session')->getDB();
 
-            $liste = $db->direct('select template_name, template from blg_ds_templates where template_type="ds"  ', []);
-            foreach ($liste as $item) {
-                $sql = str_replace('_rechnung', $matches['type'], $item['template']);
-                $name = $db->singleValue('select name  from blg_config where tabellenzusatz = {type}  ', $matches, 'name');
-                $sql = str_replace('Rechnung', $name, $item['template']);
+            try {
+                $liste = $db->direct('select template_name, template from blg_ds_templates where template_type="ds"  ', []);
+                foreach ($liste as $item) {
+                    $sql = str_replace('_rechnung', $matches['type'], $item['template']);
+                    $name = $db->singleValue('select name  from blg_config where tabellenzusatz = {type}  ', $matches, 'name');
+                    $sql = str_replace('Rechnung', $name, $item['template']);
 
-                $sql = preg_replace('!/\*.*?\*/!s', '', $sql);
-                $sql = preg_replace('#^\s*\-\-.+$#m', '', $sql);
+                    $sql = preg_replace('!/\*.*?\*/!s', '', $sql);
+                    $sql = preg_replace('#^\s*\-\-.+$#m', '', $sql);
 
-                $sinlgeStatements = $db->explode_by_delimiter($sql);
-                foreach ($sinlgeStatements as $commandIndex => $statement) {
-                    try {
-                        $db->execute($statement);
-                        $db->moreResults();
-                    } catch (\Exception $e) {
-                        echo PHP_EOL;
-                        //  PostCheck::formatPrintLn(['red'], $e->getMessage() . ': commandIndex => ' . $commandIndex);
+                    $sinlgeStatements = $db->explode_by_delimiter($sql);
+                    foreach ($sinlgeStatements as $commandIndex => $statement) {
+                        try {
+                            $db->execute($statement);
+                            $db->moreResults();
+                        } catch (\Exception $e) {
+                            echo PHP_EOL;
+                            //  PostCheck::formatPrintLn(['red'], $e->getMessage() . ': commandIndex => ' . $commandIndex);
+                        }
                     }
                 }
+                App::result('success', true);
+            } catch (Exception $e) {
+
+                App::result('last_sql', $db->last_sql);
+                App::result('msg', $e->getMessage());
+                //App::result('dq', implode("\n",$GLOBALS['debug_query']));
+
             }
 
             Route::$finished = true;
