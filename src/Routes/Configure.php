@@ -63,6 +63,7 @@ class Configure extends \Tualo\Office\Basic\RouteWrapper
             $db = App::get('session')->getDB();
 
             try {
+                $l = [];
                 $liste = $db->direct('select template_name, template from blg_ds_templates where template_type="ds"  ', []);
                 foreach ($liste as $item) {
                     $sql = str_replace('_rechnung', $matches['type'], $item['template']);
@@ -72,9 +73,10 @@ class Configure extends \Tualo\Office\Basic\RouteWrapper
                     $sql = preg_replace('!/\*.*?\*/!s', '', $sql);
                     $sql = preg_replace('#^\s*\-\-.+$#m', '', $sql);
 
-                    $sinlgeStatements = $db->explode_by_delimiter($sql);
+                    $sinlgeStatements = $db->explode_by_delimiter("delimiter ;\n" . $sql);
                     foreach ($sinlgeStatements as $commandIndex => $statement) {
                         try {
+                            $l[] = $statement;
                             $db->execute($statement);
                             $db->moreResults();
                         } catch (\Exception $e) {
@@ -83,6 +85,7 @@ class Configure extends \Tualo\Office\Basic\RouteWrapper
                         }
                     }
                 }
+                App::result('list', $l);
                 App::result('success', true);
             } catch (Exception $e) {
 
