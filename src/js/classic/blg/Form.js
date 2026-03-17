@@ -4,12 +4,12 @@ Ext.define('Tualo.report.Panel', {
         'widget.report_panel',
         'widget.dsreport',
         'widget.cmp_belege_report_editorform',
-        'widget.cmp_belege_report_editor'
+        'widget.cmp_belege_report_editorx'
     ],
     controller: 'report_panel',
-	viewModel: {
-		type: 'report_panel'
-	},
+    viewModel: {
+        type: 'report_panel'
+    },
     bind: {
         disabled: "{disabled}"
     },
@@ -24,7 +24,9 @@ Ext.define('Tualo.report.Panel', {
         
         */
     ],
-    loadRecord: function(record){
+    loadRecord: function (record) {
         this.getController().loadRecord(record);
     }
 });
+
+
