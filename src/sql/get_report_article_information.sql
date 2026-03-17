@@ -5,47 +5,68 @@ SET result = JSON_INSERT(result, '$.tax', 0);
 SET result = JSON_INSERT(result, '$.singleprice', 0);
 SET result = JSON_INSERT(result, '$.account', 0);
 SET result = JSON_INSERT(result, '$.unit', 1);
-SELECT id,
-    adress_bezug,
-    konten_bezug,
-    preis_bezug into @BLG_ID,
-    @ADR,
-    @KNT,
-    @PREISBEZUG
-from blg_config
-where tabellenzusatz = JSON_VALUE(request, '$.header.reporttype');
-SELECT feld INTO @FLD
-FROM steuergruppen
-where steuergruppe = @KNT;
+
+    SELECT id,
+        adress_bezug,
+        konten_bezug,
+        preis_bezug 
+        into @BLG_ID,
+        @ADR,
+        @KNT,
+        @PREISBEZUG
+    from blg_config where tabellenzusatz = JSON_VALUE(request, '$.header.reporttype');
+
+SET result = JSON_INSERT(result, '$.debug_BLG_ID', @BLG_ID);
+SET result = JSON_INSERT(result, '$.debug_ADR', @ADR);
+SET result = JSON_INSERT(result, '$.debug_KNT', @KNT);
+SET result = JSON_INSERT(result, '$.debug_PREISBEZUG', @PREISBEZUG);
+
+
+
+SELECT feld INTO @FLD FROM steuergruppen where steuergruppe = @KNT;
+
 SET @PREISKATEGORIE = (
-        select min(preiskategorie)
-        from staffeln
-        where gruppe = JSON_VALUE(request, '$.position.article')
-    );
+    select min(preiskategorie)
+    from staffeln
+    where gruppe = JSON_VALUE(request, '$.position.article')
+);
+
 SET result = JSON_SET(result, '$.KNT', @KNT);
-IF JSON_EXISTS(request, '$.header.referencenr') = 1
-and @ADR = 'adressen' THEN
-SELECT steuerschluessel,
-    preiskategorie INTO @STEUERSCHLUESSEL,
-    @PREISKATEGORIE
-FROM adressen
-where kundennummer = JSON_VALUE(request, '$.header.referencenr')
-    and kostenstelle = JSON_VALUE(request, '$.header.costcenter');
-SELECT ifnull(feld, '') INTO @FLD
-FROM steuergruppen
-where steuergruppe = IF (@KNT = 'steuerschluessel', @STEUERSCHLUESSEL, @KNT);
-SET result = JSON_SET(result, '$.STEUERSCHLUESSEL', @STEUERSCHLUESSEL);
-SET result = JSON_SET(result, '$.PREISKATEGORIE', @PREISKATEGORIE);
+
+IF JSON_EXISTS(request, '$.header.referencenr') = 1 and @ADR = 'adressen' THEN
+    SELECT 
+        steuerschluessel,
+        preiskategorie 
+    INTO 
+        @STEUERSCHLUESSEL,
+        @PREISKATEGORIE
+    FROM 
+        adressen
+    WHERE 
+        kundennummer = JSON_VALUE(request, '$.header.referencenr')
+        and kostenstelle = JSON_VALUE(request, '$.header.costcenter')
+    ;
+    SELECT ifnull(feld, '') 
+        INTO @FLD
+    FROM steuergruppen
+    WHERE steuergruppe = IF (@KNT = 'steuerschluessel', @STEUERSCHLUESSEL, @KNT);
+    SET result = JSON_SET(result, '$.STEUERSCHLUESSEL', @STEUERSCHLUESSEL);
+    SET result = JSON_SET(result, '$.PREISKATEGORIE', @PREISKATEGORIE);
 END IF;
+
+
 IF @PREISBEZUG is NULL THEN
-set @PREISBEZUG = 'preis';
+    set @PREISBEZUG = 'preis';
 END IF;
+
 IF @PREISKATEGORIE is NULL THEN
-set @PREISKATEGORIE = 1;
+    set @PREISKATEGORIE = 1;
 END IF;
+
 IF @FLD is NULL THEN
-set @FLD = '';
+    set @FLD = '';
 END IF;
+
 IF IFNULL(
     cast(
         JSON_VALUE(request, '$.position.singleprice') as decimal(15, 5)
@@ -58,89 +79,90 @@ and IFNULL(
     ),
     0
 ) <> 0 THEN
-SET @SQL = concat(
-        '
-        select 
-            staffeln.`',
-        @PREISBEZUG,
-        '` as `usepreis`,
-            mengeneinheiten.id mengeneinheit
-        into @usepreis,@mengeneinheit
-        from
-            `staffeln` 
-            join `artikelgruppen`
-        on 
-            `artikelgruppen`.`gruppe` = `staffeln`.`gruppe`
-            and `artikelgruppen`.`gruppe` = ',
-        QUOTE(
-            IFNULL(JSON_VALUE(request, '$.position.article'), '')
-        ),
-        '
-            and (`staffeln`.`json_formel` = "" or `staffeln`.`json_formel` is null)
-            and `staffeln`.`von` <= ',
-        IFNULL(JSON_VALUE(request, '$.position.amount'), 0),
-        '
-            and `staffeln`.`bis` >= ',
-        IFNULL(JSON_VALUE(request, '$.position.amount'), 0),
-        '
-            and `staffeln`.`zeitraum_von` <= ',
-        QUOTE(
-            IFNULL(
-                JSON_VALUE(request, '$.header.service_period_stop'),
-                curdate()
-            )
-        ),
-        '
-            and `staffeln`.`zeitraum_bis` >= ',
-        QUOTE(
-            IFNULL(
-                JSON_VALUE(request, '$.header.service_period_stop'),
-                curdate()
-            )
-        ),
-        '
-            and `staffeln`.`preiskategorie` = ',
-        @PREISKATEGORIE,
-        '                                      
-        left join bfkonten_zuordnung
-            on bfkonten_zuordnung.gruppe = artikelgruppen.gruppe
-        left join bfkonten 
-            on bfkonten_zuordnung.konto_id = bfkonten.id
-            and `bfkonten`.`gueltig_von` <= ',
-        QUOTE(
-            IFNULL(
-                JSON_VALUE(request, '$.header.service_period_stop'),
-                curdate()
-            )
-        ),
-        '
-            and `bfkonten`.`gueltig` >= ',
-        QUOTE(
-            IFNULL(
-                JSON_VALUE(request, '$.header.service_period_stop'),
-                curdate()
-            )
-        ),
-        '
+    SET @SQL = concat(
+            '
+            select 
+                staffeln.`',
+            @PREISBEZUG,
+            '` as `usepreis`,
+                mengeneinheiten.id mengeneinheit
+            into @usepreis,@mengeneinheit
+            from
+                `staffeln` 
+                join `artikelgruppen`
+            on 
+                `artikelgruppen`.`gruppe` = `staffeln`.`gruppe`
+                and `artikelgruppen`.`gruppe` = ',
+            QUOTE(
+                IFNULL(JSON_VALUE(request, '$.position.article'), '')
+            ),
+            '
+                and (`staffeln`.`json_formel` = "" or `staffeln`.`json_formel` is null)
+                and `staffeln`.`von` <= ',
+            IFNULL(JSON_VALUE(request, '$.position.amount'), 0),
+            '
+                and `staffeln`.`bis` >= ',
+            IFNULL(JSON_VALUE(request, '$.position.amount'), 0),
+            '
+                and `staffeln`.`zeitraum_von` <= ',
+            QUOTE(
+                IFNULL(
+                    JSON_VALUE(request, '$.header.service_period_stop'),
+                    curdate()
+                )
+            ),
+            '
+                and `staffeln`.`zeitraum_bis` >= ',
+            QUOTE(
+                IFNULL(
+                    JSON_VALUE(request, '$.header.service_period_stop'),
+                    curdate()
+                )
+            ),
+            '
+                and `staffeln`.`preiskategorie` = ',
+            @PREISKATEGORIE,
+            '                                      
+            left join bfkonten_zuordnung
+                on bfkonten_zuordnung.gruppe = artikelgruppen.gruppe
+            left join bfkonten 
+                on bfkonten_zuordnung.konto_id = bfkonten.id
+                and `bfkonten`.`gueltig_von` <= ',
+            QUOTE(
+                IFNULL(
+                    JSON_VALUE(request, '$.header.service_period_stop'),
+                    curdate()
+                )
+            ),
+            '
+                and `bfkonten`.`gueltig` >= ',
+            QUOTE(
+                IFNULL(
+                    JSON_VALUE(request, '$.header.service_period_stop'),
+                    curdate()
+                )
+            ),
+            '
 
-        left join mengeneinheiten
-            on artikelgruppen.einheit=mengeneinheiten.id
-        LIMIT 1
-    '
-    );
-PREPARE stmt
-FROM @SQL;
-EXECUTE stmt;
-DEALLOCATE PREPARE stmt;
-SET result = JSON_SET(result, '$.singleprice', @usepreis);
-SET result = JSON_SET(result, '$.unit', @mengeneinheit);
-ELSE
-SET @usepreis = cast(
-        JSON_VALUE(request, '$.position.singleprice') as decimal(15, 5)
-    );
-SET @mengeneinheit = cast(JSON_VALUE(request, '$.position.unit') as int);
-END IF;
-SET @SQL = concat(
+            left join mengeneinheiten
+                on artikelgruppen.einheit=mengeneinheiten.id
+            LIMIT 1
+        '
+        );
+        PREPARE stmt
+        FROM @SQL;
+        EXECUTE stmt;
+        DEALLOCATE PREPARE stmt;
+        SET result = JSON_SET(result, '$.singleprice', @usepreis);
+        SET result = JSON_SET(result, '$.unit', @mengeneinheit);
+    ELSE
+        SET @usepreis = cast(
+                JSON_VALUE(request, '$.position.singleprice') as decimal(15, 5)
+            );
+        SET @mengeneinheit = cast(JSON_VALUE(request, '$.position.unit') as int);
+    END IF;
+
+    SET @SQL = concat(
         '
         SELECT
             bfkonten.konto',
@@ -186,7 +208,10 @@ EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
 SET result = JSON_SET(result, '$.account', @account);
 SET result = JSON_SET(result, '$.tax', @tax);
+SET result = JSON_SET(result, '$.debug_sql', @SQL);
+
 END //
+
 set @test = '{
     "header": {
         "referencenr": "10001",
@@ -249,5 +274,7 @@ set @test = '{
         "gross": "0",
         "taxvalue": 0
     }
-}' // call reportArticleInformation(@test, @result) //
+}' // 
+
+call reportArticleInformation(@test, @result) //
 select @result //

@@ -223,3 +223,27 @@ values (
     'Tualo',
     'Tualo.report.data.field.MarginTotalPrice'
 );
+
+
+
+insert ignore into custom_types (
+    id,
+    xtype_long_classic,
+    xtype_long_modern,
+    extendsxtype_classic,
+    extendsxtype_modern,
+    name,
+    vendor,
+    description
+)
+values (
+    'Tualo.report.data.field.Date',
+    'data.field.tualo_report_date',
+    'data.field.tualo_report_date',
+    'Ext.data.field.Date',
+    'Ext.data.field.Date',
+    'Tualo.report.data.field.Date',
+    'Tualo',
+    'Tualo.report.data.field.Date'
+);
+
