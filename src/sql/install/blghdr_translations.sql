@@ -17,8 +17,8 @@ INSERT IGNORE INTO blghdr_translations (column_name, json_attribute_name, is_req
 values ('login', 'login', 0) //
 INSERT IGNORE INTO blghdr_translations (column_name, json_attribute_name, is_required)
 values ('tabellenzusatz', 'reporttype', 0) //
-INSERT IGNORE INTO blghdr_translations (column_name, json_attribute_name, is_required)
-values ('preisorientierung', 'kindofbill', 1) //
+replace INTO blghdr_translations (column_name, json_attribute_name, is_required)
+values ('preisorientierung', 'kindofbill', 0) //
 INSERT IGNORE INTO blghdr_translations (column_name, json_attribute_name, is_required)
 values ('referenz', 'reference', 1) //
 INSERT IGNORE INTO blghdr_translations (column_name, json_attribute_name, is_required)
@@ -39,8 +39,8 @@ INSERT IGNORE INTO blghdr_translations (column_name, json_attribute_name, is_req
 values ('faelligam', 'payuntildate', 1) //
 INSERT IGNORE INTO blghdr_translations (column_name, json_attribute_name, is_required)
 values ('faelligam', 'bookingdate', 1) //
-INSERT IGNORE INTO blghdr_translations (column_name, json_attribute_name, is_required)
-values ('create_timestamp', 'create_timestamp', 1) //
+replace INTO blghdr_translations (column_name, json_attribute_name, is_required)
+values ('create_timestamp', 'create_timestamp', 0) //
 INSERT IGNORE INTO blghdr_translations (column_name, json_attribute_name, is_required)
 values ('steuernummer', 'taxid', 0) //
 INSERT IGNORE INTO blghdr_translations (column_name, json_attribute_name, is_required)

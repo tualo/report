@@ -1,4 +1,5 @@
 DELIMITER //
+
 CREATE OR REPLACE PROCEDURE `reportArticleInformation`(in request JSON, out result JSON) BEGIN
 SET result = JSON_OBJECT();
 SET result = JSON_INSERT(result, '$.tax', 0);

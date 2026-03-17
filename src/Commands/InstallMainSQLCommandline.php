@@ -68,7 +68,7 @@ class InstallMainSQLCommandline implements ICommandline
             'install/blgpayments_translations'    => 'setup blgpayments_translations',
             'install/blgpos_translations'    => 'setup blgpos_translations',
             'install/blghdr_translations'    => 'setup blghdr_translations',
-            'install/blghdr_translations'    => 'setup blghdr_translations',
+            'install/blgreductions_translations'    => 'setup blgreductions_translations',
 
             'install/blg_ds_templates'    => 'setup blg_ds_templates',
 

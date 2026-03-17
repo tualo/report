@@ -105,11 +105,11 @@ class Report extends \Tualo\Office\Basic\RouteWrapper
 
                 App::result('report', $report);
                 $db->direct('set @report={report}', [
-                    'report' => json_encode($report)
+                    'report' => json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
                 ]);
                 $db->direct('call setReport({type},@report,@result)', [
                     'type' => $matches['type'],
-                    'report' => json_encode($report)
+                    'report' => json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
                 ]);
                 App::result('mr', $db->moreResults());
                 $data = json_decode($db->singleValue('select @result report', [], 'report'), true);
