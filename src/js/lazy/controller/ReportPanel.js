@@ -65,8 +65,18 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         }
     },
     getReportHeader: function () {
-        window.m = this;
-        return this.getView().getForm().getValues(false, false, false, true);
+        let view = this.getView(),
+            original = this.getViewModel().get('loadedRecord'),
+            o = { ...view.getForm().getValues(false, false, false, true), ...original };
+        view.setDisabled(true);
+        for (let k in o) {
+            if (o.hasOwnProperty(k)) {
+                if (o[k] == null) delete o[k];
+                if (o[k] instanceof Date) o[k] = Ext.util.Format.date(o[k], 'Y-m-d');
+            }
+        }
+        return o;
+        //return this.getView().getForm().getValues(false, false, false, true);
     },
     save: async function () {
         let view = this.getView(),
