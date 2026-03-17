@@ -66,9 +66,9 @@ class Configure extends \Tualo\Office\Basic\RouteWrapper
                 $l = [];
                 $liste = $db->direct('select template_name, template from blg_ds_templates where template_type="ds"  ', []);
                 foreach ($liste as $item) {
-                    $sql = str_replace('_rechnung', $matches['type'], $item['template']);
+                    $sql = str_replace('_rechnung', '_' . strtolower($matches['type']), $item['template']);
                     $name = $db->singleValue('select name  from blg_config where tabellenzusatz = {type}  ', $matches, 'name');
-                    $sql = str_replace('Rechnung', $name, $item['template']);
+                    $sql = str_replace('Rechnung', $name, $sql);
 
                     $sql = preg_replace('!/\*.*?\*/!s', '', $sql);
                     $sql = preg_replace('#^\s*\-\-.+$#m', '', $sql);
