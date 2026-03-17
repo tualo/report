@@ -65,6 +65,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         }
     },
     getReportHeader: function () {
+        window.m = this;
         return this.getView().getForm().getValues(false, false, false, true);
     },
     save: async function () {
