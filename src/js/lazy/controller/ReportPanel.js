@@ -379,60 +379,61 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                     }
                 }
             }
-            this.reportData(this.getViewModel().get('record').get('tabellenzusatz'), this.getViewModel().get('record').get('id'));
-
-        },
-
-        openView: function () {
-            console.log(arguments, this.getViewModel().get('renderer'))
-            let me = this,
-                renderer = this.getViewModel().get('renderer');
-
-            if (renderer.length == 1) {
-                me.openViewRenderer(renderer[0]);
-            } else {
-            }
-            // window.open('./'+typ+'/view_blg_list_'+me.getViewModel().get('record').get('tabellenzusatz') +'/report_2025_content/3
-        },
-
-        openViewRenderer: function (renderer) {
-            let me = this,
-                typ = renderer.useremote ? 'remote/pdf' : 'pugreportpdf';
-            window.open('./' + typ + '/view_blg_list_' + me.getViewModel().get('record').get('tabellenzusatz') + '/' + renderer.pug_template + '/' + me.getViewModel().get('record').get('id'), '_blank');
-
-        },
-
-
-        reject: function () {
-            let me = this;
-            Ext.Msg.show({
-                title: 'Stornieren?',
-                message: 'Möchten Sie diesen Beleg wirklich stornieren?',
-                buttons: Ext.Msg.YESNOCANCEL,
-                icon: Ext.Msg.QUESTION,
-                fn: async function (btn) {
-                    if (btn === 'yes') {
-                        let report = await fetch(
-                            './rejectreport/' + me.getViewModel().get('record').get('tabellenzusatz') + '/' + me.getViewModel().get('record').get('id') + '',
-                            {
-                                method: 'GET'
-                            }
-                        ).then((response) => { return response.json() });
-                        if (report.success) {
-                            me.getViewModel().get('record').set('id', report.data.id);
-                            me.reportData(me.getViewModel().get('record').get('tabellenzusatz'), me.getViewModel().get('record').get('id'));
-                        }
-                    } else if (btn === 'no') {
-                        console.log('No pressed');
-                    } else {
-                        console.log('Cancel pressed');
-                    }
-                }
-            });
-
-
-        },
-        pay: function () {
-            Ext.getApplication().redirectTo('payreport/' + this.getViewModel().get('record').get('tabellenzusatz') + '/' + this.getViewModel().get('record').get('id'));
         }
-    });
+        this.reportData(this.getViewModel().get('record').get('tabellenzusatz'), this.getViewModel().get('record').get('id'));
+
+    },
+
+    openView: function () {
+        console.log(arguments, this.getViewModel().get('renderer'))
+        let me = this,
+            renderer = this.getViewModel().get('renderer');
+
+        if (renderer.length == 1) {
+            me.openViewRenderer(renderer[0]);
+        } else {
+        }
+        // window.open('./'+typ+'/view_blg_list_'+me.getViewModel().get('record').get('tabellenzusatz') +'/report_2025_content/3
+    },
+
+    openViewRenderer: function (renderer) {
+        let me = this,
+            typ = renderer.useremote ? 'remote/pdf' : 'pugreportpdf';
+        window.open('./' + typ + '/view_blg_list_' + me.getViewModel().get('record').get('tabellenzusatz') + '/' + renderer.pug_template + '/' + me.getViewModel().get('record').get('id'), '_blank');
+
+    },
+
+
+    reject: function () {
+        let me = this;
+        Ext.Msg.show({
+            title: 'Stornieren?',
+            message: 'Möchten Sie diesen Beleg wirklich stornieren?',
+            buttons: Ext.Msg.YESNOCANCEL,
+            icon: Ext.Msg.QUESTION,
+            fn: async function (btn) {
+                if (btn === 'yes') {
+                    let report = await fetch(
+                        './rejectreport/' + me.getViewModel().get('record').get('tabellenzusatz') + '/' + me.getViewModel().get('record').get('id') + '',
+                        {
+                            method: 'GET'
+                        }
+                    ).then((response) => { return response.json() });
+                    if (report.success) {
+                        me.getViewModel().get('record').set('id', report.data.id);
+                        me.reportData(me.getViewModel().get('record').get('tabellenzusatz'), me.getViewModel().get('record').get('id'));
+                    }
+                } else if (btn === 'no') {
+                    console.log('No pressed');
+                } else {
+                    console.log('Cancel pressed');
+                }
+            }
+        });
+
+
+    },
+    pay: function () {
+        Ext.getApplication().redirectTo('payreport/' + this.getViewModel().get('record').get('tabellenzusatz') + '/' + this.getViewModel().get('record').get('id'));
+    }
+});
