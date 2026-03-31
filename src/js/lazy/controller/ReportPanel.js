@@ -225,6 +225,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             });
 
             if (this.headtextElement) {
+                console.log('defaultheadtext', config.defaultheadtext);
+                window.headtextElement = this.headtextElement;
                 this.headtextElement.setValue(config.defaultheadtext);
             }
             if (this.foottextElement) {
@@ -354,6 +356,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 this.getView().getComponent('reportheader').setHidden(true);
             } else {
                 this.getView().getComponent('reportheader').setHidden(false);
+                console.log('headtext config', config.headtext);
                 let cpm = Ext.create(config.headtext);
                 this.headtextElement = cpm;
                 this.getView().getComponent('reportheader').add(cpm);
