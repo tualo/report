@@ -5,7 +5,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     createConvertMenu: function () {
         let me = this;
         Tualo.Ajax.request({
-            url: './report-convertlist/' + me.view.reportindex,
+            url: './report-convertlist/' + me.getViewModel().get('record').get('tabellenzusatz'),
             params: {
             },
             scope: me,

@@ -14,11 +14,11 @@ class ConvertList extends \Tualo\Office\Basic\RouteWrapper
 {
     public static function register()
     {
-        Route::add('/report-convertlist/(?P<reportindex>\w+)', function ($matches) {
+        Route::add('/report-convertlist/(?P<tabellenzusatz>\w+)', function ($matches) {
 
             $db = App::get('session')->getDB();
             try {
-                App::result('data', $db->direct('select * from blg_config_converts  where bid1={reportindex}', $matches));
+                App::result('data', $db->direct('select * from blg_config_converts  where bid1 in (select id from blg_config where tabellenzusatz={tabellenzusatz})', $matches));
                 App::result('success', true);
             } catch (Exception $e) {
                 App::result('last_sql', $db->last_sql);
