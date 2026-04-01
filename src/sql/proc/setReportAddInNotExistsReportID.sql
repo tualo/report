@@ -53,6 +53,15 @@ BEGIN
             ) as seq
     ) do
 
+        if position.reportnr = 0 then
+            set position.reportnr = null;
+        end if;
+
+        if position.beleg  = 0 then
+            set position.beleg = null;
+        end if;
+
+
         if position.reportnr is null then
             if position.beleg is null then
                 -- wenn nichts gesetzt ist, dann die reportid verwenden, neuer beleg

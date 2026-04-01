@@ -52,6 +52,7 @@ BEGIN
     DECLARE dsx_request JSON;
     DECLARE header JSON;
     DECLARE result JSON;
+    DECLARE defaults JSON;
     DECLARE reportid bigint;
     DECLARE sql_command varchar(1000);
 
@@ -64,6 +65,8 @@ BEGIN
     );
 
     
+    call setReportDefault(reporttype,in_json,defaults);
+    set in_json = defaults;
 
     -- translate json attributes to column names
     for checkrecord in (select column_name,json_attribute_name,is_required from blghdr_translations) do

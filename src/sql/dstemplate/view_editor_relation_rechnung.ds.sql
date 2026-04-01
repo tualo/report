@@ -28,7 +28,7 @@ INSERT IGNORE INTO `ds_column_form_label` (`active`,`allowempty`,`column_name`,`
 INSERT IGNORE INTO `ds_column_form_label` (`active`,`allowempty`,`column_name`,`fieldgroup`,`field_path`,`flex`,`hidden`,`label`,`language`,`position`,`table_name`,`xtype`) VALUES ('1','0','kostenstelle','','Allgemein/Angaben','1','1','kostenstelle','DE','8','view_editor_relation_rechnung','displayfield') ; 
 INSERT IGNORE INTO `ds_column_form_label` (`active`,`allowempty`,`column_name`,`fieldgroup`,`field_path`,`flex`,`hidden`,`label`,`language`,`position`,`table_name`,`xtype`) VALUES ('1','0','kundennummer','','Allgemein/Angaben','1','1','kundennummer','DE','7','view_editor_relation_rechnung','displayfield') ; 
 INSERT IGNORE INTO `ds_column_form_label` (`active`,`allowempty`,`column_name`,`fieldgroup`,`field_path`,`flex`,`hidden`,`label`,`language`,`position`,`table_name`,`xtype`) VALUES ('1','0','referencenr','','Allgemein/Angaben','1','1','referencenr','DE','5','view_editor_relation_rechnung','displayfield') ; 
-INSERT IGNORE INTO `ds_dropdownfields` (`displayfield`,`idfield`,`name`,`table_name`) VALUES ('display','id','id','view_editor_relation_rechnung') ; 
+INSERT IGNORE INTO `ds_dropdownfields` (`displayfield`,`idfield`,`name`,`table_name`,`additional_fields`) VALUES ('display','id','id','view_editor_relation_rechnung','["address","referencenr"]') ; 
 INSERT IGNORE INTO `ds_access` (`append`,`delete`,`read`,`role`,`table_name`,`write`) VALUES ('0','0','1','_default_','view_editor_relation_rechnung','0') ; 
 INSERT IGNORE INTO `ds_access` (`append`,`delete`,`read`,`role`,`table_name`,`write`) VALUES ('0','0','0','administration','view_editor_relation_rechnung','0') ; 
 REPLACE INTO `docsystem_ds` (`table_name`) VALUES ('view_editor_relation_rechnung') ; 

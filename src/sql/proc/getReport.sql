@@ -1,4 +1,5 @@
 DELIMITER //
+ 
 CREATE OR REPLACE PROCEDURE `getReport`(
         in reporttype varchar(20),
         in in_id bigint,
@@ -59,6 +60,7 @@ IF in_id < 0 THEN
                     from blg_artikel
                         join blg_config on blg_config.id = blg_artikel.belegart
                         and blg_config.tabellenzusatz = reporttype
+                    
                 ),
                 JSON_ARRAY()
             ),
@@ -73,6 +75,68 @@ IF in_id < 0 THEN
             "locks",
             JSON_ARRAY()
         );
+
+        if exists (select 1 from blg_deb_artikel ) then
+
+            if (@currentRequest is not null) then
+                set @currentRequestKundennummer = JSON_VALUE(@currentRequest,'$.kundennummer');
+                set @currentRequestKostenstelle = JSON_VALUE(@currentRequest,'$.kostenstelle');
+                
+                if (@currentRequestKundennummer is not null) then
+                    if exists (
+                        select 
+                            1 
+                        from 
+                            blg_deb_artikel  
+                            join blg_config 
+                                on blg_config.id = blg_deb_artikel.belegart
+                                and blg_config.tabellenzusatz = reporttype
+                            where blg_deb_artikel.kundennummer = @currentRequestKundennummer
+                    
+                    ) then
+                    
+                        SET @pos  = (
+                            select 
+                            JSON_ARRAYAGG(
+                                JSON_OBJECT(
+                                    "id", -1 * blg_deb_artikel.id,
+                                    "pos", position,
+                                    "position", position,
+
+                                    "artikel", blg_deb_artikel.artikel,
+                                    "article", blg_deb_artikel.artikel,
+                                    "amount", blg_deb_artikel.anzahl,
+                                    "price", blg_deb_artikel.epreis,
+                                    "singleprice", blg_deb_artikel.epreis,
+                                    "net", blg_deb_artikel.epreis * blg_deb_artikel.anzahl,
+                                    "tax", 19,
+                                    "taxvalue", blg_deb_artikel.epreis * blg_deb_artikel.anzahl* 0.19,
+                                    "gross", blg_deb_artikel.epreis * blg_deb_artikel.anzahl*1.19,
+                                    
+                                    "singleprice", blg_deb_artikel.epreis,
+                                    "note", blg_deb_artikel.bemerkung,
+                                    "notes", blg_deb_artikel.bemerkung,
+                                    "bemerkung", blg_deb_artikel.bemerkung
+                                )
+                                order by position
+                            ) o
+                        from 
+                            blg_deb_artikel  
+                            join blg_config 
+                                on blg_config.id = blg_deb_artikel.belegart
+                                and blg_config.tabellenzusatz = reporttype
+                            where blg_deb_artikel.kundennummer = @currentRequestKundennummer
+                                and blg_deb_artikel.kostenstelle = @currentRequestKostenstelle
+                        );
+
+                         set result = JSON_SET(result,'$.positions',JSON_MERGE('[]', @pos));
+                    end if;
+                end if;
+
+            end if;
+         
+        end if;
+
 ELSE --  ZAHLUNGEN 
 call debug_message('get report payment');
 call getReportPayments(reporttype, in_id, @payments);

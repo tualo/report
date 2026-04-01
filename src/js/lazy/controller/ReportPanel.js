@@ -2,6 +2,49 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.lazy_report_panel',
 
+    createConvertMenu: function () {
+        let me = this;
+        Tualo.Ajax.request({
+            url: './report-convertlist/' + me.view.reportindex,
+            params: {
+            },
+            scope: me,
+            json: function (o) {
+                if (o.success) {
+                    let btn = me.lookupReference('convertBTN'),
+                        menu = btn.getMenu();
+                    menu.removeAll();
+                    o.data.forEach(function (elm) {
+                        menu.add({
+                            text: elm.bezeichnung,
+                            scope: me,
+                            handler: function (btn) {
+
+                                Ext.MessageBox.confirm('Frage', elm.frage, function (btn) {
+                                    if (btn == 'yes') {
+                                        /*
+                                        me.view.dnreportnumbers = me.view.reportnumbers[0];
+                                        me.view.dnreportindex = elm.bid1;
+
+                                        me.view.reportnumbers = [-1];
+                                        me.view.forceNew = true;
+                                        me.view.reportindex = elm.bid2;
+
+
+                                        me.onBoxReady();
+                                        */
+                                    }
+                                }, me);
+
+                            }
+                        });
+                        btn.setHidden(false);
+                    });
+                }
+            }
+        });
+    },
+
     onFormFieldChanged: function (fld, oldValue, newValue) {
 
         let me = this, sel = null, view = this.getView();
@@ -132,7 +175,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
                 } else {
                     if (d.id != 0) d.__id = d.id; // keep the original pos id
-                    o.positions.push(d);
+                    if (!Ext.isEmpty(d.article))
+                        o.positions.push(d);
                 }
             }
         });

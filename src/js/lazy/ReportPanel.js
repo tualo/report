@@ -72,7 +72,14 @@ Ext.define('Tualo.report.lazy.ReportPanel', {
                     itemId: "openView",
                     handler: "openView",
 
-                }
+                },
+                {
+                    xtype: 'button',
+                    text: '...',
+                    history: true,
+                    reference: 'convertBTN',
+                    menu: []
+                },
             ]
         }
     ],
