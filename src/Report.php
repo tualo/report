@@ -21,6 +21,11 @@ class Report
             $pos['net'] = $pos['net'] * $factor;
             $pos['gross'] = $pos['gross'] * $factor;
 
+
+            $pos['ftype'] = $type; // altes Format sichern
+            $pos['fid'] = $pos['id']; // alte ID sichern
+
+
             unset($pos['id']);
             unset($pos['reportnr']);
         }
@@ -35,6 +40,20 @@ class Report
 
         App::result('mr', $db->moreResults());
         $data = json_decode($db->singleValue('select @result report', [], 'report'), true);
+
+        try {
+            foreach ($data['positions'] as $new_pos) {
+                if (isset($new_pos['ftype']) && $new_pos['ftype'] == $type) {
+                    $db->direct('update blg_pos_' . $toType . ' set zid={zid},zzusatz={zzusatz} where id={fid}', [
+                        'fid' => $new_pos['fid'],
+                        'zzusatz' => $toType, // neuen Typ sichern
+                        'zid' => $new_pos['id'] // neue ID sichern
+                    ]);
+                }
+            }
+        } catch (\Exception $e) {
+            App::result('error', $e->getMessage());
+        }
         return $data;
     }
 
