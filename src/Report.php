@@ -21,6 +21,10 @@ class Report
             $pos['net'] = $pos['net'] * $factor;
             $pos['gross'] = $pos['gross'] * $factor;
 
+            if (isset($pos['zid']) && $pos['zid'] > 0) {
+                throw new \Exception('Report contains already converted positions');
+            }
+
 
             $pos['ftype'] = $type; // altes Format sichern
             $pos['fid'] = $pos['id']; // alte ID sichern
