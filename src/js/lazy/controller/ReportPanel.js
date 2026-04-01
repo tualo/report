@@ -20,8 +20,14 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                             scope: me,
                             handler: function (btn) {
 
-                                Ext.MessageBox.confirm('Frage', elm.frage, function (btn) {
+                                Ext.MessageBox.confirm('Frage', elm.frage, async function (btn) {
                                     if (btn == 'yes') {
+
+                                        // https://new.tualo.de/server/report-convert/srvauftrag/102465/rechnung
+
+                                        let resData = await fetch('./report-convert/' + me.getViewModel().get('record').get('tabellenzusatz') + '/' + me.getViewModel().get('record').get('id') + '/' + elm.totype);
+                                        let data = await resData.json();
+
                                         /*
                                         me.view.dnreportnumbers = me.view.reportnumbers[0];
                                         me.view.dnreportindex = elm.bid1;
