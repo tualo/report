@@ -22,23 +22,20 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
                                 Ext.MessageBox.confirm('Frage', elm.frage, async function (btn) {
                                     if (btn == 'yes') {
-
-                                        // https://new.tualo.de/server/report-convert/srvauftrag/102465/rechnung
-
                                         let resData = await fetch('./report-convert/' + me.getViewModel().get('record').get('tabellenzusatz') + '/' + me.getViewModel().get('record').get('id') + '/' + elm.totype);
                                         let data = await resData.json();
-
-                                        /*
-                                        me.view.dnreportnumbers = me.view.reportnumbers[0];
-                                        me.view.dnreportindex = elm.bid1;
-
-                                        me.view.reportnumbers = [-1];
-                                        me.view.forceNew = true;
-                                        me.view.reportindex = elm.bid2;
-
-
-                                        me.onBoxReady();
-                                        */
+                                        if (data.success) {
+                                            window.open('#ds/view_blg_list_' + elm.totype + '/id/' + data.data.id, '_blank');
+                                        } else {
+                                            let msg = data.msg;
+                                            if (!msg) msg = "Leider ist ein unbekannter Fehler aufgetreten.";
+                                            Ext.toast({
+                                                html: msg,
+                                                title: 'Fehler',
+                                                width: 200,
+                                                align: 't'
+                                            });
+                                        }
                                     }
                                 }, me);
 
