@@ -4,48 +4,53 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
     createConvertMenu: function () {
         let me = this;
-        Tualo.Ajax.request({
-            url: './report-convertlist/' + me.getViewModel().get('record').get('tabellenzusatz'),
-            params: {
-            },
-            scope: me,
-            json: function (o) {
-                if (o.success) {
-                    let btn = me.lookupReference('convertBTN'),
-                        menu = btn.getMenu();
-                    menu.removeAll();
-                    o.data.forEach(function (elm) {
-                        menu.add({
-                            text: elm.bezeichnung,
-                            scope: me,
-                            handler: function (btn) {
+        if (me.getViewModel().get('record').get('tabellenzusatz').length >= 3) {
+            Tualo.Ajax.request({
+                url: './report-convertlist/' + me.getViewModel().get('record').get('tabellenzusatz'),
+                params: {
+                },
+                scope: me,
+                json: function (o) {
+                    if (o.success) {
+                        let btn = me.lookupReference('convertBTN'),
+                            menu = btn.getMenu();
+                        menu.removeAll();
+                        o.data.forEach(function (elm) {
+                            menu.add({
+                                text: elm.bezeichnung,
+                                scope: me,
+                                handler: function (btn) {
 
-                                Ext.MessageBox.confirm('Frage', elm.frage, async function (btn) {
-                                    if (btn == 'yes') {
-                                        let resData = await fetch('./report-convert/' + me.getViewModel().get('record').get('tabellenzusatz') + '/' + me.getViewModel().get('record').get('id') + '/' + elm.totype);
-                                        let data = await resData.json();
-                                        if (data.success) {
-                                            window.open('#ds/view_blg_list_' + elm.totype + '/id/' + data.data.id, '_blank');
-                                        } else {
-                                            let msg = data.msg;
-                                            if (!msg) msg = "Leider ist ein unbekannter Fehler aufgetreten.";
-                                            Ext.toast({
-                                                html: msg,
-                                                title: 'Fehler',
-                                                width: 200,
-                                                align: 't'
-                                            });
+                                    Ext.MessageBox.confirm('Frage', elm.frage, async function (btn) {
+                                        if (btn == 'yes') {
+                                            let resData = await fetch('./report-convert/' + me.getViewModel().get('record').get('tabellenzusatz') + '/' + me.getViewModel().get('record').get('id') + '/' + elm.totype);
+                                            let data = await resData.json();
+                                            if (data.success) {
+                                                window.open('#ds/view_blg_list_' + elm.totype + '/id/' + data.data.id, '_blank');
+                                            } else {
+                                                let msg = data.msg;
+                                                if (!msg) msg = "Leider ist ein unbekannter Fehler aufgetreten.";
+                                                Ext.toast({
+                                                    html: msg,
+                                                    title: 'Fehler',
+                                                    width: 200,
+                                                    align: 't'
+                                                });
+                                            }
                                         }
-                                    }
-                                }, me);
+                                    }, me);
 
-                            }
+                                }
+                            });
+                            btn.setHidden(false);
                         });
-                        btn.setHidden(false);
-                    });
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            let btn = me.lookupReference('convertBTN');
+            btn.setHidden(true);
+        }
     },
 
     onFormFieldChanged: function (fld, oldValue, newValue) {
@@ -397,9 +402,17 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                         getHeader: this.getReportHeader.bind(this),
                         model: 'Tualo.DataSets.model.View_editor_blg_pos_' + this.getViewModel().get('record').get('tabellenzusatz'),
                     },
-                    // bodyPadding: 10
+                    /*
+                    listeners: {
+                        itemcontextmenu: function (view, record, item, index, e) {
+                            e.stopEvent();
+                            let me = this;
+                            alert('contextmenu');
+                        }
+                    }*/
                 })
             );
+            console.log('this.positionsList', this.positionsList);
 
             if (Ext.isEmpty(config.headtext)) {
                 this.getView().getComponent('reportheader').setHidden(true);

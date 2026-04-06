@@ -43,9 +43,9 @@ IF in_id < 0 THEN
                     select JSON_ARRAYAGG(
                             JSON_OBJECT(
                                 "pos",
-                                position,
+                                blg_artikel.position,
                                 "position",
-                                position,
+                                blg_artikel.position,
                                 "artikel",
                                 blg_artikel.artikel,
                                 "amount",
@@ -55,7 +55,7 @@ IF in_id < 0 THEN
                                 "note",
                                 blg_artikel.bemerkung
                             )
-                            order by position
+                            order by blg_artikel.position
                         )
                     from blg_artikel
                         join blg_config on blg_config.id = blg_artikel.belegart
@@ -76,7 +76,9 @@ IF in_id < 0 THEN
             JSON_ARRAY()
         );
 
-        if exists (select 1 from blg_deb_artikel ) then
+        if 
+            exists(select table_name from ds where table_name = 'blg_deb_artikel' and existsreal=1 )
+        then
 
             if (@currentRequest is not null) then
                 set @currentRequestKundennummer = JSON_VALUE(@currentRequest,'$.kundennummer');

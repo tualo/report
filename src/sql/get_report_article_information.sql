@@ -1,11 +1,11 @@
 DELIMITER //
 
 CREATE OR REPLACE PROCEDURE `reportArticleInformation`(in request JSON, out result JSON) BEGIN
-SET result = JSON_OBJECT();
-SET result = JSON_INSERT(result, '$.tax', 0);
-SET result = JSON_INSERT(result, '$.singleprice', 0);
-SET result = JSON_INSERT(result, '$.account', 0);
-SET result = JSON_INSERT(result, '$.unit', 1);
+    SET result = JSON_OBJECT();
+    SET result = JSON_INSERT(result, '$.tax', JSON_VALUE(request, '$.position.tax'));
+    SET result = JSON_INSERT(result, '$.singleprice', JSON_VALUE(request, '$.position.singleprice'));
+    SET result = JSON_INSERT(result, '$.account', JSON_VALUE(request, '$.position.account'));
+    SET result = JSON_INSERT(result, '$.unit', JSON_VALUE(request, '$.position.unit'));
 
     SELECT id,
         adress_bezug,

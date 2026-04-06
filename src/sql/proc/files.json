@@ -1,5 +1,9 @@
 [
     {
+        "file": "reportFieldData.sql",
+        "text": "setup reportFieldData procedure"
+    },
+    {
         "file": "appendReportID.sql",
         "text": "setup appendReportID procedure"
     },

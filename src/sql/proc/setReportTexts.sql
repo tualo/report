@@ -38,6 +38,7 @@ BEGIN
           
           set dsx_request=JSON_SET(dsx_request,'$.data', JSON_MERGE(JSON_ARRAY(),appendReportID( JSON_EXTRACT(in_json,'$.texts') , reportid) ));
 --          set dsx_request=JSON_SET(dsx_request,'$.data',appendReportID(JSON_EXTRACT(in_json,'$.texts'), reportid));
+
           call dsx_rest_api_set(dsx_request, result);
           if JSON_VALUE(result,'$.success')=0 then
               SET MSG = concat('Texts could not be saved: ', JSON_VALUE(result,'$.error'));

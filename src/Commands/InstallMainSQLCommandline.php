@@ -57,6 +57,7 @@ class InstallMainSQLCommandline implements ICommandline
             'steuergruppen_field' => 'setup steuergruppen_field ds definition ',
             // 'main' => 'setup main report procedures ',
             'ext_base_type' => 'setup base types ',
+            'ext_types_fields' => 'setup field types ',
 
 
             'view_brieffusstext' => 'setup report footer view ',
@@ -79,6 +80,8 @@ class InstallMainSQLCommandline implements ICommandline
             'proc/setReportTexts'    => 'setup setReportTexts',
             'proc/setReportBookingCircle'    => 'setup setReportBookingCircle',
             'proc/setReportTSE'    => 'setup setReportTSE',
+            'proc/reportFieldData'    => 'setup reportFieldData',
+            'proc/setReportDefault'    => 'setup setReportDefault',
             'proc/setReport'    => 'setup setReport',
 
             'proc/checkReportRequirements'    => 'setup checkReportRequirements',

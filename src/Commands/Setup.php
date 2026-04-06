@@ -26,6 +26,7 @@ class Setup extends BaseSetup
         $parentCommands = parent::getCommands($args);
         return [
             ...$parentCommands,
+            'import-ds-report-templates',
             'install-sql-report'
         ];
     }

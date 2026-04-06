@@ -1,8 +1,7 @@
-// old, please use TualoTaxValue instead
-Ext.define('Tualo.report.data.field.TaxValue', {
+Ext.define('Tualo.report.data.field.TualoTaxValue', {
     extend: 'Ext.data.field.Number',
     alias: [
-        'data.field.tualoreporttaxvalue'
+        'data.field.tualo_report_tax_value'
     ],
     calculate: function (data) {
         v = data.gross - data.net;

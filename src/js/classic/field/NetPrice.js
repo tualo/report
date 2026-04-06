@@ -4,11 +4,11 @@ Ext.define('Tualo.report.data.field.NetPrice', {
         'data.field.tualoreportnetprice'
     ],
     calculate: function (data) {
-        console.log('NetPrice',data);
-        v=data.singleprice*data.amount;
+        console.log('NetPrice', data);
+        v = data.singleprice * data.amount;
         return v;
     },
-    critical:true,
+    critical: true,
     persist: true,
-    depends: ['amount','singleprice'],
+    depends: ['amount', 'singleprice'],
 });

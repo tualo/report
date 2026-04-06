@@ -23,6 +23,7 @@ BEGIN
         'update', 1 = 1
     );
 
+
     IF JSON_EXISTS(in_json,'$.bookingcircle') THEN 
       
 
@@ -35,7 +36,8 @@ BEGIN
           )
         );
     END IF;
-    
+
+
     call dsx_rest_api_set(dsx_request, result);
     if JSON_VALUE(result,'$.success')=0 then
         SET MSG = concat('Booking circle could not be saved: ', JSON_VALUE(result,'$.error'));

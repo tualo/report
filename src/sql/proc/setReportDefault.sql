@@ -1,3 +1,4 @@
+DELIMITER //
 CREATE OR REPLACE PROCEDURE setReportDefault(
         in reporttype varchar(20),
         in in_json JSON,

@@ -52,11 +52,13 @@ class ImportDSTemplates implements ICommandline
 
         $files = [
 
+            'form_group.ds.sql',
             'blg_adr_rechnung.ds.sql',
             'blg_hdr_rechnung.ds.sql',
             'blg_min_rechnung.ds.sql',
             'blg_pay_rechnung.ds.sql',
             'blg_pos_rechnung.ds.sql',
+            'blg_bkr_rechnung.ds.sql',
             'blg_signum_rechnung.ds.sql',
             'blg_txt_rechnung.ds.sql',
             'view_blg_list_rechnung.ds.sql',

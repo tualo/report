@@ -86,6 +86,8 @@ BEGIN
             end if;
         end if;
     end for;
+
+    call debug_message('setReport - after header translation and validation');
     
      -- insert header
     SET header = JSON_EXTRACT(in_json,'$');
@@ -104,6 +106,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
     end if;
 
+     call debug_message('setReport - after header insert, before retrieving reportid');
+
     if JSON_VALUE(result,'$.temporary_table_name') is not null then
         set sql_command = concat('select id into @reportid from ', JSON_VALUE(result,'$.temporary_table_name'));
         PREPARE stmt FROM sql_command;
@@ -120,7 +124,9 @@ BEGIN
     -- add reportid to positions if not exists
     SET in_json = setReportAddInNotExistsReportID(in_json, reportid);
 
+ call debug_message('setReport - after adding reportid to positions, before position translation and validation');
 
+     -- translate json attributes to column names for positions 
     -- insert positions using DSX
     set dsx_request=JSON_SET(dsx_request,'$.data',JSON_EXTRACT(in_json,'$.positions'));
     set dsx_request=JSON_SET(dsx_request,'$.tablename',concat('blg_pos_', reporttype));
@@ -130,22 +136,26 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
     end if;
 
+ call debug_message('setReport - after position insert, before TSE, Texts, ReferenceNr, Address, BookingCircle');
     -- TSE
     call setReportTSE(reporttype, in_json, reportid, result);
 
+ call debug_message('setReport - after TSE, before Texts, ReferenceNr, Address, BookingCircle');
     -- Texts
     call setReportTexts(reporttype, in_json, reportid, result);
 
+ call debug_message('setReport - after Texts, before ReferenceNr, Address, BookingCircle');
     -- Bezug
     call setReportReferenceNr(reporttype, in_json, reportid, result);
-
+ call debug_message('setReport - after ReferenceNr, before Address, BookingCircle');
     -- Address
     call setReportAddress(reporttype, in_json, reportid, result);
 
+ call debug_message('setReport - after Address, before BookingCircle');
     -- BookingCircle
     call setReportBookingCircle(reporttype, in_json, reportid, result);
 
-
+ call debug_message('setReport - after BookingCircle, before recalculateHeader and getReport');
     -- finally recalculate header
     call recalculateHeader(reporttype, reportid);
     call getReport(reporttype, reportid, out_json);
