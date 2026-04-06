@@ -268,6 +268,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                         }
                     },
                 }, {
+
+
                     title: null,
                     itemId: 'list',
                     xtype: 'dslist_view_editor_blg_sets_artikel',
@@ -499,14 +501,16 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                         getHeader: this.getReportHeader.bind(this),
                         model: 'Tualo.DataSets.model.View_editor_blg_pos_' + this.getViewModel().get('record').get('tabellenzusatz'),
                     },
-                    /*
+
                     listeners: {
-                        itemcontextmenu: function (view, record, item, index, e) {
-                            e.stopEvent();
-                            let me = this;
-                            alert('contextmenu');
-                        }
-                    }*/
+                        "drop": "onDropGrid"
+                        /*
+                            itemcontextmenu: function (view, record, item, index, e) {
+                                e.stopEvent();
+                                let me = this;
+                                alert('contextmenu');
+                            }*/
+                    }
                 })
             );
             console.log('this.positionsList', this.positionsList);
@@ -609,5 +613,34 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     },
     pay: function () {
         Ext.getApplication().redirectTo('payreport/' + this.getViewModel().get('record').get('tabellenzusatz') + '/' + this.getViewModel().get('record').get('id'));
-    }
+    },
+
+
+    onDropGrid: function () {
+        this.numberRows();
+    },
+
+    numberRows: function () {
+        var i,
+            grid = this.getView(),
+            model = this.getViewModel(),
+            store = this.getStore(),
+            records = store.getRange(),
+            min = Number.POSITIVE_INFINITY,
+            fld_name = model.get('reorderfield');
+        if (!Ext.isEmpty(fld_name)) {
+            //vc.getView().getComponent('list').getStore().getRange();
+
+
+            for (i = 0; i < records.length; i++) {
+                min = Math.min(min, records[i].get(fld_name));
+            }
+            min = 0;
+
+            for (i = 0; i < records.length; i++) {
+                console.log('onDropGrid', records[i], fld_name, min + i);
+                records[i].set(fld_name, min + i);
+            }
+        }
+    },
 });
