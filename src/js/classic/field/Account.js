@@ -9,7 +9,6 @@ Ext.define('Tualo.report.data.field.Account', {
         'article'
     ],
     calculate: function (data) {
-        console.log('account', v, rec);
         return data;
     }
 });

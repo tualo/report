@@ -126,6 +126,19 @@ select gruppe from artikelgruppen //
 
 create view if not exists `view_editor_blg_pos_#####` as
 select 
+
+    artikel article,
+    bemerkung notes,
+    anzahl amount,
+    epreis singleprice,
+    netto net,
+    steuersatz tax,
+    steuer taxvalue,
+    brutto gross,
+    konto account,
+    einheit unit,
+    pos position,
+
     id,
     beleg,
     pos,
