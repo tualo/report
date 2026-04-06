@@ -624,7 +624,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         var i,
             grid = this.getView(),
             model = this.getViewModel(),
-            store = this.getStore(),
+            store = this.positionsList.getStore(),
             records = store.getRange(),
             min = Number.POSITIVE_INFINITY,
             fld_name = model.get('reorderfield');
