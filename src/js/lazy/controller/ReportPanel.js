@@ -286,14 +286,20 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                             if (records.length > 0) {
                                 let record = records[0];
 
-                                record.set(data);
+                                // record.set(data);
                                 try {
                                     record.set('article', data.artikel);
                                     record.set('notes', data.bemerkung);
                                     record.set('amount', data.amount);
                                     record.set('singleprice', data.epreis);
                                     record.set('unit', data.einheit);
+                                    record.set('einheit', data.einheit);
+                                    record.set('einheit_symbol', data.einheit_symbol);
                                     record.set('tax', 19);
+                                    if (data.materialanteil)
+                                        record.set('materialanteil', data.materialanteil);
+                                    if (data.materialanteil)
+                                        record.set('materialanteil', data.materialanteil);
                                 } catch (e) {
                                     console.error(e);
                                 }
@@ -627,7 +633,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             store = this.positionsList.getStore(),
             records = store.getRange(),
             min = Number.POSITIVE_INFINITY,
-            fld_name = model.get('reorderfield');
+            fld_name = 'position';
         if (!Ext.isEmpty(fld_name)) {
             //vc.getView().getComponent('list').getStore().getRange();
 
