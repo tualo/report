@@ -7,10 +7,7 @@ Ext.define('Tualo.report.data.field.Account', {
 
     depends: [
         'article'
-    ],
-    calculate: function (data) {
-        return data;
-    }
+    ]
 });
 
 
