@@ -291,6 +291,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                                     record.set('amount', data.amount);
                                     record.set('singleprice', data.epreis);
                                     record.set('unit', data.einheit);
+                                    record.set('tax', 19);
                                 } catch (e) {
                                     console.error(e);
                                 }
