@@ -225,6 +225,102 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         }
 
     },
+    openPresets: function () {
+        let me = this,
+            wnd = Ext.create('Ext.Window', {
+                title: 'Artikelvorgaben',
+                width: 600,
+                height: 600,
+                layout: {
+                    type: 'vbox',
+                    align: 'stretch'
+                },
+                items: [{
+                    xtype: 'textfield',
+                    emptyText: "Suchen ...",
+                    triggers: {
+                        bar: {
+                            weight: 0,
+                            cls: Ext.baseCSSPrefix + "form-clear-trigger",
+                            handler: function (field) {
+                                field.setValue("");
+                                let store = field.up('window').getComponent('list').getStore(),
+                                    params = store.getProxy().getExtraParams();
+                                if (Ext.isEmpty(params)) { params = {}; };
+                                delete params.filter_by_search;
+                                delete params.search;
+                                store.getProxy().setExtraParams(params);
+                                store.load();
+                                // field.up('window').getController().setViewType("list");
+                            }
+                        }
+                    },
+                    listeners: {
+                        specialkey: function (field, e) {
+                            if (e.getKey() == e.ENTER) {
+                                let store = field.up('window').getComponent('list').getStore();
+                                store.getProxy().setExtraParam("filter_by_search", 1);
+                                //                store.getProxy().setExtraParam("fulltext",2);
+                                store.getProxy().setExtraParam("search", field.getValue());
+                                store.load();
+                                // field.up('window').getController().setViewType("list");
+                            }
+                        }
+                    },
+                }, {
+                    title: null,
+                    itemId: 'list',
+                    xtype: 'dslist_view_editor_blg_sets_artikel',
+                    store: {
+                        type: 'view_editor_blg_sets_artikel_store',
+                        autoLoad: true,
+                    },
+                    listeners: {
+                        scope: this,
+                        itemdblclick: function (view, use_record) {
+                            console.log('itemdblclick', view, use_record);
+                            let records = this.positionsList.getSelection(),
+                                data = use_record.data;
+                            if (records.length > 0) {
+                                let record = records[0];
+
+                                record.set(data);
+                                try {
+                                    record.set('article', data.artikel);
+                                    record.set('notes', data.artikel);
+                                    record.set('amount', data.amount);
+                                    record.set('singleprice', data.epreis);
+                                    record.set('unit', data.einheit);
+                                } catch (e) {
+                                    console.error(e);
+                                }
+                            } else {
+
+                                let record = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + me.getViewModel().get('record').get('tabellenzusatz'), data);
+                                record.set('article', data.artikel);
+                                record.set('notes', data.artikel);
+                                record.set('amount', data.amount);
+                                record.set('singleprice', data.epreis);
+                                record.set('unit', data.einheit);
+                                record.set('tax', 19);
+
+                                this.positionsList.getStore().add(record);
+
+                            }
+                            view.up('window').close();
+                        }
+                    },
+                    flex: 1,
+                }]
+            });
+        wnd.show();
+        let size0 = Ext.getApplication().getMainView().getSize();
+        wnd.setPosition(size0.width * 0.025, size0.height * 0.10);
+        size0.width = size0.width * 0.95;
+        size0.height = size0.height * 0.75;
+        wnd.setSize(size0);
+
+    },
     reportData: async function (tabellenzusatz, id) {
         let view = this.getView();
         view.getForm().reset(true);

@@ -74,6 +74,15 @@ Ext.define('Tualo.report.lazy.ReportPanel', {
 
                 },
                 {
+                    xtype: "glyphtool",
+                    glyphPrefix: "fa fa-",
+                    glyph: "wand-magic",
+                    tooltip: "Vorgaben",
+                    itemId: "openPresets",
+                    handler: "openPresets",
+
+                },
+                {
                     xtype: 'button',
                     text: '...',
                     history: true,
