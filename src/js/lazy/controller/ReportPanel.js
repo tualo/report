@@ -83,6 +83,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         let flds = Ext.ComponentQuery.query('[name=referencenr]'),
             hdr = this.getView().getComponent('header').getComponent('reportheader');
 
+
         for (let i = 0; i < flds.length; i++) {
             let fld = flds[i];
 
@@ -90,9 +91,15 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
                 let store = fld.getStore(),
                     r = store.findRecord('referencenr', referencenr, 0, false, false, true);
+
                 if (r) {
                     console.log(r.get('address'));
                     return r.get('address');
+                }
+                if (store.isLoaded() == false) {
+                    setTimeout(() => {
+                        this.getAddress(referencenr);
+                    }, 500);
                 }
             }
         };
@@ -363,7 +370,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             let positions = [];
             let record = Ext.create('Tualo.DataSets.model.View_editor_blg_hdr_' + tabellenzusatz, data.data);
 
-            console.log(record.data, view.getForm().getValues());
+            console.log('reportData', record.data, view.getForm().getValues());
 
             if (Ext.isEmpty(record.data.address)) {
 
@@ -494,9 +501,10 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                         cellediting: {
                             clicksToEdit: 1,
                             listeners: {
+                                scope: this,
                                 edit: function (editor, fld) {
-                                    this.grid.checkAutoNewRow(fld.rowIdx);
-                                    this.grid.fireEvent('edited', fld.record, fld);
+                                    this.checkAutoNewRow(fld.rowIdx);
+                                    this.positionsList.fireEvent('edited', fld.record, fld);
                                     return true;
                                 }
                             }
@@ -566,6 +574,22 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         }
         this.reportData(this.getViewModel().get('record').get('tabellenzusatz'), this.getViewModel().get('record').get('id'));
 
+    },
+
+    checkAutoNewRow: function (rowIndex) {
+        let tabellenzusatz = this.getViewModel().get('record').get('tabellenzusatz'),
+            store = this.positionsList.getStore(),
+            doNotAdd = false;
+
+        console.log('checkAutoNewRow', rowIndex, store.getCount(), this.positionsList);
+        if (typeof rowIndex == 'undefined') rowIndex = -1;
+        if ((doNotAdd === false) && (rowIndex === store.getCount() - 1)) {
+            store.add(
+
+                Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, {})
+            );
+        }
+        return true;
     },
 
     openView: function () {

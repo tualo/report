@@ -12,6 +12,7 @@ Ext.define('Tualo.report.data.field.TualoAccount', {
     queriedList: {},
     convert: function (currentValue, record) {
         let doQuery = false;
+        console.log('TualoAccount convert', record);
         if (!Ext.isEmpty(record.get('article'))) {
             if (typeof record.modified == 'undefined') return currentValue * 1;
             if (record.modified) {

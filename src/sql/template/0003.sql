@@ -275,6 +275,8 @@ create or replace view `view_editor_blg_pos_#####` as
 select 
     blg_pos_#####.*,
 
+    blg_pos_#####.pos position,
+    blg_pos_#####.beleg reportnr,
     blg_pos_#####.artikel article,
     blg_pos_#####.anzahl amount,
     blg_pos_#####.epreis singleprice,

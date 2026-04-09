@@ -16,16 +16,22 @@ Ext.define('Tualo.report.data.field.TualoSinglePrice', {
     lastQuery: null,
     queriedList: {},
     convert: function (currentValue, record) {
-        let doQuery = false;
+        let doQuery = true;
 
+        console.log('TualoSinglePrice convert start', record);
         if (!Ext.isEmpty(record.get('article'))) {
             if (typeof record.modified == 'undefined') return currentValue * 1;
             if (record.modified) {
+                /*
                 if (record.modified.article) doQuery = true;
                 if (record.modified.amount) doQuery = true;
+                */
 
-                if (this.queriedList[record.get('id')] && this.queriedList[record.get('id')].article == record.get('article')
-                    && this.queriedList[record.get('id')].amount == record.get('amount')) {
+                if (
+                    this.queriedList[record.get('id')]
+                    && this.queriedList[record.get('id')].article == record.get('article')
+                    && this.queriedList[record.get('id')].amount == record.get('amount')
+                ) {
                     // take care, infinite loop possible 
                     doQuery = false;
                 }
