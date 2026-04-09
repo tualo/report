@@ -78,7 +78,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         }
     },
 
-    getAddress: function (referencenr) {
+    getAddress: async function (referencenr) {
 
         let flds = Ext.ComponentQuery.query('[name=referencenr]'),
             hdr = this.getView().getComponent('header').getComponent('reportheader');
@@ -97,9 +97,19 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                     return r.get('address');
                 }
                 if (store.isLoaded() == false) {
+
+                    // await timeout to wait for store to load
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    r = store.findRecord('referencenr', referencenr, 0, false, false, true);
+                    if (r) {
+                        console.log(r.get('address'));
+                        return r.get('address');
+                    }
+                    /*
                     setTimeout(() => {
                         this.getAddress(referencenr);
                     }, 500);
+                    */
                 }
             }
         };
@@ -374,7 +384,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
             if (Ext.isEmpty(record.data.address)) {
 
-                record.data.address = this.getAddress(record.data.referencenr);
+                record.data.address = await this.getAddress(record.data.referencenr);
             }
             view.getForm().setValues(record.data);
 
