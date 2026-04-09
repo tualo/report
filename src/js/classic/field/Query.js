@@ -6,13 +6,13 @@ Ext.define('Tualo.report.mixins.field.Query', {
         params.position = record.data;
 
         if (
-            window.report_lastQuery != null
-            && new Date().getTime() - window.report_lastQuery < 1000
+            this.report_lastQuery != null
+            && new Date().getTime() - this.report_lastQuery < 1000
         ) {
             throw 'Too many queries';
 
         }
-        window.report_lastQuery = new Date().getTime();
+        this.report_lastQuery = new Date().getTime();
 
         let request = await fetch(`./reportdata/${type}`, {
             method: 'POST',
