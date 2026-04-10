@@ -596,7 +596,10 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         if ((doNotAdd === false) && (rowIndex === store.getCount() - 1)) {
             store.add(
 
-                Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, {})
+                Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, {
+                    position: store.getCount() + 1,
+                    pos: store.getCount() + 1,
+                })
             );
         }
         return true;

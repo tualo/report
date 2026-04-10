@@ -90,6 +90,25 @@ BEGIN
 END //
 
 
+CREATE OR REPLACE PROCEDURE `reportFieldProcessDefaultMaterialanteil`( in request JSON, out result JSON) 
+COMMENT 'sets default materialanteil if not set, do not overwrite this process. just create a new one with same name and add your own logic, then set this process to inactive'
+BEGIN
+    SET result = JSON_OBJECT();
+    IF (JSON_EXISTS(request, '$.position.materialanteil') = 1) and JSON_VALUE(request, '$.position.materialanteil') is not null then
+        SET result = JSON_INSERT(result, '$.value', JSON_VALUE(request, '$.position.materialanteil'));
+        SET result = JSON_INSERT(result, '$.message', 'materialanteil already set, no default materialanteil set');
+    ELSE
+        SET result = JSON_INSERT(result, '$.value', 0);
+    END IF;
+    SET result = JSON_INSERT(result, '$.modified', 1=1);
+    SET result = JSON_INSERT(result, '$.message', 'materialanteil set to default_materialanteil');
+END //
+
+insert ignore into report_field_data_process (processname, active, execute_order) values ('reportFieldProcessDefaultMaterialanteil', 1, 0) //
+insert ignore into report_field_data_process_fieldnames (processname,fieldname, active) values ('reportFieldProcessDefaultMaterialanteil', 'materialanteil', 1) //
+insert ignore into report_field_data_process_reporttypes (processname, reporttype, active) values ('reportFieldProcessDefaultMaterialanteil', 'rechnung', 1) //
+
+
 insert ignore into report_field_data_process (processname, active, execute_order) values ('reportFieldProcessDefaultAccount', 1, 0) //
 insert ignore into report_field_data_process (processname, active, execute_order) values ('reportFieldProcessDefaultSinglePrice', 1, 0) //
 insert ignore into report_field_data_process (processname, active, execute_order) values ('reportFieldProcessDefaultTax', 1, 0) //
