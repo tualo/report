@@ -53,7 +53,10 @@ BEGIN
     DECLARE header JSON;
     DECLARE result JSON;
     DECLARE defaults JSON;
+    DECLARE positions JSON;
+    DECLARE position JSON;
     DECLARE reportid bigint;
+    DECLARE i int;
     DECLARE sql_command varchar(1000);
 
     -- Template for DSX request
@@ -122,19 +125,60 @@ BEGIN
     END IF;
 
     -- add reportid to positions if not exists
-    SET in_json = setReportAddInNotExistsReportID(in_json, reportid);
+    -- SET in_json = setReportAddInNotExistsReportID(in_json, reportid);
+
 
  call debug_message('setReport - after adding reportid to positions, before position translation and validation');
 
      -- translate json attributes to column names for positions 
     -- insert positions using DSX
-    set dsx_request=JSON_SET(dsx_request,'$.data',JSON_EXTRACT(in_json,'$.positions'));
-    set dsx_request=JSON_SET(dsx_request,'$.tablename',concat('blg_pos_', reporttype));
-    call dsx_rest_api_set(dsx_request, result);
-    if JSON_VALUE(result,'$.success')=0 then
-        SET MSG = concat('Positions could not be saved: ', JSON_VALUE(result,'$.error'));
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
-    end if;
+
+
+    SET positions = JSON_EXTRACT(in_json,'$.positions');
+    SET i = 0;
+    WHILE i < JSON_LENGTH(positions) DO
+        SET position  =  JSON_EXTRACT(positions, concat('$[', i, ']'));
+        if JSON_EXISTS(position, '$.reportnr')=0 OR JSON_VALUE(position, '$.reportnr') is null then
+            set position = JSON_SET(position, '$.reportnr', reportid);
+            set position = JSON_SET(position, '$.beleg', reportid);
+        end if;
+
+
+
+        FOR rec in (select * from blgpos_translations) DO 
+            IF ( rec.is_required = 1  and JSON_EXISTS(position, concat('$.', rec.json_attribute_name)) = 0) THEN
+                SET MSG = concat(
+                        'Required field ',
+                        rec.json_attribute_name,
+                        ' not found in JSON'
+                    );
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = MSG;
+            ELSEIF JSON_EXISTS(position, concat('$.', rec.json_attribute_name)) = 1 THEN
+                SET position = JSON_SET(
+                        position,
+                        concat('$.', rec.column_name),
+                        JSON_VALUE(position, concat('$.', rec.json_attribute_name))
+                    );
+            END IF;
+        END FOR;
+
+
+        set dsx_request=JSON_SET(dsx_request,'$.data', JSON_MERGE(json_array(),position) );
+        set dsx_request=JSON_SET(dsx_request,'$.tablename',concat('blg_pos_', reporttype));
+
+        
+        
+        call dsx_rest_api_set(dsx_request, result);
+        if JSON_VALUE(result,'$.success')=0 then
+            SET MSG = concat('Positions could not be saved: ', JSON_VALUE(result,'$.error'));
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
+        end if;
+
+
+        SET i = i + 1;
+
+    END WHILE;
 
  call debug_message('setReport - after position insert, before TSE, Texts, ReferenceNr, Address, BookingCircle');
     -- TSE
