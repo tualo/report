@@ -187,7 +187,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             let d = item.getData();
             if (
                 d.amount != null
-                && d.tax != null
+                // && d.tax != null
             ) {
                 for (let k in d) {
                     if (d.hasOwnProperty(k)) {
@@ -195,6 +195,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                         if (d[k] instanceof Date) d[k] = Ext.util.Format.date(d[k], 'Y-m-d');
                     }
                 }
+                o.positions.push(d);
+                /*
                 if ((d.id == 0) && (d.amount == 0)) {
                     // ignore emtpy lines
 
@@ -203,6 +205,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                     if (!Ext.isEmpty(d.article))
                         o.positions.push(d);
                 }
+                    */
             }
         });
 
