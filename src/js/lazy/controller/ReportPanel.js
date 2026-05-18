@@ -195,6 +195,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                         if (d[k] instanceof Date) d[k] = Ext.util.Format.date(d[k], 'Y-m-d');
                     }
                 }
+                if (!Ext.isEmpty(d.article))
+                    if (d.id != 0) d.__id = d.id; // keep the original pos id
                 o.positions.push(d);
                 /*
                 if ((d.id == 0) && (d.amount == 0)) {

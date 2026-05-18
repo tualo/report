@@ -30,6 +30,7 @@ BEGIN
             )
           )
         );
+        call debug_message( concat('setReportReferenceNr: ','blg_',(select max(adress_bezug) from blg_config where tabellenzusatz= reporttype ),'_', reporttype));
         set dsx_request=JSON_SET(dsx_request,'$.tablename',concat('blg_',(select max(adress_bezug) from blg_config where tabellenzusatz= reporttype ),'_', reporttype));
         call dsx_rest_api_set(dsx_request, result);
         if JSON_VALUE(result,'$.success')=0 then

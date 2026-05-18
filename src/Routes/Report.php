@@ -103,6 +103,14 @@ class Report extends \Tualo\Office\Basic\RouteWrapper
                 if (!isset($report['order_id']) || $report['order_id'] == '') $report['order_id'] = '';
                 if (!isset($report['time']) || $report['time'] == '') $report['time'] = (new DateTime())->format('H:i:s');
 
+                $report_positions = [];
+                foreach ($report['positions'] as $k => $v) {
+                    if (isset($v['article']) && $v['article'] != '') {
+                        $report_positions[] = $v;
+                    }
+                }
+                $report['positions'] = $report_positions;
+
                 App::result('report', $report);
                 $db->direct('set @report={report}', [
                     'report' => json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
