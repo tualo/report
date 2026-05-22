@@ -45,17 +45,9 @@ class Report extends \Tualo\Office\Basic\RouteWrapper
 
 
                     if (
-                        (isset($postdata['faelligam']))
+                        (isset($postdata['zahlungsziel']) && $postdata['zahlungsziel'] != '')
                     ) {
-                        $data['faelligam'] = $postdata['faelligam'];
-                        $data['payuntildate'] = $postdata['faelligam'];
-                    }
-
-                    if (
-                        (isset($postdata['payuntildate']))
-                    ) {
-                        $data['faelligam'] = $postdata['payuntildate'];
-                        $data['payuntildate'] = $postdata['payuntildate'];
+                        $data['payuntildate'] = (new DateTime())->modify('+' . $postdata['zahlungsziel'] . ' day')->format('Y-m-d');
                     }
                 }
 
