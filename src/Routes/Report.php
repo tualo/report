@@ -43,7 +43,7 @@ class Report extends \Tualo\Office\Basic\RouteWrapper
                         $data['referencenr'] = $postdata['bezugsnummer'];
                     }
 
-
+                    $postdata['zahlungsziel'] = 8;
                     if (
                         (isset($postdata['zahlungsziel']) && $postdata['zahlungsziel'] != '')
                     ) {
