@@ -42,6 +42,21 @@ class Report extends \Tualo\Office\Basic\RouteWrapper
                     ) {
                         $data['referencenr'] = $postdata['bezugsnummer'];
                     }
+
+
+                    if (
+                        (isset($postdata['faelligam']))
+                    ) {
+                        $data['faelligam'] = $postdata['faelligam'];
+                        $data['payuntildate'] = $postdata['faelligam'];
+                    }
+
+                    if (
+                        (isset($postdata['payuntildate']))
+                    ) {
+                        $data['faelligam'] = $postdata['payuntildate'];
+                        $data['payuntildate'] = $postdata['payuntildate'];
+                    }
                 }
 
 
