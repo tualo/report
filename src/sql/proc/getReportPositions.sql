@@ -40,7 +40,8 @@ SET @SQL = concat(
         flds,
         '
             )
-            separator ","
+                order by pos
+                separator ","
         ),"")
         ,"]"
         ) o 
@@ -57,6 +58,7 @@ SET @SQL = concat(
     WHERE beleg = ',
         in_id,
         '
+
     '
     );
 PREPARE stmt

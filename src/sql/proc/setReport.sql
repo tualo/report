@@ -144,6 +144,14 @@ BEGIN
         end if;
 
 
+        IF 
+            JSON_EXISTS(position, concat('$.', 'singleprice')) = 0
+            and 
+            JSON_EXISTS(position, concat('$.', 'epreis')) = 1
+        THEN
+            set position = JSON_SET(position, concat('$.', 'singleprice'), JSON_VALUE(position, concat('$.', 'epreis')));
+        END IF; 
+            
 
         FOR rec in (select * from blgpos_translations) DO 
             IF ( rec.is_required = 1  and JSON_EXISTS(position, concat('$.', rec.json_attribute_name)) = 0) THEN

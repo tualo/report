@@ -312,6 +312,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                                 try {
                                     record.set('article', data.artikel);
                                     record.set('notes', data.bemerkung);
+                                    record.set('bemerkung', data.bemerkung);
                                     record.set('amount', data.amount);
                                     record.set('singleprice', data.epreis);
                                     record.set('unit', data.einheit);
@@ -330,6 +331,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                                 let record = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + me.getViewModel().get('record').get('tabellenzusatz'), data);
                                 record.set('article', data.artikel);
                                 record.set('notes', data.bemerkung);
+                                record.set('bemerkung', data.bemerkung);
                                 record.set('amount', data.amount);
                                 record.set('singleprice', data.epreis);
                                 record.set('unit', data.einheit);

@@ -247,3 +247,26 @@ values (
     'Tualo.report.data.field.Date'
 );
 
+
+
+insert ignore into custom_types (
+    id,
+    xtype_long_classic,
+    xtype_long_modern,
+    extendsxtype_classic,
+    extendsxtype_modern,
+    name,
+    vendor,
+    description
+)
+values (
+    'Tualo.report.data.field.TimestampID',
+    'data.field.tualo_report_timestampid',
+    'data.field.tualo_report_timestampid',
+    'Ext.data.field.Number',
+    'Ext.data.field.Number',
+    'Tualo.report.data.field.TimestampID',
+    'Tualo',
+    'Tualo.report.data.field.TimestampID'
+);
+

@@ -301,6 +301,12 @@ call fill_ds_column('view_editor_blg_pos_#####')  //
 INSERT IGNORE INTO blgpos_translations (column_name, json_attribute_name, is_required)
 values ('ekpreis', 'purpurchaseprice', 0) //
 
+
+	
+
+
+
+
 create or replace view view_report_blg_pos_##### as 
 select 
 
