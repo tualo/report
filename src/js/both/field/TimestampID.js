@@ -4,7 +4,7 @@ Ext.define('Tualo.report.data.field.TimestampID', {
         'data.field.tualo_report_timestampid'
     ],
     convert: function (v, rec) {
-        if (Ext.isEmpty(v)) {
+        if (Ext.isEmpty(v) || v == 0) {
             v = new Date().getTime();
             // append a random number to avoid duplicates
             v = v + Math.floor(Math.random() * 10000);

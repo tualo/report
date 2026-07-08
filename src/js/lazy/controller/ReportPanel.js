@@ -147,9 +147,13 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     },
     save: async function () {
         let view = this.getView(),
+            isnew = false,
             original = this.getViewModel().get('loadedRecord'),
             o = { ...view.getForm().getValues(false, false, false, true), ...original };
         view.setDisabled(true);
+        if (o.id <= 0) {
+            isnew = true;
+        }
         for (let k in o) {
             if (o.hasOwnProperty(k)) {
                 if (o[k] == null) delete o[k];
@@ -197,6 +201,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 }
                 if (!Ext.isEmpty(d.article))
                     if (d.id != 0) d.__id = d.id; // keep the original pos id
+                if (isnew) {
+                    delete d.id;
+                }
                 o.positions.push(d);
                 /*
                 if ((d.id == 0) && (d.amount == 0)) {
