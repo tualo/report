@@ -204,6 +204,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 if (isnew) {
                     delete d.id;
                 }
+                if (id == 0) delete d.id;
                 o.positions.push(d);
                 /*
                 if ((d.id == 0) && (d.amount == 0)) {
