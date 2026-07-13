@@ -220,6 +220,20 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         });
 
 
+        if (o.positions.length == 0) {
+            Ext.toast({
+                html: "Es gibt keine Positionen zum Speichern",
+                closable: false,
+                align: 't',
+                slideInDuration: 400,
+                minWidth: 400
+            });
+            view.setDisabled(false);
+            return;
+        }
+
+
+
         let data = await fetch(
             './report/' + this.getViewModel().get('record').get('tabellenzusatz') + '/' + this.getViewModel().get('record').get('id'),
             {
