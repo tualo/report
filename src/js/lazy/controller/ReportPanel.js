@@ -335,7 +335,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                                     record.set('article', data.artikel);
                                     record.set('notes', data.bemerkung);
                                     record.set('bemerkung', data.bemerkung);
-                                    record.set('amount', data.amount);
+                                    record.set('amount', data.anzahl);
                                     record.set('singleprice', data.epreis);
                                     record.set('unit', data.einheit);
                                     record.set('einheit', data.einheit);
