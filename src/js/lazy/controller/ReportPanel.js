@@ -203,6 +203,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                     if (d.id != 0) d.__id = d.id; // keep the original pos id
                 if (isnew) {
                     delete d.id;
+                } else {
+                    d.beleg = o.id;
+                    d.reportnr = o.id;
                 }
                 if (id == 0) delete d.id;
                 o.positions.push(d);
