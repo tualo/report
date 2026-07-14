@@ -79,7 +79,11 @@ CREATE OR REPLACE PROCEDURE `reportFieldProcessDefaultTax`( in request JSON, out
 COMMENT 'sets default tax if not set, do not overwrite this process. just create a new one with same name and add your own logic, then set this process to inactive'
 BEGIN
     SET result = JSON_OBJECT();
-    IF (JSON_EXISTS(request, '$.position.tax') = 1) and JSON_VALUE(request, '$.position.tax') is not null then
+    IF (
+        JSON_EXISTS(request, '$.position.tax') = 1) 
+        and JSON_VALUE(request, '$.position.tax'
+        and true
+    ) is not null then
         SET result = JSON_INSERT(result, '$.value', JSON_VALUE(request, '$.position.tax'));
         SET result = JSON_INSERT(result, '$.message', 'tax already set, no default tax set');
     ELSE

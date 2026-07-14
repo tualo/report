@@ -111,8 +111,20 @@ class Report extends \Tualo\Office\Basic\RouteWrapper
                 if (!isset($report['time']) || $report['time'] == '') $report['time'] = (new DateTime())->format('H:i:s');
 
                 $report_positions = [];
+
+                $is_new_report = false;
+                if (!isset($report['id']) || $report['id'] < 0) {
+                    $is_new_report = true;
+                }
                 foreach ($report['positions'] as $k => $v) {
                     if (isset($v['article']) && $v['article'] != '') {
+                        if ($is_new_report) {
+                            unset($v['id']);
+
+                            unset($v['reportnr']);
+                            unset($v['beleg']); // old system
+                        }
+                        $v['reportid'] = $report['id'];
                         $report_positions[] = $v;
                     }
                 }
