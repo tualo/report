@@ -136,3 +136,59 @@ on duplicate key
         iscolumn  = values(iscolumn),
         isformfield = values(isformfield)
 ;
+
+
+
+
+insert into extjs_base_types (
+        vendor, id, classname, xtype_long_classic,
+        baseclass, xtype_long_modern, name, description,
+        iscolumn,
+        isformfield
+    )
+values
+    (
+        "Tualo",                              
+        "Tualo.report.data.field.NetFromGross",        
+        "Tualo.report.data.field.NetFromGross",  
+        "data.field.tualo_report_net_from_gross",
+        "Ext.form.field.Number",              
+        "data.field.tualo_report_net_from_gross",
+        "Tualo.report.data.field.NetFromGross",  
+        "Net From Gross Field",
+        0,
+        0
+    )
+on duplicate key 
+ update classname = values(classname), xtype_long_classic  = values(xtype_long_classic),
+        baseclass  = values(baseclass), xtype_long_modern  = values(xtype_long_modern), name  = values(name), description  = values(description),
+        iscolumn  = values(iscolumn),
+        isformfield = values(isformfield)
+;
+
+
+insert into extjs_base_types (
+        vendor, id, classname, xtype_long_classic,
+        baseclass, xtype_long_modern, name, description,
+        iscolumn,
+        isformfield
+    )
+values
+    (
+        "Tualo",                              
+        "Tualo.report.data.field.SinglePriceFromNet",        
+        "Tualo.report.data.field.SinglePriceFromNet",  
+        "data.field.tualo_report_singleprice_from_net",
+        "Ext.form.field.Number",              
+        "data.field.tualo_report_singleprice_from_net",
+        "Tualo.report.data.field.SinglePriceFromNet",  
+        "Single Price From Net Field",
+        0,
+        0
+    )
+on duplicate key 
+ update classname = values(classname), xtype_long_classic  = values(xtype_long_classic),
+        baseclass  = values(baseclass), xtype_long_modern  = values(xtype_long_modern), name  = values(name), description  = values(description),
+        iscolumn  = values(iscolumn),
+        isformfield = values(isformfield)
+;
