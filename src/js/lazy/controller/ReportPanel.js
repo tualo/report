@@ -191,6 +191,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             let d = item.getData();
             if (
                 d.amount != null
+                && !Ext.isEmpty(d.article)
                 // && d.tax != null
             ) {
                 for (let k in d) {
@@ -212,7 +213,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 /*
                 if ((d.id == 0) && (d.amount == 0)) {
                     // ignore emtpy lines
-
+    
                 } else {
                     if (d.id != 0) d.__id = d.id; // keep the original pos id
                     if (!Ext.isEmpty(d.article))
