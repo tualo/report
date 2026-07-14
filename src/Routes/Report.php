@@ -115,6 +115,13 @@ class Report extends \Tualo\Office\Basic\RouteWrapper
                 $is_new_report = false;
                 if (!isset($report['id']) || $report['id'] < 0) {
                     $is_new_report = true;
+                    if ((isset($report['id'])) && ($report['id'] < 0)) {
+                        unset($report['id']);
+                    }
+
+                    if ((isset($report['belegnummer'])) && ($report['belegnummer'] < 0)) {
+                        unset($report['belegnummer']);
+                    }
                 }
                 foreach ($report['positions'] as $k => $v) {
                     if (isset($v['article']) && $v['article'] != '') {
