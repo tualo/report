@@ -2,6 +2,15 @@
 Ext.define('Tualo.report.mixins.field.Query', {
     query: async function (record, queriedValue, type) {
         let params = {};
+        if (typeof record.store == 'undefined') {
+            return {
+                queriedValue: queriedValue,
+                data: {
+                    value: 0,
+                    msg: 'Kein Store gefunden'
+                }
+            };
+        }
         if (typeof record.store.getHeader == 'function') params.header = record.store.getHeader();
         params.position = record.data;
 
