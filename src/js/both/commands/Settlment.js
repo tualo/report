@@ -35,7 +35,7 @@ Ext.define('Tualo.report.commands.Settlement', {
         this.records = records;
         this.selectedrecords = selectedrecords;
         if (this.selectedrecords.length != 2) {
-            Ext.History.back(); å
+            Ext.History.back();
         }
         let sum = 0;
         this.selectedrecords.forEach((rec) => {
