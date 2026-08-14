@@ -1,4 +1,4 @@
-
+delimiter ;
 
 insert into extjs_base_types (
         vendor, id, classname, xtype_long_classic,

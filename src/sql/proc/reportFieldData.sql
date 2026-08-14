@@ -130,6 +130,8 @@ insert ignore into report_field_data_process_reporttypes (processname, reporttyp
 insert ignore into report_field_data_process_reporttypes (processname, reporttype, active) values ('reportFieldProcessDefaultTax', 'krechnung', 1) //
 
 
+ 
+
 CREATE OR REPLACE PROCEDURE `reportFieldData`(in fieldName VARCHAR(128), in request JSON, out result JSON) 
 BEGIN
     SET result = JSON_OBJECT();
