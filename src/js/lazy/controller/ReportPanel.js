@@ -426,7 +426,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 console.log('reportData positions', item, pos);
                 for (let k in config.translations.pos) {
                     let o = config.translations.pos[k][0];
-                    pos[o.column_name] = item[k];
+                    //pos[o.column_name] = item[k];
+                    pos[k] = item[o.column_name];
                     console.log('reportData positions translation', k, o.column_name, item[k]);
                 }
                 console.log('reportData positions 2', item, pos);
