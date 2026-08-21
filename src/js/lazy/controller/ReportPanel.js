@@ -423,10 +423,13 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
             data.data.positions.forEach((item) => {
                 let pos = { ...item };
+                console.log('reportData positions', item, pos);
                 for (let k in config.translations.pos) {
                     let o = config.translations.pos[k][0];
                     pos[o.column_name] = item[k];
+                    console.log('reportData positions translation', k, o.column_name, item[k]);
                 }
+                console.log('reportData positions 2', item, pos);
                 let precord = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, pos);
                 positions.push(precord);
             });
