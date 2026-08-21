@@ -489,13 +489,25 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
         } catch (e) { }
     },
     initializeReport: async function () {
+        let me = this,
+            model = this.getViewModel(),
+            record = model.get('record');
+
+        window.reportPanel = this;
+        window.reportPanelModel = model;
+        window.reportPanelRecord = record;
         // this.hideSaveButton();
 
         if (this.getViewModel().get('initializeReport') === true) return;
         this.getViewModel().set('initializeReport', true);
         this.createConvertMenu();
 
-        console.log('initializeReport', this.getViewModel().get('record').get('tabellenzusatz'));
+        console.log('initializeReport', record.get('tabellenzusatz'));
+        if (Ext.isEmpty(record.get('tabellenzusatz'))) {
+            Ext.toast('Die Beleg-Liste ist nicht konfiguriert', 2000);
+            console.info('Die Beleg-Liste ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_pos_' + this.getViewModel().get('record').get('tabellenzusatz') + ' anpassen.');
+            return;
+        }
         let config = await fetch('./reportconfig/' + this.getViewModel().get('record').get('tabellenzusatz')).then((response) => { return response.json() });
         if (config.success) {
             this.getViewModel().set('config', config);
