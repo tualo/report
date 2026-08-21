@@ -491,35 +491,38 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     initializeReport: async function () {
         let me = this,
             model = this.getViewModel(),
-            record = model.get('record');
+            record = model.get('record'),
+            tabellenzusatz = record.get('tabellenzusatz');
 
         window.reportPanel = this;
         window.reportPanelModel = model;
         window.reportPanelRecord = record;
         // this.hideSaveButton();
 
+        tabellenzusatz = tabellenzusatz.toLowerCase().replace(/[^a-z0-9_]/g, '');
+
         if (this.getViewModel().get('initializeReport') === true) return;
         this.getViewModel().set('initializeReport', true);
         this.createConvertMenu();
 
         console.log('initializeReport', record.get('tabellenzusatz'));
-        if (Ext.isEmpty(record.get('tabellenzusatz'))) {
+        if (Ext.isEmpty(tabellenzusatz)) {
             Ext.toast('Die Beleg-Liste ist nicht konfiguriert', 2000);
-            console.info('Die Beleg-Liste ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_pos_' + this.getViewModel().get('record').get('tabellenzusatz') + ' anpassen.');
+            console.info('Die Beleg-Liste ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_pos_' + tabellenzusatz + ' anpassen.');
             return;
         }
-        let config = await fetch('./reportconfig/' + this.getViewModel().get('record').get('tabellenzusatz')).then((response) => { return response.json() });
+        let config = await fetch('./reportconfig/' + tabellenzusatz).then((response) => { return response.json() });
         if (config.success) {
             this.getViewModel().set('config', config);
 
-            if (Ext.isEmpty(Ext.ClassManager.getByAlias('widget.dslist_view_editor_blg_pos_' + this.getViewModel().get('record').get('tabellenzusatz')))) {
+            if (Ext.isEmpty(Ext.ClassManager.getByAlias('widget.dslist_view_editor_blg_pos_' + tabellenzusatz))) {
                 Ext.toast('Die Beleg-Liste ist nicht konfiguriert', 2000);
-                console.info('Die Beleg-Liste ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_pos_' + this.getViewModel().get('record').get('tabellenzusatz') + ' anpassen.');
+                console.info('Die Beleg-Liste ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_pos_' + tabellenzusatz + ' anpassen.');
                 return;
             }
-            if (Ext.isEmpty(Ext.ClassManager.getByAlias('widget.dslist_view_editor_blg_hdr_' + this.getViewModel().get('record').get('tabellenzusatz')))) {
+            if (Ext.isEmpty(Ext.ClassManager.getByAlias('widget.dslist_view_editor_blg_hdr_' + tabellenzusatz))) {
                 Ext.toast('Der Belegkopf ist nicht konfiguriert', 2000);
-                console.info('Der Belegkopf ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_hdr_' + this.getViewModel().get('record').get('tabellenzusatz') + ' anpassen.');
+                console.info('Der Belegkopf ist nicht konfiguriert. Bitte den Datenstamm view_editor_blg_hdr_' + tabellenzusatz + ' anpassen.');
                 return;
             }
 
@@ -546,7 +549,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 this.positionsList = Ext.create({
                     title: null,
                     border: true,
-                    xtype: 'dslist_view_editor_blg_pos_' + this.getViewModel().get('record').get('tabellenzusatz'),
+                    xtype: 'dslist_view_editor_blg_pos_' + tabellenzusatz,
                     features: {
                         ftype: 'summary',
                         dock: 'bottom'
@@ -568,7 +571,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                     store: {
                         type: 'json',
                         getHeader: this.getReportHeader.bind(this),
-                        model: 'Tualo.DataSets.model.View_editor_blg_pos_' + this.getViewModel().get('record').get('tabellenzusatz'),
+                        model: 'Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz,
                     },
 
                     listeners: {
