@@ -3,6 +3,10 @@ DELIMITER //
 alter table buchungskreise add if not exists `vat_id` varchar(50) DEFAULT '' //
 
 alter table buchungskreise add if not exists tax_id varchar(255) default '' //
+alter table buchungskreise add if not exists firmen_name varchar(255) default '' //
+alter table buchungskreise add if not exists firmen_strasse varchar(255) default '' //
+alter table buchungskreise add if not exists firmen_plz varchar(255) default '' //
+alter table buchungskreise add if not exists firmen_ort varchar(255) default '' //
 
 CREATE OR REPLACE TRIGGER blg_hdr_#####_ai_seller_information
 AFTER INSERT ON blg_hdr_##### FOR EACH ROW

@@ -421,19 +421,23 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             }
             view.getForm().setValues(record.data);
 
-            data.data.positions.forEach((item) => {
-                let pos = { ...item };
-                console.log('reportData positions', item, pos);
-                for (let k in config.translations.pos) {
-                    let o = config.translations.pos[k][0];
-                    //pos[o.column_name] = item[k];
-                    pos[k] = item[o.column_name];
-                    console.log('reportData positions translation', k, o.column_name, item[k]);
-                }
-                console.log('reportData positions 2', item, pos);
-                let precord = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, pos);
-                positions.push(precord);
-            });
+            if (!Ext.isEmpty(data.data.positions)) {
+                data.data.positions.forEach((item) => {
+                    let pos = { ...item };
+                    console.log('reportData positions', item, pos);
+                    for (let k in config.translations.pos) {
+                        let o = config.translations.pos[k][0];
+                        //pos[o.column_name] = item[k];
+                        if (typeof item[o.column_name] != 'undefined') {
+                            pos[k] = item[o.column_name];
+                            console.log('reportData positions translation', k, o.column_name, item[k]);
+                        }
+                    }
+                    console.log('reportData positions 2', item, pos);
+                    let precord = Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, pos);
+                    positions.push(precord);
+                });
+            }
 
             if (this.headtextElement) {
                 console.log('defaultheadtext', config.defaultheadtext);
@@ -444,19 +448,20 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 this.foottextElement.setValue(config.defaultfoottext);
             }
 
-
-            data.data.texts.forEach((item) => {
-                if (item.type == 'head') {
-                    if (this.headtextElement) {
-                        this.headtextElement.setValue(item.text);
+            if (!Ext.isEmpty(data.data.texts)) {
+                data.data.texts.forEach((item) => {
+                    if (item.type == 'head') {
+                        if (this.headtextElement) {
+                            this.headtextElement.setValue(item.text);
+                        }
                     }
-                }
-                if (item.type == 'foot') {
-                    if (this.foottextElement) {
-                        this.foottextElement.setValue(item.text);
+                    if (item.type == 'foot') {
+                        if (this.foottextElement) {
+                            this.foottextElement.setValue(item.text);
+                        }
                     }
-                }
-            });
+                });
+            }
 
             if (positions.length == 0) {
                 positions.push(Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, {}));
