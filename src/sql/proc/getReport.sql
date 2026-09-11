@@ -12,6 +12,7 @@ BEGIN
     from blg_config
     where tabellenzusatz = reporttype;
 IF in_id < 0 THEN
+    
     SET result = JSON_OBJECT(
             "reporttype",
             reporttype,

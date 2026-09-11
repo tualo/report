@@ -50,6 +50,25 @@ class Report extends \Tualo\Office\Basic\RouteWrapper
                         $data['payuntildate'] = (new DateTime())->modify('+' . $postdata['zahlungsziel'] . ' day')->format('Y-m-d');
                     }
                 }
+                if (count($data['texts']) == 0) {
+                    $data['texts'] = $db->direct('
+                        select 
+                            t.txt,t.zahlart,blg_config.tabellenzusatz,\'head\' type 
+                        from 
+                            blg_config_headtext t join blg_config on t.belegid = blg_config.id
+                            and blg_config.tabellenzusatz = {type}
+                            and zahlart = {zahlart}
+                            and false
+                        union 
+
+                        select 
+                            t.txt,t.zahlart,blg_config.tabellenzusatz,\'foot\' type 
+                        from 
+                            blg_config_foottext t join blg_config on t.belegid = blg_config.id
+                            and blg_config.tabellenzusatz = {type}
+                            and zahlart = {zahlart}
+                        ', ['type' => $type, 'id' => $matches['id'], 'zahlart' => '*']);
+                }
 
 
                 App::result('data', $data);
