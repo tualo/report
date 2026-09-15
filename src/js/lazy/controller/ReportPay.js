@@ -34,7 +34,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPay', {
         },
         {
           text: 'Hinzufügen',
-          handler: 'addPayment'
+          handler: me.addPayment.bind(me)
         }
       ]
     });
