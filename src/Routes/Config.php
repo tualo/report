@@ -22,16 +22,37 @@ class Config extends \Tualo\Office\Basic\RouteWrapper
                 $header = json_decode($db->singleValue('select json_extract(js,"$[0].items") x from view_ds_formtabs_pertable where table_name = "view_editor_blg_hdr_' . $matches['type'] . '"', [], 'x'), true);
                 App::result('header', $header);
                 $matches['table_name'] = 'blg_txt_' . $matches['type'];
-                $texts = json_decode($db->singleValue('select json_object("xtype",xtype) json from ds_column_form_label 
-                    join blg_config on concat("blg_txt_",blg_config.tabellenzusatz)=ds_column_form_label.table_name
-                        and fusstext=1
-                where table_name={table_name} and column_name="text" ', $matches, 'json'), true);
+
+
+                $sql_template = '
+                    select 
+                        xtype,
+                        json_merge( json_object("xtype",xtype),ifnull( ds_form_field_additional_config.config,"{}")) json
+                    from 
+                        ds_column_form_label 
+                        join blg_config on concat("blg_txt_",blg_config.tabellenzusatz)=ds_column_form_label.table_name
+                            and fusstext=1
+                        left join ds_form_field_additional_config
+                            on (ds_form_field_additional_config.table_name,ds_form_field_additional_config.column_name) = (ds_column_form_label.table_name,ds_column_form_label.column_name)
+                where 
+                    ds_column_form_label.table_name={table_name} and ds_column_form_label.column_name="text"';
+                $texts = json_decode($db->singleValue($sql_template, $matches, 'json'), true);
 
                 App::result('foottext', $texts);
-                $texts = json_decode($db->singleValue('select json_object("xtype",xtype) json from ds_column_form_label 
-                    join blg_config on concat("blg_txt_",blg_config.tabellenzusatz)=ds_column_form_label.table_name
-                        and kopftext=1
-                where table_name={table_name} and column_name="text" ', $matches, 'json'), true);
+
+                $sql_template = '
+                    select 
+                        xtype,
+                        json_merge( json_object("xtype",xtype),ifnull( ds_form_field_additional_config.config,"{}")) json
+                    from 
+                        ds_column_form_label 
+                        join blg_config on concat("blg_txt_",blg_config.tabellenzusatz)=ds_column_form_label.table_name
+                            and kopftext=1
+                        left join ds_form_field_additional_config
+                            on (ds_form_field_additional_config.table_name,ds_form_field_additional_config.column_name) = (ds_column_form_label.table_name,ds_column_form_label.column_name)
+                where 
+                    ds_column_form_label.table_name={table_name} and ds_column_form_label.column_name="text"';
+                $texts = json_decode($db->singleValue($sql_template, $matches, 'json'), true);
                 App::result('headtext', $texts);
 
                 App::result('translations', [
