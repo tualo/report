@@ -452,12 +452,22 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 data.data.texts.forEach((item) => {
                     if (item.type == 'head') {
                         if (this.headtextElement) {
-                            this.headtextElement.setValue(item.text);
+                            if (item.text) {
+                                this.headtextElement.setValue(item.text);
+                            }
+                            if (item.txt) {
+                                this.headtextElement.setValue(item.txt);
+                            }
                         }
                     }
                     if (item.type == 'foot') {
                         if (this.foottextElement) {
-                            this.foottextElement.setValue(item.text);
+                            if (item.text) {
+                                this.foottextElement.setValue(item.text);
+                            }
+                            if (item.txt) {
+                                this.foottextElement.setValue(item.txt);
+                            }
                         }
                     }
                 });
