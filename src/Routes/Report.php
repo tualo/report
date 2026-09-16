@@ -51,14 +51,14 @@ class Report extends \Tualo\Office\Basic\RouteWrapper
                     }
                 }
                 if (count($data['texts']) == 0) {
-                    $data['texts'] = $db->direct('
+                    try {
+                        $data['texts'] = $db->direct('
                         select 
                             t.txt,t.zahlart,blg_config.tabellenzusatz,\'head\' type 
                         from 
                             blg_config_headtext t join blg_config on t.belegid = blg_config.id
                             and blg_config.tabellenzusatz = {type}
                             and zahlart = {zahlart}
-                            and false
                         union 
 
                         select 
@@ -68,6 +68,9 @@ class Report extends \Tualo\Office\Basic\RouteWrapper
                             and blg_config.tabellenzusatz = {type}
                             and zahlart = {zahlart}
                         ', ['type' => $type, 'id' => $matches['id'], 'zahlart' => '*']);
+                    } catch (Exception $e) {
+                        App::result('msg', $e->getMessage());
+                    }
                 }
 
 
