@@ -219,3 +219,31 @@ on duplicate key
         iscolumn  = values(iscolumn),
         isformfield = values(isformfield)
 ;
+
+
+
+insert into extjs_base_types (
+        vendor, id, classname, xtype_long_classic,
+        baseclass, xtype_long_modern, name, description,
+        iscolumn,
+        isformfield
+    )
+values
+    (
+        "Tualo",                              
+        "Tualo.report.form.fields.PriceType",
+        "Tualo.report.form.fields.PriceType",  
+        "widget.tualo_report_pricetype",
+        "Ext.form.field.ComboBox",              
+        "widget.tualo_report_pricetype",
+        "Tualo.report.form.fields.PriceType",  
+        "Price Type Field",
+        0,
+        0
+    )
+on duplicate key 
+ update classname = values(classname), xtype_long_classic  = values(xtype_long_classic),
+        baseclass  = values(baseclass), xtype_long_modern  = values(xtype_long_modern), name  = values(name), description  = values(description),
+        iscolumn  = values(iscolumn),
+        isformfield = values(isformfield)
+;

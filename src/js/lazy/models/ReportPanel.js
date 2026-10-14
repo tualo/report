@@ -7,6 +7,7 @@ Ext.define('Tualo.report.lazy.models.ReportPanel', {
         record: null,
         loadedRecord: null,
         config: null,
+        pricetype: 'netto',
         renderer: []
     },
     formulas: {

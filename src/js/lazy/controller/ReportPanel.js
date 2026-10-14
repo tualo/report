@@ -474,7 +474,9 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             }
 
             if (positions.length == 0) {
-                positions.push(Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, {}));
+                positions.push(Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, {
+                    pricetype: model.get('pricetype')
+                }));
             }
 
             this.positionsList.getStore().loadData(positions);
@@ -490,6 +492,24 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             // delete item['listeners'];
             if (item.items) {
                 item.items = this.removeUneccessaryFields(item.items);
+            }
+        });
+        return list;
+    },
+    setReportView: function (list) {
+        list.forEach((item) => {
+            item.reportView = this.getView();
+            item.reportList = this.positionsList;
+            console.log(item, item.name)
+            if (
+                (item.name == 'preisorientierung') ||
+                (item.name == 'pricetype')
+            ) {
+                item.value = model.get('pricetype');
+            }
+            // delete item['listeners'];
+            if (item.items) {
+                item.items = this.setReportView(item.items);
             }
         });
         return list;
@@ -545,9 +565,47 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
                 return;
             }
 
+            this.positionsList = Ext.create({
+                title: null,
+                border: true,
+                xtype: 'dslist_view_editor_blg_pos_' + tabellenzusatz,
+                features: {
+                    ftype: 'summary',
+                    dock: 'bottom'
+                },
+                plugins: {
+                    gridfilters: true,
+                    cellediting: {
+                        clicksToEdit: 1,
+                        listeners: {
+                            scope: this,
+                            edit: function (editor, fld) {
+                                this.checkAutoNewRow(fld.rowIdx);
+                                this.positionsList.fireEvent('edited', fld.record, fld);
+                                return true;
+                            }
+                        }
+                    }
+                },
+                store: {
+                    type: 'json',
+                    getHeader: this.getReportHeader.bind(this),
+                    model: 'Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz,
+                },
+
+                listeners: {
+                    "drop": "onDropGrid"
+                    /*
+                        itemcontextmenu: function (view, record, item, index, e) {
+                            e.stopEvent();
+                            let me = this;
+                            alert('contextmenu');
+                        }*/
+                }
+            })
 
 
-
+            config.header = this.setReportView(config.header);
             let hdr = Ext.create({
                 scrollable: 'y',
                 xtype: 'panel',
@@ -565,44 +623,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
 
             this.getView().getComponent('reportlist').add(
-                this.positionsList = Ext.create({
-                    title: null,
-                    border: true,
-                    xtype: 'dslist_view_editor_blg_pos_' + tabellenzusatz,
-                    features: {
-                        ftype: 'summary',
-                        dock: 'bottom'
-                    },
-                    plugins: {
-                        gridfilters: true,
-                        cellediting: {
-                            clicksToEdit: 1,
-                            listeners: {
-                                scope: this,
-                                edit: function (editor, fld) {
-                                    this.checkAutoNewRow(fld.rowIdx);
-                                    this.positionsList.fireEvent('edited', fld.record, fld);
-                                    return true;
-                                }
-                            }
-                        }
-                    },
-                    store: {
-                        type: 'json',
-                        getHeader: this.getReportHeader.bind(this),
-                        model: 'Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz,
-                    },
-
-                    listeners: {
-                        "drop": "onDropGrid"
-                        /*
-                            itemcontextmenu: function (view, record, item, index, e) {
-                                e.stopEvent();
-                                let me = this;
-                                alert('contextmenu');
-                            }*/
-                    }
-                })
+                this.positionsList
             );
             console.log('this.positionsList', this.positionsList);
 

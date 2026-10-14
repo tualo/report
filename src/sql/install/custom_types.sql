@@ -270,3 +270,70 @@ values (
     'Tualo.report.data.field.TimestampID'
 );
 
+
+
+
+insert ignore into custom_types (
+    id,
+    xtype_long_classic,
+    xtype_long_modern,
+    extendsxtype_classic,
+    extendsxtype_modern,
+    name,
+    vendor,
+    description
+)
+values (
+    'Tualo.report.data.field.SinglePriceGrossPriceType',
+    'data.field.tualo_report_single_price_gross_price_type',
+    'data.field.tualo_report_single_price_gross_price_type',
+    'Ext.data.field.Number',
+    'Ext.data.field.Number',
+    'Tualo.report.data.field.SinglePriceGrossPriceType',
+    'Tualo',
+    'Tualo.report.data.field.SinglePriceGrossPriceType'
+);
+
+insert ignore into custom_types (
+    id,
+    xtype_long_classic,
+    xtype_long_modern,
+    extendsxtype_classic,
+    extendsxtype_modern,
+    name,
+    vendor,
+    description
+)
+values (
+    'Tualo.report.data.field.GrossByPriceType',
+    'data.field.tualo_report_gross_by_price_type',
+    'data.field.tualo_report_gross_by_price_type',
+    'Ext.data.field.Number',
+    'Ext.data.field.Number',
+    'Tualo.report.data.field.GrossByPriceType',
+    'Tualo',
+    'Tualo.report.data.field.GrossByPriceType'
+);
+
+
+ 
+insert ignore into custom_types (
+    id,
+    xtype_long_classic,
+    xtype_long_modern,
+    extendsxtype_classic,
+    extendsxtype_modern,
+    name,
+    vendor,
+    description
+)
+values (
+    'Tualo.report.data.field.NetByPriceType',
+    'data.field.tualo_report_net_by_price_type',
+    'data.field.tualo_report_net_by_price_type',
+    'Ext.data.field.Number',
+    'Ext.data.field.Number',
+    'Tualo.report.data.field.NetByPriceType',
+    'Tualo',
+    'Tualo.report.data.field.NetByPriceType'
+);

@@ -280,6 +280,11 @@ select
     blg_pos_#####.artikel article,
     blg_pos_#####.anzahl amount,
     blg_pos_#####.epreis singleprice,
+    blg_pos_#####.epreis*(1+blg_pos_#####.steuersatz/100) singlegrossprice,
+
+    blg_hdr_#####.preisorientierung,
+    blg_hdr_#####.preisorientierung pricetype,
+    
     blg_pos_#####.ekpreis purpurchaseprice,
     blg_pos_#####.netto net,
     blg_pos_#####.brutto gross,
@@ -293,6 +298,11 @@ select
     
 from 
     blg_pos_##### 
+    join 
+    blg_hdr_##### on
+        blg_pos_#####.beleg = blg_hdr_#####.id
+    
+    
 //
 
 call fill_ds('view_editor_blg_pos_#####')  //
@@ -315,6 +325,7 @@ select
 
     mengeneinheiten.symbol mengeneinheiten_symbol,
     mengeneinheiten.faktor mengeneinheiten_faktor
+
 
 from
 
