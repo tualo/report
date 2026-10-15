@@ -81,7 +81,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     getAddress: async function (referencenr) {
 
         let flds = Ext.ComponentQuery.query('[name=referencenr]'),
-            hdr = this.getView().getComponent('header').getComponent('reportheader');
+            hdr = this.getView().getComponent('header'); //.getComponent('reportheader');
 
 
         for (let i = 0; i < flds.length; i++) {
@@ -117,6 +117,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
     },
 
     loadRecord: function (record) {
+        console.log('loadRecord>>>>>>>>>>>>>>>>>>>', record);
         this.getViewModel().set('record', record);
         this.getViewModel().set('loadedRecord', record.data);
 
@@ -381,7 +382,8 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
     },
     reportData: async function (tabellenzusatz, id) {
-        let view = this.getView();
+        let view = this.getView(),
+            model = this.getViewModel();
         view.getForm().reset(true);
         if (this.positionsList)
             this.positionsList.getStore().removeAll();
@@ -411,6 +413,12 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             }).then((response) => { return response.json() });
         if (data.success) {
             let positions = [];
+
+            if (!Ext.isEmpty(model.get('loadedRecord'))) {
+                // merge loadedRecord into the new record
+                data.data = Ext.apply({}, model.get('loadedRecord'), data.data);
+                console.log('merged data', data.data);
+            }
             let record = Ext.create('Tualo.DataSets.model.View_editor_blg_hdr_' + tabellenzusatz, data.data);
 
             console.log('reportData', record.data, view.getForm().getValues());
@@ -440,11 +448,15 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
             }
 
             if (this.headtextElement) {
-                console.log('defaultheadtext', config.defaultheadtext);
-                window.headtextElement = this.headtextElement;
+                if (typeof this.headtextElement.setRecord == 'function') {
+                    this.headtextElement.setRecord(record);
+                }
                 this.headtextElement.setValue(config.defaultheadtext);
             }
             if (this.foottextElement) {
+                if (typeof this.foottextElement.setRecord == 'function') {
+                    this.foottextElement.setRecord(record);
+                }
                 this.foottextElement.setValue(config.defaultfoottext);
             }
 
@@ -475,6 +487,7 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
             if (positions.length == 0) {
                 positions.push(Ext.create('Tualo.DataSets.model.View_editor_blg_pos_' + tabellenzusatz, {
+
                     pricetype: model.get('pricetype')
                 }));
             }
@@ -606,39 +619,40 @@ Ext.define('Tualo.report.lazy.controller.ReportPanel', {
 
 
             config.header = this.setReportView(config.header);
-            let hdr = Ext.create({
-                scrollable: 'y',
+            /*let hdr = Ext.create({
+                //scrollable: 'y',
                 xtype: 'panel',
                 defaults: {
                     labelWidth: 150,
                 },
                 items: this.removeUneccessaryFields(config.header),
-                // bodyPadding: 10
             });
+            */
 
-            this.getView().getComponent('header').getComponent('reportheader').removeAll();
-            this.getView().getComponent('header').getComponent('reportheader').add(
-                hdr
-            );
+            let headerFields = this.removeUneccessaryFields(config.header);
+            console.log('headerFields', headerFields);
+            this.getView().getComponent('header').removeAll();
+            this.getView().getComponent('header').add(headerFields);
+            this.getView().getComponent('reportlist').add(this.positionsList);
 
 
-            this.getView().getComponent('reportlist').add(
-                this.positionsList
-            );
-            console.log('this.positionsList', this.positionsList);
 
             if (Ext.isEmpty(config.headtext)) {
                 this.getView().getComponent('reportheader').setHidden(true);
             } else {
                 this.getView().getComponent('reportheader').setHidden(false);
                 console.log('headtext config', config.headtext);
+
+                config.headtext.record = record;
                 let cpm = Ext.create(config.headtext);
                 this.headtextElement = cpm;
+
                 this.getView().getComponent('reportheader').add(cpm);
             }
             if (Ext.isEmpty(config.foottext)) {
                 this.getView().getComponent('reportfooter').setHidden(true);
             } else {
+                config.foottext.record = record;
                 this.getView().getComponent('reportfooter').setHidden(false);
                 let cpm = Ext.create(config.foottext);
                 this.foottextElement = cpm;

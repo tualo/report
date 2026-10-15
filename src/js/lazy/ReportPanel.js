@@ -93,7 +93,9 @@ Ext.define('Tualo.report.lazy.ReportPanel', {
         }
     ],
 
+    scrollable: 'y',
     items: [
+        /*
         {
             xtype: 'panel',
             itemId: 'header',
@@ -106,7 +108,7 @@ Ext.define('Tualo.report.lazy.ReportPanel', {
 
 
             items: [
-                /*{
+                / *{
                     xtype: 'panel',
                     itemId: 'reportaddress',
                     layout: {
@@ -116,7 +118,7 @@ Ext.define('Tualo.report.lazy.ReportPanel', {
                     items: [
 
                     ]
-                },*/
+                },* /
                 {
                     xtype: 'panel',
                     flex: 2,
@@ -126,25 +128,35 @@ Ext.define('Tualo.report.lazy.ReportPanel', {
                 }
             ]
         },
+        */
+
+        {
+            xtype: 'panel',
+            itemId: 'header',
+            layout: 'fit',
+            //flex: 0.5,
+            hidden: false
+        },
         {
             xtype: 'panel',
             itemId: 'reportheader',
             layout: 'fit',
-            flex: 0.5,
+            //flex: 0.5,
             hidden: true
         },
         {
             xtype: 'panel',
             itemId: 'reportlist',
             layout: 'fit',
-            flex: 1,
+            minHeight: 300,
+            //flex: 1,
             //html: 'table',
         },
         {
             xtype: 'panel',
             itemId: 'reportfooter',
             layout: 'fit',
-            flex: 0.5,
+            //flex: 0.5,
             hidden: true
         },
         {

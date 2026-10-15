@@ -6,7 +6,9 @@ create table if not exists blg_release_signature_angebot (
     created_at timestamp not null default current_timestamp,
     primary key (id, login)
 );
+alter table blg_release_signature_angebot add column if not exists `value` decimal(15,6) default 0 //
 //
+
 alter table blg_hdr_angebot add column if not exists release_signature tinyint(1) default 0 //
 alter table blg_hdr_angebot add column if not exists release_value decimal(15,2) default -1 //
 
@@ -15,15 +17,14 @@ create or replace procedure recalculaterelease(
     in p_id bigint
 )
 begin
+    declare max_value decimal(15,6) default 0;
     -- procedure logic here
     if p_type = 'angebot' then
-        select count(*) into @count
-        from blg_release_signature_angebot
+    
+        select max(`value`) into max_value from blg_release_signature_angebot   
         where id = p_id;
-        if @count > 1 then
-            update blg_hdr_angebot 
-            set release_signature = 1
-            where id = p_id;
+        if max_value >= 0 then
+            update blg_hdr_angebot  set release_signature = 1, release_value = max_value where id = p_id and release_signature = 0 and netto <= max_value;
         end if;
     end if;
 end //
@@ -58,7 +59,7 @@ AFTER INSERT
 ON blg_hdr_angebot FOR EACH ROW
 BEGIN
     insert ignore into blg_release_signature_angebot (id, login)
-    values (new.id, getSessionUser());
+    values (new.id, getSessionUser(), organigramm_zeichnungswert(getSessionUser()));
 END //
 
 
@@ -77,8 +78,8 @@ begin
     
    if zeichnungswert >= net then
        -- User has sufficient release value
-       insert ignore into blg_release_signature_angebot (id, login)
-       values (p_id, getSessionUser());
+       insert ignore into blg_release_signature_angebot (id, login, `value`)
+       values (p_id, getSessionUser(), zeichnungswert);
        SET res= 1;
        SET msg='Sie haben das Angebot freigegeben';
    else
