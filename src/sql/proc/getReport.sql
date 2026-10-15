@@ -259,6 +259,8 @@ PREPARE stmt
 FROM @SQL;
 execute stmt;
 DEALLOCATE PREPARE stmt;
+
+
 set @SQL = replace(
         concat(
             'select  ifnull(
@@ -279,6 +281,70 @@ PREPARE stmt
 FROM @SQL;
 execute stmt;
 DEALLOCATE PREPARE stmt;
+
+
+SET @electronic_scheme = json_array();
+if exists( select table_name from ds where table_name='adressen_electronic_scheme' ) then
+    if exists( select table_name from ds where table_name=concat('blg_adressen_', reporttype) ) then
+        set @SQL = replace(
+                concat(
+                    'select  ifnull(
+                            (SELECT  
+                                JSON_ARRAYAGG(
+                                    JSON_OBJECT("electronic_scheme", `electronic_scheme`, "address", `address` )
+                                )
+                            FROM 
+                                adressen_electronic_scheme
+                            WHERE (kundennummer,kostenstelle) in (select kundennummer,kostenstelle from blg_adressen_##### where id= ',  in_id, ')
+                            )
+                            ,json_array()
+                        ) into @electronic_scheme'
+                ),
+                '#####',
+                reporttype
+            );
+
+        -- replace into test_cmd (id,val) values (1,@SQL);
+        PREPARE stmt
+        FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
+    end if;
+end if;
+
+
+SET @release_signatures = json_array();
+    if exists( select table_name from ds where table_name=concat('blg_release_signature_', reporttype) ) then
+        set @SQL = replace(
+                concat(
+                    'select  ifnull(
+                            (SELECT  
+                                JSON_ARRAYAGG(
+                                    JSON_OBJECT("login", `login`, "value", `value`, "created_at", `created_at` )
+                                )
+                            FROM 
+                                blg_release_signature_##### 
+                            WHERE  id= ',  in_id, '
+                            )
+                            ,json_array()
+                        ) into @release_signatures'
+                ),
+                '#####',
+                reporttype
+            );
+
+        -- replace into test_cmd (id,val) values (1,@SQL);
+        PREPARE stmt
+        FROM @SQL;
+        execute stmt;
+        DEALLOCATE PREPARE stmt;
+end if;
+
+
+
+
+
+
 set @SQL = replace(
         concat(
             'select  ifnull(
@@ -365,8 +431,13 @@ from ds_column
 where table_name = concat('blg_hdr_', reporttype)
     and ds_column.existsreal = 1
     and ds_column.writeable = 1;
+
+
+
 --  KOPFDATEN SQL
 call debug_message('get report hdr');
+
+
 SET @SQL = concat(
         '
         SELECT JSON_OBJECT(
@@ -394,7 +465,11 @@ SET @SQL = concat(
             "seller_information", JSON_MERGE("{}",@seller_information),
             "buyer_information",  JSON_MERGE("{}",@buyer_information),
             "seller_global_ids",  JSON_MERGE("{}",@seller_global_ids),
-            "taxes", JSON_MERGE("[]",@taxes)               
+            "taxes", JSON_MERGE("[]",@taxes),
+            "login", ifnull(hdr.login,"0000"),
+            "electronic_scheme", JSON_MERGE("[]",@electronic_scheme),
+            "release_signatures", JSON_MERGE("[]",@release_signatures)
+                           
 
         ) 
 
