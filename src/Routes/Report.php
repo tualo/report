@@ -90,13 +90,18 @@ class Report extends \Tualo\Office\Basic\RouteWrapper
                 $db = App::get('session')->getDB();
                 Route::$finished = true;
                 App::contenttype('application/json');
+                App::result('s', 1);
                 $report = R::reject($matches['type'], $matches['id']);
+                App::result('s', 2);
                 if (is_null($report)) throw new \Exception('Report not found');
+                App::result('s', 3);
                 $db->direct('call recalculateHeader({type},{id})', [
                     'type' => $matches['type'],
                     'id' => $report['id']
                 ]);
+                App::result('s', 4);
                 $report = R::get($matches['type'], $report['id']);
+                App::result('s', 5);
 
                 App::result('data', $report);
                 App::result('success', true);

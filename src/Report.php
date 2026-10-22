@@ -21,18 +21,31 @@ class Report
             $pos['net'] = $pos['net'] * $factor;
             $pos['gross'] = $pos['gross'] * $factor;
 
-            if (isset($pos['zid']) && $pos['zid'] > 0) {
+            /*if (isset($pos['zid']) && $pos['zid'] > 0) {
                 throw new \Exception('Report contains already converted positions');
-            }
+            }*/
 
 
             $pos['ftype'] = $type; // altes Format sichern
             $pos['fid'] = $pos['id']; // alte ID sichern
 
 
+            $pos['zzusatz'] = $type; // altes Format sichern
+            $pos['zid'] = $pos['id']; // alte ID sichern
+
+            unset($pos['vzusatz']);
+            unset($pos['vid']);
+
+
             unset($pos['id']);
             unset($pos['reportnr']);
         }
+
+        foreach ($report['texts'] as &$row) {
+            $row['typ'] = $row['type']; // altes Format sichern
+        }
+
+        App::result('xreport', $report);
 
         $db->direct('set @report={report}', [
             'report' => json_encode($report)
@@ -101,6 +114,8 @@ class Report
         if (!isset($report['time']) || $report['time'] == '') $report['time'] = (new \DateTime())->format('H:i:s');
 
         App::result('report', $report);
+
+        $db->direct('set @logger_session_token=uuid()');
         $db->direct('set @report={report}', [
             'report' => json_encode($report)
         ]);

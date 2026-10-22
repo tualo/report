@@ -23,6 +23,8 @@ Ext.define('Tualo.report.mixins.field.Query', {
         }
         this.report_lastQuery = new Date().getTime();
 
+        console.log('Query params:', params);
+
         let request = await fetch(`./reportdata/${type}`, {
             method: 'POST',
             headers: {

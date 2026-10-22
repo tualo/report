@@ -39,7 +39,7 @@ create table if not exists `report_field_data_process_fieldnames` (
 ) // 
 
 
-CREATE OR REPLACE PROCEDURE `reportFieldProcessDefaultAccount`( in request JSON, out result JSON) 
+CREATE   PROCEDURE IF NOT EXISTS `reportFieldProcessDefaultAccount`( in request JSON, out result JSON) 
 COMMENT 'sets default account if not set, do not overwrite this process. just create a new one with same name and add your own logic, then set this process to inactive'
 BEGIN
     SET result = JSON_OBJECT();
@@ -56,7 +56,28 @@ BEGIN
 END //
 
 
-CREATE OR REPLACE PROCEDURE `reportFieldProcessDefaultSinglePrice`( in request JSON, out result JSON) 
+CREATE   PROCEDURE IF NOT EXISTS `reportFieldProcessAccount`( in request JSON, out result JSON) 
+COMMENT 'sets default account if not set, do not overwrite this process. just create a new one with same name and add your own logic, then set this process to inactive'
+BEGIN
+    SET result = JSON_OBJECT();
+    SET result = JSON_INSERT(result, '$.value', '9999');
+    IF (JSON_EXISTS(request, '$.position.account') = 1) and JSON_VALUE(request, '$.position.account') is not null then
+        SET result = JSON_INSERT(result, '$.value', JSON_VALUE(request, '$.position.account'));
+        SET result = JSON_INSERT(result, '$.message', 'account already set, no default account set');
+    ELSEIF (JSON_EXISTS(request, '$.position.konto') = 1) and JSON_VALUE(request, '$.position.konto') is not null and JSON_VALUE(request, '$.position.konto') <>0 then
+        SET result = JSON_INSERT(result, '$.value', JSON_VALUE(request, '$.position.konto'));
+        SET result = JSON_INSERT(result, '$.message', 'account already set, no default account set');
+    ELSE
+
+        SET result = JSON_INSERT(result, '$.value', '1234');
+    END IF;
+
+    SET result = JSON_INSERT(result, '$.modified', 1=1);
+    SET result = JSON_INSERT(result, '$.message', 'account set to default_account');
+END //
+
+
+CREATE   PROCEDURE IF NOT EXISTS `reportFieldProcessDefaultSinglePrice`( in request JSON, out result JSON) 
 COMMENT 'sets default single price if not set, do not overwrite this process. just create a new one with same name and add your own logic, then set this process to inactive'
 BEGIN
     SET result = JSON_OBJECT();
@@ -75,7 +96,7 @@ END //
 
 
 
-CREATE OR REPLACE PROCEDURE `reportFieldProcessDefaultTax`( in request JSON, out result JSON) 
+CREATE   PROCEDURE IF NOT EXISTS `reportFieldProcessDefaultTax`( in request JSON, out result JSON) 
 COMMENT 'sets default tax if not set, do not overwrite this process. just create a new one with same name and add your own logic, then set this process to inactive'
 BEGIN
     SET result = JSON_OBJECT();
@@ -94,7 +115,7 @@ BEGIN
 END //
 
 
-CREATE OR REPLACE PROCEDURE `reportFieldProcessDefaultMaterialanteil`( in request JSON, out result JSON) 
+CREATE   PROCEDURE IF NOT EXISTS `reportFieldProcessDefaultMaterialanteil`( in request JSON, out result JSON) 
 COMMENT 'sets default materialanteil if not set, do not overwrite this process. just create a new one with same name and add your own logic, then set this process to inactive'
 BEGIN
     SET result = JSON_OBJECT();
@@ -129,7 +150,10 @@ insert ignore into report_field_data_process_reporttypes (processname, reporttyp
 insert ignore into report_field_data_process_reporttypes (processname, reporttype, active) values ('reportFieldProcessDefaultSinglePrice', 'krechnung', 1) //
 insert ignore into report_field_data_process_reporttypes (processname, reporttype, active) values ('reportFieldProcessDefaultTax', 'krechnung', 1) //
 
-
+insert ignore into report_field_data_process (processname, active, execute_order) values ('reportFieldProcessDefaultAccount', 1, 0) //
+insert ignore into report_field_data_process_fieldnames (processname,fieldname, active) values ('reportFieldProcessDefaultAccount', 'account', 1) //
+insert ignore into report_field_data_process_reporttypes (processname, reporttype, active) values ('reportFieldProcessDefaultAccount', 'rechnung', 1) //
+insert ignore into report_field_data_process_reporttypes (processname, reporttype, active) values ('reportFieldProcessDefaultAccount', 'krechnung', 1) //
  
 
 CREATE OR REPLACE PROCEDURE `reportFieldData`(in fieldName VARCHAR(128), in request JSON, out result JSON) 
