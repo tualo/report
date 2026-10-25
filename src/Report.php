@@ -123,8 +123,12 @@ class Report
             'type' => $type,
             'report' => json_encode($report)
         ]);
+
+
         App::result('mr', $db->moreResults());
-        return json_decode($db->singleValue('select @result report', [], 'report'), true);
+        $report = json_decode($db->singleValue('select @result report', [], 'report'), true);
+
+        return json_decode($report, true);
     }
 
     public static function addReduction(
@@ -304,6 +308,33 @@ class Report
             ];
         } catch (\Exception $e) {
         }
+
+        try {
+            App::setDatabaseRequestParameter(['id' => $data['id'] ?? -1]);
+            $data['additional_information'] = $db->directSingleHash('select * from view_blg_additional_information_' . $type . ' where id = {id}', [
+                'id' => $data['id'] ?? -1
+            ], 'key');
+        } catch (\Exception $e) {
+            $data['additional_information'] = [
+                'error' => $e->getMessage()
+            ];
+        }
+        /*
+        create or replace view  view_blg_additional_information as 
+select
+    concat(
+        'Ihre Zahlungsbedingungen:  ',
+        if(skontotage=0 or skonto=0,'', concat(skontotage,' Tage mit ', skonto ,'% Skonto oder ')),
+        zahlungsziel,' Tage netto'
+    ) as zahltext
+from 
+    blg_hdr_calculation h
+    join tualo_job j
+        on h.jobid = j.id
+    join adressen a
+   
+        on (j.kundennummer,j.kostenstelle) = (a.kundennummer,a.kostenstelle)
+    */
 
 
         // deprecated!

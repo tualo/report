@@ -196,7 +196,7 @@ SET @SQL = concat(
                     "[",
                     ifnull(group_concat( 
                         JSON_OBJECT( 
-
+                            "id", concat(id,"_",typ),
                             "type", typ,
                             "text", text
                         )
@@ -338,6 +338,12 @@ SET @release_signatures = json_array();
         FROM @SQL;
         execute stmt;
         DEALLOCATE PREPARE stmt;
+end if;
+
+if json_length(@release_signatures) = 0 then
+    set @release_signatures = json_array(
+        JSON_OBJECT("login", getSessionUser(), "value", 0, "created_at",now() )
+    );
 end if;
 
 
