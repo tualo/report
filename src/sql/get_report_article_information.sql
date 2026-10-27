@@ -15,7 +15,7 @@ CREATE OR REPLACE PROCEDURE `reportArticleInformation`(in request JSON, out resu
         @ADR,
         @KNT,
         @PREISBEZUG
-    from blg_config where tabellenzusatz = JSON_VALUE(request, '$.header.reporttype');
+    from blg_config where lower(trim(tabellenzusatz)) = lower(trim(JSON_VALUE(request, '$.header.reporttype'))  );
 
 SET result = JSON_INSERT(result, '$.debug_BLG_ID', @BLG_ID);
 SET result = JSON_INSERT(result, '$.debug_ADR', @ADR);

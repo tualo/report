@@ -501,7 +501,7 @@ SET @SQL = concat(
         '
         '
     );
--- select @SQL; 
+ select @SQL; 
 PREPARE stmt
 FROM @SQL;
 execute stmt;
