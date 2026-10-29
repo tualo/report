@@ -50,28 +50,7 @@ END //
 
 
 
-select 
-    a.steuerschluessel,
-    p.artikel,
-    p.konto,
-    p.steuersatz,
-
-    findAccountNumber(p.artikel,a.steuerschluessel,curdate()) x,
-    findTaxRate(p.artikel,a.steuerschluessel,curdate()) y
-
-from 
-    blg_pos_calculation p
-    join blg_hdr_calculation h
-        on p.beleg = h.id
-        and h.datum>='2026-01-01'
-    join tualo_job j
-        on j.id = h.jobid
-    join adressen a
-        on (j.kundennummer,j.kostenstelle) = (a.kundennummer,a.kostenstelle)
-having  
-    steuersatz<>y
-
-create procedure if not exists `correctTaxRateDiscrepancy`()
+CREATE or REPLACE PROCEDURE `correctTaxRateDiscrepancy`()
 BEGIN
 
     for recs in (
@@ -89,29 +68,25 @@ BEGIN
             blg_pos_calculation p
             join blg_hdr_calculation h
                 on p.beleg = h.id
-                and h.datum>='2026-01-01'
+                and (
+                    h.create_timestamp >= now() + interval - 665 day
+                    or h.create_timestamp is null
+                )
+
             join tualo_job j
                 on j.id = h.jobid
-                and j.status in (
-                    1,
-                    2,
-                    3,
-                    4
-                )
+                
             join adressen a
                 on (j.kundennummer,j.kostenstelle) = (a.kundennummer,a.kostenstelle)
+            join artikelgruppen
+                on cast( artikelgruppen.gruppen_id as char ) = p.artikel
         having  
             steuersatz<>y
-            and konto =0
-        limit 100
+            and konto in (0,8400)
+        limit 1000
     ) do
-        -- You can add your processing logic here, for example:
-        /*
-        IF (new.steuer <> (new.netto * (0+new.steuersatz/100))) THEN
-     SET new.steuer = (new.netto * (0+new.steuersatz/100));
-   END IF;
-   SET NEW.brutto = new.netto + new.steuer;
-        */
+        
+        
         update blg_pos_calculation set steuersatz = recs.y, konto = recs.x where id = recs.id;
         update blg_pos_calculation set steuer = (netto * (0+recs.y/100)), brutto = (netto + (netto * (0+recs.y/100))) where id = recs.id;
     end for;
