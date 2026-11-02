@@ -283,6 +283,13 @@ class Report
             $data['girocode'] = $db->singleValue('select `getGiroCodeText' . $type . '`({id}) c', $data, 'c');
         } catch (\Exception $e) {
         }
+
+
+        try {
+            $data['en16931_positions'] = $db->direct('select * from view_blg_pos_' . $type . '_en16931 where beleg = {id}', $data, '');
+        } catch (\Exception $e) {
+        }
+
         try {
             $data['report_title'] = $db->singleValue('select name from blg_config where tabellenzusatz = {reporttype}', $data, 'name');
         } catch (\Exception $e) {
