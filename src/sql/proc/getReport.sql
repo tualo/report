@@ -397,7 +397,7 @@ set @SQL = replace(
                                     "VAT" `type`,
                                     steuersatz `rate`,
                                     sum(brutto) `gross`,
-                                    sum(netto) `net`,
+                                    sum(round(netto,2)) `net`,
                                     sum(steuer) `tax`
                                 FROM 
                                     blg_pos_##### 

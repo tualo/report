@@ -257,7 +257,9 @@ class Report
             'type' => $type,
             'id' => $id
         ]);
+        App::result('moreResults',  $db->moreResults());
         $data = json_decode($db->singleValue('select @o report', [], 'report'), true);
+
         if (is_null($data)) throw new \Exception('Report not found');
 
         try {
