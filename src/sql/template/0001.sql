@@ -1,5 +1,13 @@
 DELIMITER //
 
+create table blg_layout (
+  id bigint primary key,
+  name varchar(255) not null,
+  description varchar(255)
+) //
+
+insert ignore into blg_layout (id,name,description) values (0,'Standard-Layout','Default report layout') //
+
 CREATE OR REPLACE FUNCTION `getReportToAccount`(intabellenzusatz VARCHAR(20), kundennummer VARCHAR(50),kostenstelle integer) RETURNS varchar(50)  
     DETERMINISTIC
 BEGIN
