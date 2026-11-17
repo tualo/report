@@ -14,7 +14,8 @@ Ext.define('Tualo.report.controller.Form', {
             this.getView().up().getViewModel().set('isModified', false)
             this.getView().up().getViewModel().set('isNew', false)
             if (typeof this.myPanel == 'undefined') {
-                this.myPanel = Ext.create('Tualo.report.lazy.ReportPanel', {});
+                let ct = Ext.create;
+                this.myPanel = ct('Tualo.report.lazy.ReportPanel', {});
                 this.getView().add(this.myPanel);
             }
             this.myPanel.loadRecord(record);
