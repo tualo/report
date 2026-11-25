@@ -271,6 +271,7 @@ call addFieldIfNotExists('blg_pos_#####','gewicht','decimal(15,6) DEFAULT 0.0000
 call addFieldIfNotExists('blg_pos_#####','einheit','varchar(10) DEFAULT NULL') //
 call addFieldIfNotExists('blg_pos_#####','einheit_symbol','varchar(10) DEFAULT NULL') //
 call addFieldIfNotExists('blg_pos_#####','einheit_faktor','decimal(15,6) DEFAULT 1') //
+call addFieldIfNotExists('blg_pos_#####','singleprice_print_precision','tinyint unsigned NOT NULL DEFAULT 2') //
 call addFieldIfNotExists('blg_pos_#####','vdatum','date DEFAULT current_date') //
 call addFieldIfNotExists('blg_pos_#####','handwerkeranteil','decimal(15,6) DEFAULT 0') //
 call addFieldIfNotExists('blg_pos_#####','ekpreis','decimal(15,6) DEFAULT 0') //

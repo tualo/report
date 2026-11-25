@@ -304,6 +304,8 @@ from
     
 //
 
+call fill_ds('blg_pos_#####')  //
+call fill_ds_column('blg_pos_#####')  //
 call fill_ds('view_editor_blg_pos_#####')  //
 call fill_ds_column('view_editor_blg_pos_#####')  //
 
