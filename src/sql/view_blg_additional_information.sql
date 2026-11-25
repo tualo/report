@@ -19,7 +19,8 @@ with base as (
         a.lieferantennummer,
         concat(
             "Ihre Zahlungsbedingungen:  ",
-            if(ifnull(a.skontotage,0)=0 or ifnull(a.skonto,0)=0,"", concat(ifnull(a.skontotage,0)," Tage mit ", ifnull(a.skonto,0) ,"% Skonto oder ")),
+
+            if(ifnull(a.skontotage,0)=0 or ifnull(a.skonto,0)=0,"", concat("Bis",DATE_ADD(h.datum, INTERVAL ifnull(a.skontotage,0) DAY)," ",ifnull(a.skontotage,0)," Tage mit ", ifnull(a.skonto,0) ,"% Skonto oder ")),
             ifnull(a.zahlungsziel,0)," Tage netto"
         ) as zahlungsbedingungen,
         json_object(

@@ -1,6 +1,6 @@
 DELIMITER //
 
-create table blg_layout (
+create table if not exists blg_layout (
   id bigint primary key,
   name varchar(255) not null,
   description varchar(255)

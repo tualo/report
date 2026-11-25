@@ -108,6 +108,8 @@ class Configure extends \Tualo\Office\Basic\RouteWrapper
                     '0001.sql',
                     '0002.sql',
                     '0003.sql',
+                    '0004.sql',
+                    '0005.sql',
                     '0100.sql',
                     'view_editor_blg_hdr_xzy.sql',
                     'view_editor_blg_pos_xzy.sql',

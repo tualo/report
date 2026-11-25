@@ -51,9 +51,9 @@ SET @SQL = concat(
         reporttype,
         ' pos 
 
-        left join `artikelgruppen` on `pos`.`artikel` = `artikelgruppen`.`gruppe`
+        left join `artikelgruppen` on `pos`.`artikel` = `artikelgruppen`.`gruppen_id`
         left join `warengruppen` on  `warengruppen`.`warengruppe` = `artikelgruppen`.`warengruppe`
-        left join `mengeneinheiten` on `artikelgruppen`.`einheit` = `mengeneinheiten`.`id`
+        left join `mengeneinheiten` on ifnull(`pos`.`einheit`, artikelgruppen.`einheit`) = `mengeneinheiten`.`id`
         
     WHERE beleg = ',
         in_id,

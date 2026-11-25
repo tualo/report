@@ -55,9 +55,15 @@ BEGIN
     DECLARE defaults JSON;
     DECLARE positions JSON;
     DECLARE position JSON;
+    DECLARE vid_references JSON;
+    DECLARE vid_reference JSON;
     DECLARE reportid bigint;
+    DECLARE positionid bigint;
     DECLARE i int;
+    DECLARE j int;
     DECLARE sql_command varchar(1000);
+    DECLARE reference_vid LONGTEXT;
+    DECLARE reference_type LONGTEXT;
 
     -- Template for DSX request
     SET dsx_request = JSON_OBJECT(
@@ -70,6 +76,67 @@ BEGIN
     
     call setReportDefault(reporttype,in_json,defaults);
     set in_json = defaults;
+
+    SET positions = JSON_EXTRACT(in_json, '$.positions');
+    SET i = 0;
+    WHILE i < JSON_LENGTH(positions) DO
+        SET position = JSON_EXTRACT(positions, CONCAT('$[', i, ']'));
+        SET positionid = JSON_VALUE(position, '$.id');
+
+        IF positionid IS NOT NULL AND positionid > 0 THEN
+            SET @report_position_has_references = 0;
+            SET sql_command = CONCAT(
+                'SELECT EXISTS(SELECT 1 FROM `blg_vid_', REPLACE(reporttype, '`', '``'),
+                '` WHERE id = ?) INTO @report_position_has_references'
+            );
+            PREPARE stmt FROM sql_command;
+            EXECUTE stmt USING positionid;
+            DEALLOCATE PREPARE stmt;
+            IF @report_position_has_references = 1 THEN
+                SIGNAL SQLSTATE '45000'
+                    SET MESSAGE_TEXT = 'Die Position stammt aus einem Verweis und darf nicht geändert werden.';
+            END IF;
+        END IF;
+
+        IF JSON_EXISTS(position, '$.vid_references') THEN
+            SET vid_references = JSON_EXTRACT(position, '$.vid_references');
+            IF JSON_TYPE(vid_references) <> 'ARRAY' THEN
+                SIGNAL SQLSTATE '45000'
+                    SET MESSAGE_TEXT = 'vid_references muss ein Array sein.';
+            END IF;
+            SET j = 0;
+            WHILE j < JSON_LENGTH(vid_references) DO
+                SET vid_reference = JSON_EXTRACT(vid_references, CONCAT('$[', j, ']'));
+                SET reference_vid = JSON_VALUE(vid_reference, '$.vid');
+                SET reference_type = JSON_VALUE(vid_reference, '$.vzusatz');
+                IF JSON_TYPE(vid_reference) <> 'OBJECT'
+                    OR JSON_TYPE(JSON_EXTRACT(vid_reference, '$.vid')) NOT IN ('INTEGER', 'STRING')
+                    OR reference_vid IS NULL
+                    OR reference_vid NOT REGEXP '^-?[0-9]{1,19}$'
+                    OR CAST(reference_vid AS DECIMAL(20,0)) NOT BETWEEN -9223372036854775808 AND 9223372036854775807
+                    OR JSON_TYPE(JSON_EXTRACT(vid_reference, '$.vzusatz')) <> 'STRING'
+                    OR reference_type IS NULL OR CHAR_LENGTH(reference_type) = 0
+                    OR CHAR_LENGTH(reference_type) > 255 THEN
+                    SIGNAL SQLSTATE '45000'
+                        SET MESSAGE_TEXT = 'vid_references enthält einen ungültigen vid- oder vzusatz-Wert.';
+                END IF;
+                SET j = j + 1;
+            END WHILE;
+            IF EXISTS (
+                SELECT 1
+                FROM JSON_TABLE(vid_references, '$[*]' COLUMNS (
+                    vid BIGINT PATH '$.vid',
+                    vzusatz VARCHAR(255) PATH '$.vzusatz'
+                )) AS ref
+                GROUP BY ref.vid, ref.vzusatz
+                HAVING COUNT(*) > 1
+            ) THEN
+                SIGNAL SQLSTATE '45000'
+                    SET MESSAGE_TEXT = 'vid_references enthält doppelte Verweise.';
+            END IF;
+        END IF;
+        SET i = i + 1;
+    END WHILE;
 
     -- translate json attributes to column names
     for checkrecord in (select column_name,json_attribute_name,is_required from blghdr_translations) do
@@ -138,6 +205,11 @@ BEGIN
     SET i = 0;
     WHILE i < JSON_LENGTH(positions) DO
         SET position  =  JSON_EXTRACT(positions, concat('$[', i, ']'));
+        SET vid_references = JSON_EXTRACT(position, '$.vid_references');
+        SET position = JSON_REMOVE(position, '$.vid_references');
+        IF JSON_VALUE(position, '$.id') < 0 THEN
+            SET position = JSON_REMOVE(position, '$.id');
+        END IF;
         if JSON_EXISTS(position, '$.reportnr')=0 OR JSON_VALUE(position, '$.reportnr') is null then
             set position = JSON_SET(position, '$.reportnr', reportid);
             set position = JSON_SET(position, '$.beleg', reportid);
@@ -183,6 +255,37 @@ BEGIN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
         end if;
 
+        IF vid_references IS NOT NULL AND JSON_LENGTH(vid_references) > 0 THEN
+            IF JSON_VALUE(result, '$.temporary_table_name') IS NULL
+                OR JSON_VALUE(result, '$.temporary_table_name') NOT REGEXP '^[A-Za-z0-9_]+$' THEN
+                SIGNAL SQLSTATE '45000'
+                    SET MESSAGE_TEXT = 'Positions-ID konnte nicht ermittelt werden: temporäre Tabelle fehlt.';
+            END IF;
+
+            SET @report_position_id = NULL;
+            SET sql_command = CONCAT(
+                'SELECT id INTO @report_position_id FROM `',
+                JSON_VALUE(result, '$.temporary_table_name'), '`'
+            );
+            PREPARE stmt FROM sql_command;
+            EXECUTE stmt;
+            DEALLOCATE PREPARE stmt;
+            SET positionid = @report_position_id;
+            IF positionid IS NULL THEN
+                SIGNAL SQLSTATE '45000'
+                    SET MESSAGE_TEXT = 'Positions-ID konnte nicht ermittelt werden.';
+            END IF;
+
+            SET sql_command = CONCAT(
+                'INSERT INTO `blg_vid_', REPLACE(reporttype, '`', '``'),
+                '` (id, vid, vzusatz) ',
+                'SELECT ?, ref.vid, ref.vzusatz FROM JSON_TABLE(?, ''$[*]'' COLUMNS (',
+                'vid BIGINT PATH ''$.vid'', vzusatz VARCHAR(255) PATH ''$.vzusatz'')) AS ref'
+            );
+            PREPARE stmt FROM sql_command;
+            EXECUTE stmt USING positionid, vid_references;
+            DEALLOCATE PREPARE stmt;
+        END IF;
 
         SET i = i + 1;
 
