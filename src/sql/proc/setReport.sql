@@ -14,7 +14,7 @@ und speichert ihn in den entsprechenden Datenbanktabellen. Sie führt folgende S
 2. Prüfung aller Pflichtfelder im Header
 3. Speicherung des Headers in der Tabelle blg_hdr_<reporttype>
 4. Ermittlung der generierten Report-ID (bei neuen Belegen)
-5. Setzen der Report-ID in allen Positionen (falls nicht vorhanden)
+5. Speicherung des Kundenbezugs vor den Positionen und Setzen der Report-ID in allen Positionen
 6. Validierung und Übersetzung der JSON-Attribute für Positionen (blgpos_translations)
 7. Speicherung aller Positionen in der Tabelle blg_pos_<reporttype>
 8. Neuberechnung der Kopfsummen via recalculateHeader()
@@ -100,7 +100,7 @@ BEGIN
 
         IF JSON_EXISTS(position, '$.vid_references') THEN
             SET vid_references = JSON_EXTRACT(position, '$.vid_references');
-            IF JSON_TYPE(vid_references) <> 'ARRAY' THEN
+            IF BINARY JSON_TYPE(vid_references) <> BINARY 'ARRAY' THEN
                 SIGNAL SQLSTATE '45000'
                     SET MESSAGE_TEXT = 'vid_references muss ein Array sein.';
             END IF;
@@ -109,12 +109,12 @@ BEGIN
                 SET vid_reference = JSON_EXTRACT(vid_references, CONCAT('$[', j, ']'));
                 SET reference_vid = JSON_VALUE(vid_reference, '$.vid');
                 SET reference_type = JSON_VALUE(vid_reference, '$.vzusatz');
-                IF JSON_TYPE(vid_reference) <> 'OBJECT'
-                    OR JSON_TYPE(JSON_EXTRACT(vid_reference, '$.vid')) NOT IN ('INTEGER', 'STRING')
+                IF BINARY JSON_TYPE(vid_reference) <> BINARY 'OBJECT'
+                    OR BINARY JSON_TYPE(JSON_EXTRACT(vid_reference, '$.vid')) NOT IN (BINARY 'INTEGER', BINARY 'STRING')
                     OR reference_vid IS NULL
                     OR reference_vid NOT REGEXP '^-?[0-9]{1,19}$'
                     OR CAST(reference_vid AS DECIMAL(20,0)) NOT BETWEEN -9223372036854775808 AND 9223372036854775807
-                    OR JSON_TYPE(JSON_EXTRACT(vid_reference, '$.vzusatz')) <> 'STRING'
+                    OR BINARY JSON_TYPE(JSON_EXTRACT(vid_reference, '$.vzusatz')) <> BINARY 'STRING'
                     OR reference_type IS NULL OR CHAR_LENGTH(reference_type) = 0
                     OR CHAR_LENGTH(reference_type) > 255 THEN
                     SIGNAL SQLSTATE '45000'
@@ -190,6 +190,9 @@ BEGIN
         SET MSG = concat('Report ID could not be retrieved after header insert');
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
     END IF;
+
+    -- Der Kundenbezug muss fuer die Kontenermittlung der Positionen vorliegen.
+    call setReportReferenceNr(reporttype, in_json, reportid, result);
 
     -- add reportid to positions if not exists
     -- SET in_json = setReportAddInNotExistsReportID(in_json, reportid);
@@ -291,18 +294,15 @@ BEGIN
 
     END WHILE;
 
- call debug_message('setReport - after position insert, before TSE, Texts, ReferenceNr, Address, BookingCircle');
+ call debug_message('setReport - after position insert, before TSE, Texts, Address, BookingCircle');
     -- TSE
     call setReportTSE(reporttype, in_json, reportid, result);
 
- call debug_message('setReport - after TSE, before Texts, ReferenceNr, Address, BookingCircle');
+ call debug_message('setReport - after TSE, before Texts, Address, BookingCircle');
     -- Texts
     call setReportTexts(reporttype, in_json, reportid, result);
 
- call debug_message('setReport - after Texts, before ReferenceNr, Address, BookingCircle');
-    -- Bezug
-    call setReportReferenceNr(reporttype, in_json, reportid, result);
- call debug_message('setReport - after ReferenceNr, before Address, BookingCircle');
+ call debug_message('setReport - after Texts, before Address, BookingCircle');
     -- Address
     call setReportAddress(reporttype, in_json, reportid, result);
 

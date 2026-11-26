@@ -10,6 +10,7 @@ CREATE TABLE blg_vid_test (
     FOREIGN KEY (id) REFERENCES blg_pos_test (id) ON DELETE CASCADE
 );
 CREATE TABLE test_header_writes (id INT NOT NULL);
+CREATE TABLE test_customer_reference (id BIGINT PRIMARY KEY);
 
 DELIMITER //
 CREATE PROCEDURE setReportDefault(IN typ VARCHAR(20), IN input JSON, OUT output JSON)
@@ -23,9 +24,14 @@ BEGIN
     DROP TEMPORARY TABLE IF EXISTS temp_report_test;
     CREATE TEMPORARY TABLE temp_report_test (id BIGINT);
     IF JSON_VALUE(request, '$.tablename') = 'blg_hdr_test' THEN
+        DELETE FROM test_customer_reference;
         INSERT INTO test_header_writes VALUES (1);
         INSERT INTO temp_report_test VALUES (100);
     ELSE
+        CALL assert_test(
+            (SELECT COUNT(*) = 1 FROM test_customer_reference WHERE id = 100),
+            'Customer reference must be saved before positions'
+        );
         SET pos_id = JSON_VALUE(request, '$.data[0].id');
         IF pos_id IS NULL THEN
             INSERT INTO blg_pos_test (beleg) VALUES (100);
@@ -41,7 +47,10 @@ BEGIN
 END //
 CREATE PROCEDURE setReportTSE(IN typ VARCHAR(20), IN input JSON, IN id BIGINT, OUT result JSON) BEGIN END //
 CREATE PROCEDURE setReportTexts(IN typ VARCHAR(20), IN input JSON, IN id BIGINT, OUT result JSON) BEGIN END //
-CREATE PROCEDURE setReportReferenceNr(IN typ VARCHAR(20), IN input JSON, IN id BIGINT, OUT result JSON) BEGIN END //
+CREATE PROCEDURE setReportReferenceNr(IN typ VARCHAR(20), IN input JSON, IN id BIGINT, OUT result JSON)
+BEGIN
+    INSERT INTO test_customer_reference VALUES (id);
+END //
 CREATE PROCEDURE setReportAddress(IN typ VARCHAR(20), IN input JSON, IN id BIGINT, OUT result JSON) BEGIN END //
 CREATE PROCEDURE setReportBookingCircle(IN typ VARCHAR(20), IN input JSON, IN id BIGINT, OUT result JSON) BEGIN END //
 CREATE PROCEDURE recalculateHeader(IN typ VARCHAR(20), IN id BIGINT) BEGIN END //

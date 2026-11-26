@@ -293,7 +293,7 @@ class Report
         } catch (\Exception $e) {
         }
         try {
-            $data['report_taxes'] = $db->direct('select * from view_report_blg_taxes_' . $type . ' where beleg = {id}', $data, '');
+            $data['report_taxes'] = $db->direct('select * from view_report_blg_taxes_' . $type . ' where beleg = {id} order by _prio', $data, '');
         } catch (\Exception $e) {
         }
         try {
